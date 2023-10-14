@@ -1,0 +1,733 @@
+%% TO DO: Monotonicity
+
+%% TO DO: more rules for convenience, e.g. defining the \bot symbol,
+%% and then defining in and out rules for it
+
+%% Prove that the $\vee$elimination rule is necessary
+%% if we didn't have it, then our system would be sound relative to valuations
+
+%% Show that $\phi\vee\bot \equiv \phi$
+
+%% TO DO: find my old exercises involving "adoring somebody" etc
+
+%% TO DO: synonyms for "entails" or "implies"
+
+%% TO DO: translation from predicate symbols to English
+
+%% TO DO: discuss that -> may not be truth-functional
+
+%% TO DO: serial relation = entire relation
+
+\documentclass[fleqn]{tufte-book}
+\setcounter{secnumdepth}{0}
+% \includeonly{rules}
+\title{How Logic Works}
+\author{Hans Halvorson}
+\input{preamble.tex}
+\renewcommand{\emph}{\textbf}
+\usepackage{xcolor,colortbl}
+\definecolor{Gray}{gray}{0.85}
+\usepackage[acronym]{glossaries-extra}
+\usepackage{svg}
+\makeglossaries
+\usepackage{venndiagram}
+\usepackage{enumitem}
+\usepackage{mathtools}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{tcolorbox}
+\usepackage{multirow}
+\newtheorem*{prop*}{Proposition}
+\newtheorem{prop}{Proposition}
+\numberwithin{prop}{chapter}
+\newtheorem*{lemma*}{Lemma}
+\newtheorem*{fct}{Finite completeness theorem}
+\newtheorem*{dnf}{DNF theorem}
+\newtheorem*{subthm}{Substitution theorem}
+\newtheorem*{sothm}{Soundness theorem}
+\theoremstyle{definition}
+\newtheorem*{defn}{Definition}
+\newtheorem*{example}{Example}
+\newtheorem{exercise}{Exercise}
+\newtheorem{exercises}[exercise]{Exercise}
+\numberwithin{exercise}{chapter}
+% \publisher{Princeton University Press}
+\usepackage{array}
+\usepackage[caption=false]{subfig}
+\usepackage{tikz}
+\usetikzlibrary{calc,trees,positioning,arrows,fit,shapes,calc}
+\newcommand{\mymk}[1]{%
+  \tikz[baseline=(char.base)]\node[anchor=south west, draw,rectangle, rounded corners, inner sep=2pt, minimum size=7mm,
+    text height=2mm](char){#1} ;}
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+            \node[shape=circle,draw,inner sep=2pt] (char) {#1};}}
+\usepackage[framemethod=TikZ]{mdframed}
+\newcounter{axi}\setcounter{axi}{0}
+\renewcommand{\theaxi}{\arabic{axi}}
+\newenvironment{law}[2][]{%
+    \refstepcounter{axi}
+ \ifstrempty{#1}%
+% if condition (without title)
+{\mdfsetup{%
+    frametitle={%
+        \tikz[baseline=(current bounding box.east),outer sep=0pt]
+        \node[anchor=east,rectangle,fill=blue!20]
+        {\strut Axiom~\theaxi};}
+    }%
+% else condition (with title)
+}{\mdfsetup{%
+    frametitle={%
+        \tikz[baseline=(current bounding box.east),outer sep=0pt]
+        \node[anchor=east,rectangle,fill=blue!20]
+        {\strut ~#1};}%
+    }%
+}%
+% Both conditions
+\mdfsetup{%
+    skipabove=2em,
+    skipbelow=2em,
+    innertopmargin=10pt,linecolor=blue!20,%
+    linewidth=2pt,topline=true,%
+    frametitleaboveskip=\dimexpr-\ht\strutbox\relax%
+}
+\begin{mdframed}[]\relax}{%
+\end{mdframed}}
+\usepackage{tikz-cd}
+% \setcounter{secnumdepth}{1}
+% \setcounter{tocdepth}{0}
+\newcommand{\lra}{\leftrightarrow}
+
+\newtcbox{irule}[1]{coltitle=blue!20!black, colback=black!1!white, 
+  colframe=black!10!white,title=#1}
+
+% \tbcset{coltitle=blue!20!black, colback=black!1!white, 
+% colframe=black!10!white}
+
+% \tcbset{fonttitle=\bfseries,nobeforeafter,center title}
+
+% \usepackage{imakeidx}
+
+% \makeindex
+
+\tcbuselibrary{skins,xparse}
+
+% \includeonly{models}
+
+\makeglossaries
+
+
+\doublespacing
+\begin{document}
+\frontmatter
+
+\maketitle
+
+\tableofcontents
+
+\newglossaryentry{valid}
+{
+  name={valid},
+  description={An argument is valid just in case its premises provide
+    decisive support for its conclusion, alternatively, if the truth
+    of its premises guarantees the truth of its conclusion} }
+
+\newglossaryentry{atomic sentence} { name={atomic sentence},
+  first={\emph{atomic sentence}},
+  description={An atomic sentence is a sentence that does not have any
+    other sentence as a proper syntactic part.  In propositional
+    logic, atomic sentences are represented by capital letters such as
+    $P,Q,R,\dots $.  In quantifier logic, the atomic sentences are
+    either relation symbols applied to closed terms, such as $Rab$, or equalities between closed terms, such as $a=b$.}
+}
+
+
+\newglossaryentry{interpretation}
+{
+  name={interpretation},
+  description={An interpretation is an assignment of symbols to set-theoretic structures.}
+}
+
+
+\chapter{Preface}
+
+This book has no subject matter --- or, to be more precise, it's about
+both everything and nothing.  For the science of logic has no
+doctrines or creeds.  There is no set of beliefs that distinguishes
+the logical people from the non-logical people, not the beliefs of the
+European Enlightenment, nor the deliverances of contemporary natural
+science, nor the opinions of some Princeton philosopher.  Simply put,
+learning the science of logic can't be reduced to learning any
+particular facts at all; it's learning a skill, namely, the skill to
+discern between good and bad arguments.
+
+There are numerous reasons why you need this skill, no matter what you
+end up doing with your life.  First, being logical will help you
+reason about how to get what you want.  Second, many of our society's
+best jobs require strong logic skills --- whether it be programming
+computers, buying stock options, curing diseases, prosecuting
+criminals, discovering alternative energy sources, or interpreting the
+constitution.  (And that's not even to speak of that all-important
+task of parenting and raising intellectually healthy children.)
+Third, regardless of your ideological bent --- whether you're
+religious, atheist, or agnostic --- you surely want to do everything
+you can to ensure that your view aligns with reality.  For this task,
+logic is an invaluable tool, if only to protect you from the plethora
+of bad arguments you'll hear in your life.
+
+Our goal here is no more or less than to initiate you into the most
+up-to-date account of what makes an argument good.  We'll give you the
+tools, but it's up to you to decide how you're going to use them.
+
+\medskip {\it {\bf Note} about how to use this book:} The first six
+chapters of this book (up through ``quantifying'') correspond roughly
+to a first course in formal logic at an average university in the
+United States.  We cover the material in about a quarter of the number
+of pages of some well-known logic textbooks, which was intentional:
+logic should organize your already existing thoughts, not add to the
+jumble of thoughts that need to be organized.
+
+In Chapter 7, we gently ramp up to applications of formal logic, and
+in particular to the application of formal logic to the study of
+itself (i.e.\ logical metatheory).  In one sense, this material goes
+beyond a typical first course in logic, but we would like to change
+that.  This material is not intrinsically more difficult than what has
+gone before.  In fact, what can make it seem difficult is that it's
+less clear what rules of reasoning one is permitted to use.  However,
+we try to explain clearly that the rules of reasoning here are none
+other than those that were learned in the previous chapters.
+
+Having shown how formal logic can be used to formulate theories, we
+then begin to use formal logic to formulate a theory about itself.  In
+Chapter 8, we use the theory of sets to define the notion of an
+interpretation of a language, and Tarski's rigorous definition of {\it
+  truth}.  In Chapter 9, we present a theory about propositional
+logic, proving both soundness and completeness theorems.  Finally, in
+Chapter 10, we sketch the outlines of a similar theory about
+quantifier logic.  Thus, the chapters form a natural staircase leading
+up to the treasure-chest of advanced applications of logic, including
+modal logic, set theory, and G{\"o}del's theorem.
+
+\medskip {\it {\bf Note} to the instructor, or to the person deciding
+  which logic book to use:} To express a thought, or to make an
+argument, or to formulate a theory, you have to pick a language to
+use.  Similarly, to become more logical, you have to adopt some
+particular system of logic.  I've made a choice for you here, and here
+is my rationale.
+
+The first choice point is between ``trees'' and ``arguments.''  The
+advantage of trees is that they are really easy, and require little
+mental exertion.  But wait, isn't the goal to become the most
+excellent logical thinkers that we can be?  People don't become better
+logical thinkers by being taught a recipe that somebody else found,
+and that lets them effectively turn their minds off.  But that's
+precisely the point of logical trees: they give students a {\it
+  recipe} for evaluating simple arguments.  If the goal were to
+manufacture an army of logical automata, then I might well use trees.
+But since I'm teaching human beings, I prefer to teach them that
+distinctively human skill of making and evaluating arguments.
+Accordingly, this book focuses primarily on how to make rigorous
+arguments, and secondarily on the (non-algorithmic) skill of detecting
+bad arguments.
+
+The second choice point is whether to represent arguments using a
+``Fitch-style'' or a ``Lemmon-style'' system.  This is a difficult
+decision.  Fitch-style is very intuitive and has a shallow learning
+curve.  Unfortunately, Fitch-style argument is opaque to reflection:
+it's difficult for students to see why Fitch-style works, and even
+more difficult for them to imagine how the rules might have been
+different (thereby reinforcing an unfortunate perception that there is
+no human creativity involved in formulating the laws of logic).  In
+contrast, Lemmon-style argument has a steeper learning curve, but it's
+more flexible and transparent to reflection.  It's relatively easy to
+see why the system works, and it's easy to tweak the rules and see how
+things would come out different.  So, the steeper learning curve of
+the Lemmon approach is a price I'm willing to pay to enable my reader
+to become a more clear and creative logical thinker.
+
+There are at least three ways in which this book differs from many
+other introductory logic books.  First, we teach intrinsic methods
+(e.g.\ reasoning) prior to teaching extrinsic methods (e.g.\ checking
+with truth tables).  Here our philosophical convictions have been
+reinforced by our pedagogical experience, viz.\ that an
+argument-centric approach leads to students gaining a higher level of
+mastery and confidence, and that the skills gained are more easily
+transferable to other intellectual tasks.
+
+Second, and for similar reasons, we treat formal validity as defined
+in terms of the inference rules, and not in terms of
+truth-preservation.  Our issue here is that a precise notion of
+truth-preservation requires a previous understanding of valid
+reasoning in set theory.  So, we want to be forthright with our reader
+that we, at least, don't have a clear and distinct perception of what
+truth-preservation amounts to, at least not until we explicate the
+notion in terms of set theory.  By taking formal validity as defined
+by the rules, we emphasize that genuine creativity is required to
+design rules that both capture and sharpen our intuitions about
+validity.
+
+Third, in Chapter \ref{theories}, we ease students away from rigid
+formal proofs, and towards ``informal rigor.''  Again, the goal is for
+the students to be able to transfer their knowledge to other
+disciplines where rigid formal proofs might not be appropriate or
+useful.  Fourth, in Chapter \ref{meta}, we introduce logical
+metatheory as ``just another theory'' by explaining how to formulate
+the metatheory for propositional with predicate logic and a bit of set
+theory.  Thus, we close the circle of logic back upon itself.
+
+\medskip {\it {\bf Note} to the reader:} We put an asterisk to the
+left of exercises that might be perceived as more difficult than the
+preceding ones.  In the case of proofs, it often occurs that a
+difficult result is basically a version of the law of excluded middle:
+$P\vee \neg P$.  So, if you get stuck, you might try first to prove
+excluded middle, and then to use that to get the result you want.
+
+\mainmatter
+
+\newglossaryentry{double turnstile}% label
+{
+  name={\ensuremath{\vDash}},% default display
+  description={semantic implication: whenever the sentences to the
+    left of the double turnstile are true, the sentence to the right
+    of the double turnstile is true},% description
+  category=symbol% category label
+}
+
+\newglossaryentry{turnstile}% label
+{
+  name={\ensuremath{\vdash}},% default display
+  description={the relation of provability defined by the inference rules},% description
+  category=symbol% category label
+} 
+
+\newglossaryentry{main column}
+{
+  name={main column},
+  description={is the column in the truth table of a sentence corresponding to the main connective of that sentence}
+}
+
+\newglossaryentry{soundness theorem}
+{
+  name={main column},
+  description={shows that provable sequents are truth-preserving}
+} 
+
+\newglossaryentry{substitution instance}
+{
+  name={substitution instance}, first={\emph{substitution instance}},
+  description={A substitution instance of a sentence is any other
+    sentence that results from the first by a uniform replacement of
+    non-logical terms.  i.e.\ it is any sentence that could result
+    from translating that sentence to another language.}
+}
+
+\newglossaryentry{main connective} { name={main connective},
+  first={\emph{main connective}}, description={for a propositional
+    logic sentence $\phi$, the last connective in the construction of
+    $\phi$}}
+
+\newglossaryentry{substitution} { name={substitution},
+  first={\emph{substitution}}, description={when some non-logical
+    symbols are replaced with other suitable syntactic structures}}
+
+\newglossaryentry{subformula} { name={subformula},
+  first={\emph{subformula}}, description={a subformula of $\phi$ is
+    any formula that occurs in the construction of $\phi$}}
+
+\newglossaryentry{reconstrual} { name={reconstrual}, description={A
+    reconstrual assigns non-logical symbols to corresponding syntactic
+    structures.  For example, a reconstrual assigns a predicate symbol
+    to a formula with one free variable.}  }
+
+\newglossaryentry{dependency number} { name={dependency number},
+  first={\emph{dependency number}}, description={a number in the
+    leftmost column of a proof that displays which assumptions are in
+    force at a particular step in the proof}  }
+
+\newglossaryentry{translation}
+{
+  name={translation},
+  description={A translation is a map from formulas to formulas,
+    generated by a reconstrual of the non-logical vocabulary in those formulas.}
+}
+
+\newglossaryentry{model}
+{
+  name={model},
+  description={A model of a theory is an interpretation in which all the theory's sentences are true.}
+}
+
+\newglossaryentry{sequent}
+{
+  name={sequent},
+  description={A sequent consists of a list of sentences (premises), a
+    turnstile $\vdash$, and another sentence (conclusion).  It is the
+    symbolic representation of a valid argument form}
+}
+
+\newglossaryentry{disjunction}
+{
+  name={disjunction},
+  description={A disjunction is a sentence whose main connective is
+    ``or'', symbolized by $\vee$}
+}
+
+\newglossaryentry{conditional}
+{
+  name = {conditional},
+  description={A conditional sentence is one whose main connective is
+    ``if\dots then'', symbolized by $\to$}
+}
+
+\newglossaryentry{extension}
+{
+  name={extension},
+  description={The extension of a relation is the set of things that
+    stand in that relation.  The extension of a name is the individual that it denotes}
+}
+
+\newglossaryentry{intension}
+{
+  name={intension},
+  description={The intension of a relation is, intuitively, what the relation means}
+}
+
+\newglossaryentry{formula}
+{
+  name={formula},
+  description={A formula (alternately, well-formed formula) is a
+    string of symbols that could become a sentence by the addition of quantifiers}
+}
+
+\newglossaryentry{antecedent}
+{
+  name={antecedent},
+  description={The antecedent of a conditional is the sentence that
+    occurs after ``if'', e.g.\ in ``if it is raining then the sidewalk
+    is wet,'' the sentence ``it is raining'' is the antecedent}}
+
+\newglossaryentry{consequent}
+{
+  name={consequent},
+  description={The consequent of a conditional is the sentence that
+    occurs after ``then'', e.g.\ in ``if it is raining then the sidewalk is
+    wet'' the sentence ``the sidewalk is wet'' is the consequent}}
+
+\newglossaryentry{literal}
+{
+  name={literal},
+  description={A propositional logic sentence is called a literal if
+    it is atomic or negated atomic}}
+
+\newglossaryentry{truth-functional}
+{
+  name={truth-functional},
+  description={A connective is truth-functional just in case its truth
+    value is a function of the truth value of the relevant component
+    sentences}}
+
+\newglossaryentry{signature}
+{
+  name={signature},
+  description={A signature is a set of non-logical symbols:
+    propositional constants, relation, function, and constant symbols}}
+
+\newglossaryentry{consistent} { name={consistent}, description={A
+    collection of sentences is semantically consistent if they can all
+    be true simultaneously.  A collection of sentences is
+    proof-theoretically consistent if no contradiction can be derived
+    from them} }
+
+\newglossaryentry{expressively complete} { name={expressively
+    complete}, description={A collection of connectives is
+    expressively complete if it can express all truth functions} }
+
+\newglossaryentry{biconditional} { name={biconditional},
+  description={A biconditional is a statement of the form ``$\phi$ if
+    and only if $\psi$.'' It asserts that $\phi$ is a necessary and
+    sufficient condition for $\psi$} }
+
+\newglossaryentry{sufficient condition} { name={sufficient condition},
+  description={In a conditional statement ``if $\phi$ then $\psi$'',
+    the antecedent $\phi$ is a sufficient condition for $\psi$} }
+
+\newglossaryentry{necessary condition} { name={necessary condition},
+  description={In a conditional statement ``if $\phi$ then $\psi$'',
+    the consequent $\psi$ is a necessary condition for $\phi$} }
+
+\newglossaryentry{inconsistency} { name={inconsistency},
+  description={An inconsistency is a sentence that is false in all
+    situations} }
+
+\newglossaryentry{contingency} { name={contingency},
+  description={A contingency is a sentence that is true in some
+    situations and false in other situations}}
+
+\newglossaryentry{tautology} { name={tautology}, description={A
+    tautology is a sentence $\phi$ that is provable from no premises,
+    i.e.\ $\vdash \phi$, or that is true merely in virtue of its form,
+    or that is true in all situations}}
+
+\newglossaryentry{counterexample}
+{
+  name={counterexample},
+  description={A counterexample to an argument is a formalization of the notion of a situation, or state of affairs,
+    in which the premises are true and the conclusion is false.} }
+
+\newglossaryentry{universal quantifier}{ name={universal quantifier},
+  first={\emph{universal quantifier}}, description={the symbol
+    $\forall$ that plays the role of ``all'' or ``every''}}
+
+\newglossaryentry{existential quantifier}{ name={existential quantifier},
+  first={\emph{existential quantifier}}, description={the symbol
+    $\exists$ that plays the role of ``some'' or ``there is''}}
+
+\newglossaryentry{variable}{ name={variable}, first={\emph{variable}}, description={a symbol such as $x$, which
+    plays the role of an open term}}
+
+
+
+\newglossaryentry{dnf}{type=\acronymtype, name={DNF},
+  description={disjunctive normal form}, first={\textbf{disjunctive normal
+      form (DNF)}}}
+
+\newglossaryentry{cnf}{type=\acronymtype, name={CNF},
+  description={conjunctive normal form}, first={\textbf{conjunctive
+      normal form (CNF)}}}
+
+\newglossaryentry{em}{type=\acronymtype, name={EM},
+  description={law of excluded middle}, first={\textbf{law of excluded
+      middle (EM)}}}
+
+\newglossaryentry{raa}{type=\acronymtype, name={RAA},
+  description={reductio ad absurdum}, first={\emph{reductio ad
+      absurdum (RAA)}}}
+
+\newglossaryentry{dm}{type=\acronymtype, name={DM},
+  description={De Morgan's rule}, first={\textbf{DeMorgan's rule (DM)}}}
+
+\newglossaryentry{efq}{type=\acronymtype, name={EFQ},
+  description={ex falso quodlibet}, first={\emph{ex falso quodlibet
+      (EFQ)}}}
+
+\newglossaryentry{qn}{type=\acronymtype, name={QN},
+  description={quantifier negation equivalences},
+  first={\emph{quantifier negation equivalences (QN)}}}
+
+\newglossaryentry{complete}{name={complete},
+  first={\textbf{completeness}}, description={(1) A complete proof system
+    is one the proves everything it should: if $\phi\vDash\psi$ then
+    $\phi\vdash\psi$. (2) A theory $T$ is complete just in case
+    $T\vdash\phi$ or $T\vdash\neg\phi$, for every sentence $\phi$ in
+    its language.}}
+
+\newglossaryentry{sound}{name={sound}, first={\textbf{soundness}},
+  description={A sound proof system is one that doesn't prove things
+    it shouldn't: if $\phi\vdash\psi$ then $\phi\vDash\psi$.}}
+
+ 
+
+
+
+\include{lfh}
+
+\include{deducing}
+
+\include{supposing}
+
+\include{building}
+
+\include{truth}
+
+\include{quantifying}
+
+\include{theorizing}
+
+\include{models}
+
+\include{meta}
+
+\include{meta-pred}
+
+\include{limit}
+
+\backmatter
+
+\appendix
+
+\singlespacing
+
+\include{rules}
+
+\include{derived}
+
+\include{tables}
+
+\include{algorithms}
+
+
+
+
+
+% \include{equiv}
+
+
+
+%% basic set theory
+
+
+%% de-interpretation
+
+%% Glossary
+%% Conjunction
+%% Main Connective
+%% Truth-value
+%% Well formed formula
+%% Fallacy
+
+
+% \newglossaryentry{idempotent}
+% {
+%   name={idempotent},
+%   description={If $\circ$ is a binary function, then an idempotent is
+%     an $x$ such that $x\circ x=x$} }
+
+% \newglossaryentry{quantifier}
+% {
+%   name={quantifier},
+%   description={A phrase to express how many of a certain kind of thing
+%     exists, in our symbolic language, either $\exists$ or $\forall$} }
+
+% \newglossaryentry{scope}
+% {
+%   name={scope},
+%   description={The scope of a quantifier in a formula is the
+%     subformula to which the quantifier is applied} }
+
+
+% \newglossaryentry{truth value}
+% {
+%   name={truth value},
+%   description={is a mathematical object (in particular, either $0$ or $1$) that can be assigned to a
+%     sentence, representing its status as either true or false}
+% }
+
+% \newglossaryentry{fallacy}
+% {
+%   name={fallacy},
+%   description={Technically speaking, any invalid argument is a
+%     fallacy.  Historically speaking, fallacies are invalid
+%     arguments that people have often mistaken for valid}
+% }
+
+
+
+
+% \newglossaryentry{first-order logic}
+% { name={first-order logic},
+%   description={A first-order logic is one in which quantifiers apply
+%     only to elements, and not to predicates.  In other words, a
+%     first-order logic cannot say, ``There is a property $P$ such that
+%     \dots ''}}
+
+
+% \newglossaryentry{disjunctive normal form}
+% {
+%   name={disjunctive normal form},
+%   description={A formula is in disjunctive normal form just in case it
+%     is a disjunction of conjunctions of literals}
+% }
+
+% \newglossaryentry{main connective}
+% {
+%   name={main connective},
+%   description={the main connective of a formula is the final
+%     connective applied in the construction of that formula}
+% }
+
+% \newglossaryentry{interpretation}
+% {
+%   name={interpretation},
+%   description={An interpretation of a signature $\Sigma$ is an
+%     assignment of a domain set $M$, and of extensions for all
+%     relation and function symbols.  The extensions of relation symbols
+%     are subsets of Cartesian products $M\times\cdots\times M$.}
+% }
+
+% \newglossaryentry{empty set}
+% {
+%   name={empty set \ensuremath{\emptyset}},
+%   description={The empty set $\emptyset$ is the unique set that contains no elements}
+% }
+
+
+
+
+% \newglossaryentry{bot}
+% {
+%   name={\ensuremath{\bot}},
+%   description={the false: a sentence that is always false, and which
+%     implies every other sentence},
+%   sort=bot
+% }
+
+% \newglossaryentry{top}
+% {
+%   name={\ensuremath{\top}},
+%   description={the true: a sentence that is always true, and which
+%     is implied by any other sentence}, 
+%   sort=top
+% }
+
+% \newglossaryentry{contradiction} { name={contradiction}, description={A
+%     contradiction, in the strict sense, is a formula of the form
+%     $\phi\wedge\neg\phi$.  A contradiction, in the loose sense, is a
+%     formula that is always false} }
+
+% \newglossaryentry{term} { name={term}, description={Semantically
+%     speaking, a (closed) term is a symbol that denotes an object.
+%     Syntactically speaking, the terms of a predicate logic signature
+%     are defined inductively: names and variables are terms, and a
+%     function symbols applied to terms yields another term}}
+
+
+% \newglossaryentry{subformula} { name={subformula}, description={A
+%     subformula of a formula is any formula that occurs in the
+%     construction tree of that formula}}
+
+% \newglossaryentry{sentence} { name={sentence}, description={In
+%     predicate logic, a sentence is a formula with no free variables}}
+
+% \newglossaryentry{free variable} { name={free variable},
+%   description={A variable is free in a formula if it is not bound by
+%     a quantifier}}
+
+% \newglossaryentry{valuation} { name={valuation},
+%   description={A valuation of a language is a special case of a translation, 
+%     where the atomic sentences of the language are assigned truth-values.  A
+%     valuation corresponds to a row in a truth-table}}
+
+% \newglossaryentry{truth-table} { name={truth-table},
+%   description={A truth-table is a systematic listing of all
+%     truth-values assigned to a formula and its subformulas}}
+
+
+
+%% subformula
+
+%% substitution instance
+
+% \glsaddall
+\printglossaries
+
+
+% \printindex
+
+
+\end{document}
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

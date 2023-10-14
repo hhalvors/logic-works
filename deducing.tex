@@ -1,0 +1,694 @@
+\chapter{Deducing} \label{deduce}
+
+Let's look at another obviously valid argument.
+\[ \begin{array}{p{6cm}} Roses are red and violets are blue. \\ \hline
+    Roses are red. \end{array} \] (Here the horizontal line functions
+as a ``therefore'' indicator.)  The reason this argument is valid is
+because the conclusion just extracts one of two sentences that are
+conjoined in the premise.  In other words, the argument form looks
+like this:
+\[ \begin{array}{p{1.7cm}} 
+  $P$ and $Q$ \\ \hline $P$ \end{array} \] Here we've replaced
+``roses are red'' with the letter $P$, and we've replaced ``violets
+are blue'' with the letter $Q$.  Obviously, the argument would be
+valid no matter what sentences we put in for $P$ and $Q$.
+
+\newglossaryentry{conjunction}
+{
+  name=conjunction,
+  description={a conjunction is a formula that is built from two other formulas,
+    using the connective $\wedge$}
+} 
+
+The reason why this argument form is valid is because of the way that
+the word ``and'' works.  It's a special word that connects two
+statements into one bigger statement that logically implies both of
+the original statements.  Since ``and'' plays this special logical
+role, it can be helpful to make it stand out.  We'll use the symbol
+``$\wedge$'' as shorthand for ``and,'' so that ``$P\wedge Q$'' will
+stand for ``$P$ and $Q$.'' In this case, the argument form above looks
+like this:
+\[ \begin{array}{c} P\wedge Q \\ \hline P \end{array} \] Our arguments
+are gradually changing from linguistic to symbolic --- but simply
+because we're trying to capture the essence of what makes them valid.
+The symbol $\wedge$ here is not a new thing.  It's just the good old
+notion of ``and'', written in compact notation.  And that will be the
+case for \textit{everything} you encounter in this book.  In this
+book, we won't need to introduce new things that you've never
+encountered before in your life.  In this way, logic is quite
+different from empirical sciences such as biology, chemistry, or
+physics.  In physics, you'll run into things like ``quantum fields,''
+which I imagine your mother didn't tell you about.  But in logic,
+we're just going to make precise concepts that you use already in
+everyday life.
+
+\tcbset{enhanced,colback=white,coltitle=black,colbacktitle=white,fonttitle=\bfseries,sharp
+corners}
+
+\bigskip
+\begin{tcolorbox}[enhanced,width=10cm,title=conjunction elimination
+  ($\wedge$E),attach boxed title to top
+  left={yshift=-2mm,xshift=4mm},boxed title style={sharp corners}] For
+  any two sentences $\phi$ and $\psi$, you are permitted to infer both
+  $\phi$ and $\psi$ individually from the conjunction
+  $\phi\wedge \psi$. \end{tcolorbox}
+
+\bigskip 
+
+The Greek letters $\phi$ and $\psi$ here are meant to emphasize the
+schematic nature of inference rules.  In particular, a Greek letter
+like $\phi$ can stand for any sentence whatsoever, whether it be $P$
+or $Q$ or $P\wedge Q$ or $P\wedge (P\wedge Q)$.  So, for example,
+$\wedge$E allows one to infer $P$ from $P\wedge Q$, and it also allows
+one to infer $(Q\wedge P)$ from $(Q\wedge P)\wedge
+Q$. \index{conjunction}
+
+In practice, we use the rules (such as $\wedge$ elimination) in a
+linear format, moving from the top of the page to the bottom.  For
+example, the following is a typical application of $\wedge$
+elimination.
+\[ \begin{array}{l >{$}p{2cm}<{$} p{1.5cm}}
+      (1) & P\wedge Q & A \\
+      (2) & P & 1 $\wedge$E
+   \end{array} \]
+ Here the first line is annotated with ``A,'' which means that it's
+ an assumption of the problem.\footnote{In this chapter, assumptions
+   are things that are given to you --- as part of the problem you're
+   trying to solve.  In the next chapter, we'll
+   explain how you can make your own assumptions.}  The second line is annotated with ``1
+ $\wedge$E,'' which means that the conjunction elimination rule was used on line
+ $1$.  In a correctly written (i.e.\ valid) proof, every line
+ must either be an assumption, or it must be justified by one of the
+ rules of inference.
+
+Here's a slightly more complicated proof of $P$ from \mbox{$(P\wedge
+Q)\wedge (R\wedge P)$}.
+\[ \begin{array}{l >{$}p{3cm}<{$} p{1.5cm}}
+      (1) & (P\wedge Q)\wedge (R\wedge P) & A \\
+     (2) & P\wedge Q & 1 $\wedge$E \\
+     (3) & P    & 2 $\wedge$E 
+   \end{array} \]
+ Note that we weren't forced to take the route that we did.  We could
+ have peeled off the conjunct $R\wedge P$ instead, and used that to get
+ $P$.  In fact, logic never tells you what steps you must take; it only
+ tells you what steps you are permitted to take.  It's up to you to decide
+ where you want to go and how you want to get there.
+ 
+Just as a conjunction can be disassembled into its conjuncts, so a
+conjunction can be assembled from individual propositions.  So we have
+a rule:
+
+\bigskip
+\begin{tcolorbox}[enhanced,width=10cm,title=conjunction introduction
+  ($\wedge$I),attach boxed title to top
+  left={yshift=-2mm,xshift=4mm},boxed title style={sharp corners}]
+  For any two sentences $\phi$ and $\psi$, you are permitted to infer
+  $\phi\wedge \psi$ if you already have both $\phi$ and
+  $\psi$. \newline 
+  Schematically: $\begin{array}{c c}
+       \phi \qquad  \psi \\ \hline
+       \phi \wedge \psi \end{array} $ \end{tcolorbox}
+
+\bigskip 
+
+So, when you use conjunction introduction, you will cite two lines, one for
+each conjunct.  For example: \[ \begin{array}{l >{$}p{2.5cm}<{$} p{1.5cm}}
+                    (1) & P & A   \\
+                    (2) & Q & A   \\
+                    (3) & P\wedge Q & 1,2 $\wedge$I
+                                \end{array} \]
+Note, however, that you can use the same line twice.  For example, the
+following counts as a valid application of conjunction introduction:
+\[ \begin{array}{l >{$}p{2.5cm}<{$} p{1.5cm}}
+     (1) & P  & A   \\
+     (2) & P\wedge P & 1,1
+                       $\wedge$I \end{array} \] It also doesn't matter
+ which order the lines occur in.  For example, if $Q$ occurs before $P$, then you can use conjunction introduction to infer either $Q\wedge P$ or $P\wedge Q$.
+                                   
+At this stage, we need to introduce another device.  Suppose that you
+already have one conjunction, say $P\wedge Q$, and you want to
+conjoin it with yet another statement, say $R$.  In that case, to
+conjoin the first composite statement with the second simple
+statement, you first have to put the first sentence into parentheses,
+as follows:
+  \[ \begin{array}{l >{$}p{2.5cm}<{$} p{1.5cm}}
+      (1) & P\wedge Q & A    \\
+       (2) & R  & A  \\
+       (3) & (P\wedge Q)\wedge R &  1,2 $\wedge$I \end{array} \]
+You might be thinking that these parentheses aren't really necessary,
+because it doesn't matter which conjunction gets put in first.  There
+is a sense in which that is correct.  But for now, let's be careful to
+keep track of where things are coming from.
+
+\newglossaryentry{conjunct}
+{
+  name=conjunct,
+  description={a conjunct is one of the two subformulas that are combined with
+    $\wedge$ to form a conjunction}
+}
+
+It's also crucial to note that this rule is schematic.  In particular,
+$\wedge$ elimination allows you to derive a \gls{conjunct} from any
+conjunction, e.g.\ both $P$ and $Q\wedge R$ may be derived from
+$P\wedge (Q\wedge R)$.  Note, however, that $\wedge$E does
+\textit{not} allow you to derive $Q$ immediately from
+$P\wedge (Q\wedge R)$, because the original sentence isn't a
+conjunction of $Q$ with something else.  Each conjunctive sentence has
+precisely two conjuncts.  In this case, the two conjuncts are $P$ and
+$Q\wedge R$.  The latter is a conjunction, so that the sentence $Q$ is
+``two levels deep'' inside the conjunction $P\wedge (Q\wedge R)$.
+We'll explain this notion of ``levels'' inside sentences in Chapter
+\ref{meta}.  But for now, your intuitions should suffice to keep you
+out of trouble.
+
+With these two rules ($\wedge$E and $\wedge$I), you can now start
+proving some stuff on your own.
+
+\begin{exercises} \mbox{}
+  \begin{enumerate}
+  \item Prove that $Q\wedge P$ follows from $P\wedge Q$.  That is,
+    write $P\wedge Q$ on line $(1)$, then use the rules ($\wedge$
+    introduction and elimination) repeatedly until you obtain
+    $Q\wedge P$.
+  \item Prove that $P\wedge (Q\wedge R)$ follows from
+    $(P\wedge Q)\wedge R$.
+    \end{enumerate}
+\end{exercises}
+
+In this book, if a concept is really important, then we'll probably
+invent a symbol for it.  The reason we do that is because it makes it
+easy for us to identify instances where that concept is being used.
+The most important concept in this book is the concept of a
+\emph{valid argument} (and the related concepts of when one statement
+\emph{entails} or \emph{implies} another statement).  Since this
+concept is so central to this book, we'll give it a symbol
+$\gls{turnstile}$.  Thus, we write $P\wedge Q\vdash P$ as shorthand
+for ``$P\wedge Q$ logically implies $P$''.  Or, to be even more
+precise, $P\wedge Q\vdash P$ means that there is a correctly written
+proof that begins with $P\wedge Q$ and that ends with $P$.  The entire
+string $P\wedge Q\vdash P$ is called a \emph{\gls{sequent}}, which is
+just a fancy name for a logically valid argument in our symbolic
+language. \index{sequent}
+
+The most general sequent then looks something like this:
+\[ \phi _1,\dots ,\phi _n\: \vdash \:\psi \] which says that there is
+a proof that assumes $\phi _1,\dots ,\phi _n$ are derives $\psi$.  For
+example, using conjunction introduction, you can easily write a
+three-line proof that establishes the sequent $P,Q\vdash P\wedge Q$.
+Another four-line proof with conjunction introduction establishes the
+sequent $P,Q\vdash P\wedge (P\wedge Q)$.
+
+To keep your head clear, it's best not to think of sequents like
+$\phi\vdash\psi$ as sentences of the artificial language we're
+describing.  Imagine that we're designing an artificial intelligence,
+and we're programming it with rules for drawing valid inferences.  In
+this case, ``$P$'' and ``$Q$'' are sentences of the AI's language, and
+$\wedge$ is a connective that can be used to build more and more
+complex sentences in the AI's language.  However, the symbol $\vdash$
+is not of the same kind.  It's not part of the AI's language, but part
+of our design language --- which we use to describe the permissible
+reasoning processes for the AI.  In particular, $\phi\vdash\psi$ means
+that the AI can --- by using the rules we've specified --- derive
+$\psi$ from $\phi$.  But $\phi\vdash\psi$ is not itself one of the
+sentences that the AI is programmed to assert.
+
+By stating the rules (such as $\wedge$I and $\wedge$E), we are
+gradually building up the relation $\vdash$ that holds between
+premises and conclusions.  We want to build up slowly and carefully so
+that we don't by accident declare that an argument is valid when, as a
+matter of fact, it's not really valid.
+
+At the moment, we have only two rules.  Now it's time to add some
+more.  Let's start with a rule for introducing disjunctions, that is
+sentences that involve an ``either \dots or \dots '' clause, which
+we'll abbreviate by the symbol ``$\vee$''.  That is, we'll symbolize
+``either $P$ or $Q$'' as \mbox{``$P\vee Q$''}. \index{disjunction}
+
+Before we state the disjunction introduction rule, note that there are
+two ways that we use disjunctions in English.  In one sense, a
+\gls{disjunction} presents you with \textit{exclusive} choices.  For
+example, a person can be born either in the US or in the UK (but of
+course a person cannot be born in both places).  In another sense, a
+disjunction just tells us that at least one of the two options holds.
+For example, a person can be either a US citizen or a UK citizen ---
+and, as a matter of fact, it's possible to be both.  In this case, the
+disjunction is \textit{inclusive}.
+
+If we take disjunction in the inclusive sense, then a disjunction
+always follows from either one of its disjuncts.  For example, if I
+tell you that I'm a US citizen, then you know that I'm either a US
+citizen or a UK citizen.  You might not typically have any need to
+draw such an inference --- once you know that one of the disjuncts is
+true, why would you bother to assert the disjunction?  In real life,
+asserting a disjunction is most useful when you have reason to think
+that one of the two disjuncts must be true, but you don't know which
+one.  For example, you know that I'm either a US citizen, or I'm not a
+US citizen, even if you don't know which of those two is the case.
+
+We hereby stipulate that $\vee$ will behave like inclusive
+disjunction, and hence the following rule makes sense.
+
+\bigskip
+\begin{tcolorbox}[enhanced,width=10cm,title=disjunction introduction
+  ($\vee$I),attach boxed title to top
+  left={yshift=-2mm,xshift=4mm},boxed title style={sharp corners}]
+  Given $\phi$, you are permitted to infer \mbox{$\phi\vee \psi$}, for
+  any sentence $\psi$ whatsoever.  Similarly, given $\phi$, you are
+  permitted to infer \mbox{$\psi\vee\phi$}, for any sentence $\psi$
+  whatsoever.  Schematically:
+  $ \begin{array}{c p{0.1cm} c}
+       \phi & & \phi \\ \cline{1-1} \cline{3-3} 
+    \phi \vee \psi & & \psi\vee\phi \end{array} $ \end{tcolorbox}
+
+\bigskip 
+
+The funny thing about disjunction introduction is that it throws
+information away.  From a stronger premise $P$, you get to infer a
+weaker conclusion $P\vee Q$.  Why would anyone ever want to do that?
+In short, weakening premises becomes really useful in contexts where
+two different premises lead to the same weakening.  But we'll get to
+that maneuver later, in the next chapter.  For now, we can start using
+disjunction introduction in combination with our conjunction rules.
+\[ \begin{array}{l >{$}p{3.25cm}<{$} p{2cm}}
+     (1) & P\wedge Q & A \\
+     (2) & P         & 1 $\wedge$E \\
+     (3) & P\vee R   & 2 $\vee$I \\
+     (4) & Q         & 1 $\wedge$E \\
+     (5) & R\vee Q   & 4 $\vee$I \\
+     (6) & (P\vee R)\wedge (R\vee Q) & 3,5 $\wedge$I \end{array}\]
+Notice how we disjoin $R$ on the right in line 3, and on the left in
+line 5.  The disjunction introduction rule allows both of these moves.
+
+Keep in mind that disjunction introduction allows you to disjoin anything you
+want.  So, for example, the following is also valid.
+\[ \begin{array}{l >{$}p{1.75cm}<{$} p{2cm}}
+     (1) & P & A \\
+     (2) & P\vee P & 1
+                     $\vee$I \end{array} \] The disjunction
+ introduction rule might seem too liberal, because the premise $\phi$
+ puts no constraints on the statement $\psi$ that occurs in the
+ conclusion $\phi\vee\psi$.  For example, the following argument is
+ valid.
+ \begin{quote} Klaas is a professor. \newline Therefore, either Klaas
+   is a professor or he is a serial killer.  \end{quote} If it seems
+ strange to you that this argument is valid, then I suspect it is
+ because we usually have no good reason to assert a disjunction when
+ we're already in a position to assert one of the disjuncts.  For
+ example, if you told somebody (who doesn't know Klaas) that Klaas is
+ either a professor or a serial killer, then they are likely to infer
+ that you are unsure which he is --- and, that if you were shown
+ evidence that Klaas is not a professor, then you would conclude that
+ he is a serial killer.  But logically speaking, those inferences are
+ not warranted.  If you are shown evidence that Klaas is not a
+ professor, when you previously believed that he is, then you're more
+ likely to retract the claim that Klaas is either a professor or a
+ serial killer.
+ 
+It's time then that we further clarified our methodology.  Our aim
+here is \textit{not} to capture every single intuition we might have
+about good arguments that are stated in our natural languages.
+Instead, our aim is to find the best \textit{formal} model of the
+notion of validity.  And the thing about formal models is that they
+can have two distinct types of virtues.  On the one hand, it's good to
+fit the facts (in this case, our intuitions about which arguments are
+valid).  On the other hand, it's good for our formal apparatus to be
+be both powerful and manageable.  It might be helpful to think of an
+analogy here.  Think of how physics describes the motion of
+projectiles.  One of the first things that a physicist does is to make
+some idealizing assumptions, e.g.\ that there is no wind resistance.
+That assumption won't really hold in real-life applications.  But
+making such an idealizing assumption allows a physicist to bring to
+bear the powers of abstract reasoning to figure out a lot of
+information that will be approximately true in many different
+situations.
+
+Here's another way of putting the same thing.  The physicist's model
+of projectile motion is an \textit{analogy} for projectile motion in
+the real world.  In the same way, symbolic logic is supposed to be an
+analogy for good arguments in real life.  As with any analogy, it
+breaks down at some point --- in this case, it already breaks down in
+the failure of the logical $\vee$ to capture all the nuances of the
+natural language ``or.''  However, this disanalogy is the price of
+constructing a system that is powerful, manageable, and applicable in
+many different situations in life.
+
+\begin{exercises} Prove the following sequents.
+  \begin{enumerate}
+  \item $P\wedge Q\:\vdash\:Q\vee R$
+  \item $P\wedge Q\:\vdash (P\vee R)\wedge (Q\vee R)$  
+  \item $P\:\vdash\:Q\vee (P\vee Q)$
+  \item $P\:\vdash\: (P\vee R)\wedge (P\vee Q)$
+  \end{enumerate}
+\end{exercises}
+
+So far we've found two special logical words that enable valid
+inferences: ``and'' and ``or''.  Are there any other logical words
+besides them?  Yes, there are many others.  The next one we'll look at
+is ``if $\phi$ then $\psi$'', which we symbolize as ``$\phi\to\psi$''.
+The sentence $\phi\to\psi$ is called a \emph{\gls{conditional}}; the
+first component sentence $\phi$ is its \emph{\gls{antecedent}}, and
+the second component sentence $\psi$ is the \emph{\gls{consequent}}.
+
+The statement $\phi\to\psi$ does not, by itself, imply either $\phi$
+or $\psi$.  It only tells us that, in combination with $\phi$, you're
+entitled to conclude that $\psi$.  Thus, the rule for eliminating
+$\to$ requires a second premise as follows:
+\bigskip 
+\begin{tcolorbox}[enhanced,width=10cm,title=modus ponens (MP),attach boxed title to top
+  left={yshift=-2mm,xshift=4mm},boxed title style={sharp corners}]
+Given \mbox{$\phi\to\psi$} and $\phi$, you are permitted to conclude $\psi$.
+Schematically: $\begin{array}{c} \phi\to \psi \quad \phi \\ \hline
+    \psi \end{array}$ \end{tcolorbox} \bigskip By our earlier
+convention, we should call this rule ``$\to$ elimination.'' However,
+it has an old Latin name \emph{modus ponens}, and we'll follow
+historical precedent.
+ 
+As with our previous inference rules, MP is implicitly schematic.
+That is, it doesn't apply only to the specific conditional $P\to Q$,
+it applies to any conditional, such as $(P\vee Q)\to R$.  For example,
+we can use MP now to derive $R$ from $(P\vee Q)\to R$ and $P$.
+\[ \begin{array}{l >{$}p{3cm}<{$} p{2cm}}
+     (1) & (P\vee Q)\to R & A  \\
+     (2) & P    & A  \\
+     (3) & P\vee Q & 2 $\vee$I  \\
+     (4) & R & 1,3 MP \end{array} \] Notice how we used
+MP on a conditional (line 1) whose antecedent is complex (a
+disjunction $P\vee Q$).
+That's perfectly OK, because MP is schematic.  In other words, MP
+works on any conditional sentence, no matter whether its antecedent
+and consequent are simple or complex.  You have to be careful,
+however, only to apply inference rules to an entire line.  For
+example, you cannot apply MP to the sentences $P\vee (Q\to R)$ and
+$Q$, because the first sentence is a disjunction, not a conditional.
+
+Sometimes one conditional is embedded in another, as for example if I
+say, ``if you take my class, then if you do the homework you will
+learn some logic.''  In such cases, we might have to apply MP twice
+to detach the consequent of the conditional.  Here then is a
+derivation of $R$ from the premises $P\to (Q\to R)$ and $P\wedge Q$.
+\[ \begin{array}{l >{$}p{3cm}<{$} p{2cm}}
+     (1) & P\to (Q\to R) & A \\
+     (2) & P\wedge Q     & A \\
+     (3) & P             & 2 $\wedge$E \\
+     (4) & Q\to R        & 1,3 MP \\
+     (5) & Q             & 2 $\wedge$E \\
+     (6) & R             & 4,5 MP \end{array} \]
+Again, you have to be careful only to apply MP when the main
+sentence on a line is a conditional, and you also have the antecedent
+of that conditional.  For example, given premises $(P\to Q)\to R$ and
+$P$ you should {\it not} infer that $Q$, or that $Q\to R$.  While
+$(P\to Q)\to R$ is a conditional, its antecedent is $P\to Q$.
+
+\begin{exercise} Prove that the following argument forms are valid.
+  You may use the rules $\wedge$E, $\wedge$I, $\vee$I, and MP.
+  \begin{enumerate}
+\item $P\ifthen (Q\ifthen R),\,P\ifthen Q,\,P\:\vdash\: R$
+% 4; MT, DN
+\item $(A\orr B)\ifthen T,\,Z\ifthen A,\,T\ifthen W,\,Z\:\vdash\:W$
+% 8; &E, MT, MP, vI
+\item $(A\ifthen  B)\andd (C\ifthen A),\,(C\andd (W\ifthen  Z))\andd W\:\vdash\:(B\orr D)\andd  (Z\orr E)$
+\item $P\to (P\to Q),\,P\:\vdash\: Q$
+\item $P\wedge (P\to Q)\:\vdash\: P\wedge Q$  
+\end{enumerate} \end{exercise}
+
+Our brains are so accustomed to using modus ponens that we sometimes
+make the simple mistake of trying to apply it in the opposite
+direction.  For example, I've heard more than one person put
+forward the following argument.
+\[ \begin{array}{p{8cm}}
+     If God exists then there are objective moral rules. \\
+     There are objective moral rules. \\ \hline
+     God  exists. \end{array} \]
+ This argument has the form:
+ \[ \begin{array}{l}
+      P\to Q \\
+      Q \\ \hline
+      P \end{array} \]
+which is like backwards modus ponens, since the consequent is the
+premise, and the antecedent is the conclusion.  However, this argument
+form is invalid.  Consider, for example, the following instance
+of the same form.
+\[ \begin{array}{p{8.5cm}}
+  If UCLA is in Palo Alto, then UCLA is in California. \\
+  UCLA is in California. \\ \hline
+  UCLA is in Palo Alto.  \end{array} \]  This argument has obviously
+true premises, and an obviously false conclusion.  Therefore it's
+invalid, and its form doesn't guarantee validity.  
+
+In general, if an argument form is \emph{invalid}, then it admits some
+instance where the premises are true and the conclusion is false.
+This instance is called a \emph{\gls{counterexample}} to the argument
+form.  Historically, invalid argument forms have often been called
+\emph{fallacies}, especially when people commonly mistake the form for
+valid.  The previous example is in instance of the fallacy of
+\emph{affirming the consequent}.
+
+\section{Negation}
+
+We turn now to negative phrases, such as ``it is not the case that
+\dots '', which we'll symbolize with $\neg$.  That is, we write ``it
+is not the case that $P$'' as $\neg P$.  With this new connective in
+hand, we can capture another valid argument form using the ``if \dots
+then '' connective.  Consider, for example, the following argument:
+\[ \begin{array}{p{6cm}}
+  If $n$ is divisible by $4$, then $n$ is even.      \\ 
+  $n$ is not even.       \\ \hline 
+  $n$ is not divisible by $4$.     \end{array} \]
+This argument is valid, and it's an instance of a famous argument
+form.
+
+\bigskip 
+\begin{tcolorbox}[enhanced,width=10cm,title=modus tollens (MT),attach boxed title to top
+  left={yshift=-2mm,xshift=4mm},boxed title style={sharp corners}]
+   Given $\phi\to \psi$ and $\neg \psi$, you are permitted to infer $\neg
+  \phi$.  \newline Schematically: $\begin{array}{c c}
+       \phi\to \psi \quad \neg\psi \\ \hline
+       \neg\phi \end{array} $
+   \end{tcolorbox}
+\bigskip 
+
+
+% \begin{law}[Modus Tollendo Tollens (MT)]{}
+%   Given $P\to Q$ and $\neg Q$, you are permitted to infer $\neg
+%   P$. Schematically:
+%   \[ \begin{array}{c c}
+%        P\to Q \quad \neg Q \\ \hline
+%        \neg P \end{array} \] \end{law}
+As with MP, the new rule applies not just to the conditional sentence
+$P\to Q$, but to any other conditional, such as $(P\wedge Q)\to R$ or
+$P\to (Q\wedge \neg Q)$.
+
+%% TO DO: Necessary and sufficient conditions
+%% "only if" "unless"
+
+\begin{exercise} Prove that
+  $Q\to (P\to R),\,\neg R\wedge Q\:\vdash\: \neg P$.
+\end{exercise}
+
+Modus ponens can be restated as follows: a conditional $\phi\to \psi$
+says that the antecedent $\phi$ is a \emph{\gls{sufficient condition}}
+for the consequent $\psi$.  In other words, the truth of $\phi$ is a
+guarantee of the truth of $\psi$.  Modus tollens can then be restated
+as: a conditional $\phi\to \psi$ says that the consequent $\psi$ is a
+\emph{\gls{necessary condition}} for the antecedent $\phi$.  In other
+words, the falsity of $\psi$ is a guarantee of the falsity of $\phi$.
+To understand the difference between necessary and sufficient
+conditions, think about the example of rain and clouds.  To say that
+rain is a sufficient condition for clouds does not mean that rain
+causes clouds, but merely that the truth of ``it's raining''
+guarantees the truth of ``there are clouds''.  To say that clouds are
+a necessary condition for rain means that the falsity of ``there are
+clouds'' guarantees the falsity of ``it is raining''.
+
+It's important also to be totally clear about the relation between the
+phrase ``\dots if \dots'' and the phrase ``\dots only if \dots
+.''  Consider the following examples.
+\begin{enumerate}
+  \item Alice is admitted to Harvard medical school only if she has a high
+  MCAT score.
+  \item Alice is admitted to Harvard medical school if she has a high
+    MCAT score.
+  \end{enumerate}
+  The first sentence says that having a high MCAT score is a necessary
+  condition for Alice being admitted.  The second sentence says that
+  having a high MCAT score is a sufficient condition for Alice being
+  admitted.  I would guess that the first sentence is true, no matter
+  who Alice is, and that the second sentence is usually false ---
+  because having a high MCAT score is not a sufficient condition for
+  admission to the best medical schools.
+ 
+To get the full effect out of modus tollens, we need to say something
+more about the logical role of negation.  It turns out that the role
+of negation is a bit more controversial than you might have thought.
+But as this is an introductory book, we're going to begin with a
+simplistic picture of negation.
+
+When I was young, I was taught that it's bad English to use double
+negations, such as ``you don't know nothing.''  My mother told me that
+that sentence really means that you do know something, and so I should
+say ``you don't know anything.''  Now, the goal of this book isn't to
+teach you to speak better English; and being a living and growing
+language, English has an enormous amount of subtlety in expression.
+In particular, two negatives in English don't always mean exactly the
+same thing as a positive.  In contrast, our symbolic language is
+extremely literal and rigid.  We will stipulate in fact that two
+negations is logically equivalent to no negation at all.
+
+\bigskip 
+\begin{tcolorbox}[enhanced,width=10cm,title=double negation (DN),attach boxed title to top
+  left={yshift=-2mm,xshift=4mm},boxed title style={sharp corners}]
+Given $\phi$ you are permitted to infer $\neg \neg \phi$, and given
+$\neg \neg \phi$ you are permitted to infer $\phi$. \newline Schematically:
+  $\begin{array}{c c c} \begin{array}{c} \phi \\ \hline \neg\neg
+        \phi \end{array} & & \begin{array}{c} \neg \neg \phi \\ \hline
+        \phi \end{array} \end{array} $
+\end{tcolorbox}
+\bigskip 
+
+Among logicians, mathematicians, and philosophers, there has been some
+skirmishing about whether the second of these rules (i.e.\ the DN
+elimination rule) is valid.  The thought was: how can proving that
+something is not true establish that something is true?  The foes of
+DN elimination are typically called {\it intuitionists}, after an
+early twentieth-century movement in the philosophy of mathematics.
+However, our methodology in this book is more empiricist than it is
+rationalist.  In particular, we're not going to stop and search for
+some Platonic insight into whether or not the rules are valid.
+Instead, we'll accept the rules as tentative conventions, and then
+we'll explore their consequences.  We believe it's good to ask the
+deep philosophical question about which are the right rules --- but it
+can be good to keep that question on the back-burner while you're
+figuring out the consequences of the rules.
+
+As with the other connective symbols, the negation symbol can be
+applied repeatedly.  For example, we can have $\neg P$ or $\neg\neg P$
+or $\neg\neg\neg P$, etc.  Of course, DN elimination can be applied
+whenever there are two or more negation symbols, and it allows us to
+remove the first two.  For example, the following is a valid
+inference:
+\[ \begin{array}{l >{$}p{1.5cm}<{$} p{2cm}}
+     (1) & \neg\neg\neg P & A \\
+     (2) & \neg P & 1 DN \end{array} \] It can also make a big
+ difference which order the connectives are applied.  So, for example, $\neg (P\to Q)$ says something very different than $\neg P\to Q$.  (The former is a negated sentence, and the latter is a conditional.)  We take the negation sign to apply only to what comes immediately after it.  So, in the sentence $\neg P\to Q$, the negation applies only to $P$.  In $\neg (P\to Q)$, the negation applies to $P\to Q$.  Be careful only to use DN when the entire sentence on a line is negated twice.  For example, the sentence $\neg (\neg P\to Q)$ is {\it not} a candidate for DN elimination, because the first negation symbol applies to the conditional $\neg P\to Q$, and not to the negation $\neg P$.  Similarly, you are not permitted to apply DN introduction to a subformula.  For example, you may not use DN to infer $\neg\neg P\to Q$ from $P\to Q$, because the former sentence is a conditional, not a twice-negated sentence.\footnote{Later we will show that any subformula $\phi$ can in fact be replaced by $\neg\neg\phi$. See page \pageref{replacement}. But we we want to start with a small number of strict rules, and then do some work to show that these rules allow us to prove a lot of interesting things.}
+
+We can now use all of our deduction rules in combination to prove
+further validities, such
+as $P\to\neg Q,Q\vdash \neg P$.
+\[ \begin{array}{l >{$}p{2cm}<{$} p{2cm}}
+     (1) & P\to \neg Q    & A \\
+     (2) & Q              & A \\
+     (3) & \neg \neg Q    & 2 DN \\
+     (4) & \neg P         & 1,3 MT \end{array} \]
+Notice that we needed to infer line $3$ before using MT, 
+because $Q$ is not itself literally the negation of $\neg Q$. In
+formal logic, there are no shortcuts; the rules must be applied
+exactly as they are stated.
+
+The following more complicated proof shows that $\neg P$ follows from
+$\neg (P\to Q)\to Q$ and $\neg Q$.
+\[ \begin{array}{l >{$}p{3cm}<{$} p{2cm}}
+     (1) & \neg (P\to Q)\to Q  & A \\
+     (2) & \neg Q              & A \\
+     (3) & \neg\neg (P\to Q)   & 1,2 MT \\
+     (4) & P\to Q              & 3 DN \\
+     (5) & \neg P              & 4,2 MT 
+   \end{array} \]
+Here we used $\neg Q$ twice over: once to get $\neg\neg (P\to Q)$, and
+once to get $\neg P$.
+
+\section{Equivalence}
+
+You'll have noticed that some proofs go both ways.  For example, you
+can prove $Q\wedge P$ from $P\wedge Q$, and vice versa.  In this case,
+we'll write $P\wedge Q\dashv\vdash Q\wedge P$, indicating proofs in
+both directions, and we'll say that the two sentences are
+\emph{provably equivalent}.  There is a strong sense in which provably
+equivalent sentences are the same ``for all logical purposes''.
+
+\begin{exercise} Prove the following sequents.
+  \begin{enumerate} \item $P\wedge (Q\wedge R)\:\dashv\vdash\:
+  (P\wedge Q)\wedge R$ \item $P\:\dashv\vdash\: P\wedge
+  P$ \end{enumerate} \end{exercise}
+
+\section{Summary}
+
+In this chapter, we identified some particularly simple valid argument
+forms that are based on the special logical words ``and'', ``or'',
+``if \dots then'', and ``not''.  These argument forms are: modus
+ponens, modus tollens, double negation, conjunction introduction,
+conjunction elimination, and disjunction introduction.
+
+%% For more about translation, see Suppes, First Course in Mathematical Logic
+
+\begin{exercises} As we mentioned before, there is only an approximate
+  match between symbolic logic and arguments in the wild.
+  Nonetheless, to develop your intuitions, it helps sometimes to look
+  at an argument in the wild, and to try to represent it symbolically.
+  To that end, let's try our hand at representing the logical form of
+  some sentences.  Here's how we do it.  First of all, identify the
+  overall logical structure of the sentence.  Ask yourself: what does
+  the sentence assert?  Is it an \gls{atomic sentence} in the sense
+  that there is no internal logical complexity?  Does it assert the
+  conjunction of two other sentences?  Does it assert the disjunction
+  of two other sentences?  Etc. \index{sentence!atomic}
+
+  For example, the sentence, ``The cat is on the mat,'' is atomic.  In
+  this case, the best we can do is to represent it with a single
+  letter such as $P$.  On the other hand, ``The cat is on the mat, and
+  the dog is in the kennel,'' asserts a conjunction of two atomic
+  sentences.  Thus, it's best represented as something like
+  $P\wedge Q$.
+
+  For the following sentences, give the most perspicuous
+  representation you can of their inner logical form.  First identify
+  the component atomic sentences, and abbreviate each with a
+  (distinct) letter.  Then translate the original sentence using the
+  symbols $\orr ,\andd ,\negg ,\ifthen$ for the logical words ``or'',
+  ``and'', ``not'', ``if\dots then\dots ''.  (We have suggested
+  letters for the atomic sentences at the end of each sentence.)
+
+\begin{enumerate}
+
+\item It's not true that if Ron doesn't do his homework then Hermione
+  will finish it for him.  $R,H$
+\item Harry will be singed unless he evades the dragon's fiery breath.
+  $S,E$
+\item Aristotle was neither a great philosopher nor a great scientist.
+  $P,S$
+\item Mark will get an A in logic only if he does the homework or
+  bribes the professor. $A,H,B$
+\item Dumbledore will be killed, and either McGonagal will become
+  headmistress and Hogwarts will flourish, or else it won't
+  flourish. $K,M,F$
+\item Harry and Dumbledore are not both right about the moral status
+  of Professor Snape.  $H,D$
+
+\end{enumerate}
+\end{exercises}
+
+\begin{exercises} Prove that the following argument forms are valid.
+  Each line of your proof must either be one of the premises given, or
+  it must be justified from previous lines by one of our rules of
+  inference: MP, MT, DN, $\wedge$I, $\wedge$E, or $\vee$I.
+\begin{enumerate}
+\item $\neg \neg Q\to P,\,\neg P\:\vdash\:\neg Q$
+\item $P\to (P\to Q),\,P\:\vdash\: Q$
+\item $(P\wedge P)\to Q,\, P\:\vdash\: Q$
+\item $P\:\vdash\: Q\vee (\neg\neg P\vee R)$
+\end{enumerate} \end{exercises}
+
+\begin{exercise} Demonstrate that the following argument forms are \emph{invalid}
+  by providing a counterexample, i.e.\ give English sentences for
+  $P,Q,R$ such that the premises are obviously true, and the conclusion
+  is obviously false. \index{counterexample}
+  \begin{enumerate}
+  \item $P\to \neg Q,\neg P \: \vdash \: Q$
+  \item $P\to R\:\vdash \: (P\vee Q)\to R$
+  \end{enumerate}
+  \end{exercise}
+
+   
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "main"
+%%% End:

@@ -1,0 +1,84 @@
+\chapter{Validity Tests for Predicate Logic} \label{algorithms}
+
+In this appendix, we sketch an algorithm for testing whether arguments
+with only unary predicate symbols are valid.  Note that it's enough to
+have an algorithm that tests for the consistency of sentences.  Thus,
+we first describe an algorithm (Algorithm A) that tests the
+consistency of quantifier-free sentences.  We then describe Algorithm
+B, which tests the consistency of simple monadic sentences (which have
+just one quantifier at the beginning).  Finally, we describe Algorithm
+C, which tests the consistency of Boolean combinations of simple
+monadic sentences.
+
+\section{Algorithm A}
+
+\textit{Use:} To test for the consistency of a set of quantifier-free
+sentences.
+
+\bigskip\noindent \textit{Algorithm:} For any set $\Gamma$ of
+quantifier-free sentences, try to assign truth-values to all of the
+elementary sentences that make up the sentences in $\Gamma$ in such a
+way as to make all of the sentences in $\Gamma$ true.  If there is
+such an assignment, then the sentences in $\Gamma$ are consistent.  If
+not, then they are inconsistent.
+
+To determine the extension of the predicates: if a given sentence is
+true, then put the object named into the extension of the predicate
+used in the sentence.  So, for example, if $Fa$ is false, then leave
+$a$ out of the extension of $F$.
+
+\section{Algorithm B}
+
+\textit{Use:} To test for the consistency of a set
+of simple monadic sentences (note: a sentence is simple monadic just
+in case the main operator of the sentence is a quantifier and it
+doesn't contain any other quantifiers or names within the scope of the
+main quantifier).
+
+\begin{enumerate} \item Take each sentence beginning with an
+existential quantifier and give an instance of the sentence such that
+each sentence contains a different arbitrary name.
+
+\item Then take each
+sentence beginning with a universal quantifier and produce an instance
+of the quantifier for each name used in step (1).  If there are no
+sentences beginning with existential quantifiers, then you need only
+one instance of each universal sentence.
+
+\item Take the list of instances and plug that set of sentences into
+  Algorithm A.  If those sentences are consistent then the set of
+  simple monadic sentences is consistent.  If not, then they aren't.
+
+\end{enumerate}
+
+\section{Algorithm C}
+
+\textit{Use:} To test for the consistency of pure monadic sentences
+(note: a pure monadic sentence is a sentence that is a
+truth-functional combination of simple monadic sentences).
+
+\begin{enumerate} \item Take your pure monadic sentences and conjoin
+  them into one giant sentence of the form $\phi \wedge \psi \wedge \chi$, etc.
+
+  \item Treating the simple monadic sentences as elementary, put the entire
+    giant sentence into \gls{dnf}.
+
+  \item Drive in any negations that are on the outside of quantifiers.
+
+  \item You've now got a big disjunction of conjunctions, i.e.\ a
+    sentence of the form
+    $(\phi \wedge \psi)\vee (\chi \wedge \theta )$, etc, where each
+    sentence letter is a simple monadic sentence.  Take each disjunct
+    one at a time and plug the simple monadic sentences into Algorithm
+    B.  If any one disjunct is consistent, then the whole giant
+    sentence is consistent, and the original set of pure monadic
+    sentences is consistent.  If none of them are consistent, then the
+    whole thing is inconsistent. \end{enumerate}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "main"
+%%% End:
+
+

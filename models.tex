@@ -1,0 +1,958 @@
+\chapter{Models} \label{inter}
+
+The primary goal of this chapter is to teach you how to {\it prove}
+that an argument is invalid.  The idea here is like truth-tables, but
+the method more closely resembles what one actually does in real-life
+scenarios, especially in the sciences.
+
+A typical (scientific) theory is applicable in many different
+situations.  For example, Darwin's theory of evolution applies to
+early human history, but it also applies to populations of
+fruit-flies, or to cancer cells.  Similarly, a theory about economic
+bubbles might apply to the housing bubble in the US in the early
+2000s, and also to the tulip crisis of 1637 in Holland.  So,
+scientific thinking involves both abstract theory, and the application
+of that theory to specific situations --- or, to be more precise,
+application to more concrete descriptions of situations.  We'll say
+that the concrete description is a \emph{model} of the abstract
+theory.\footnote{Warning: the English verb ``to model'' is used in two
+  almost opposite ways.  First, one can model a concrete thing by
+  constructing an abstract representation of it.  Second, one can
+  model an abstract idea or theory by constructing a more concrete
+  instance of it.  In this chapter, we will be concerned exclusively
+  with the second sense of modelling.}
+
+For our purposes, the primary utility of model-building is that we can
+use it to show that an argument is invalid.  For, if one can build a
+model where the premises of an argument are true, but its conclusion
+is false, then that argument is invalid.  What then are the rules for
+model-building, and how can we tell whether or not sentences are true
+in a model?  To get answers to these questions, let's begin with a
+famous example where model-building played a crucial role.
+
+For most of western history, Euclidean geometry was taken to be the
+paradigm example of certain knowledge.  Sitting in a dark room, you
+can use Euclidean geometry to deduce, with complete logical rigor,
+that in any triangle, the sum of the internal angles is $180$ degrees.
+Then if you go outside and measure triangles, you will find again and
+again that the prediction of Euclidean geometry is correct: the
+internal angles always add up to $180$ degrees.
+
+It seems almost like a miracle that Euclidean geometry --- discovered
+more than two thousand years ago --- could be so certain.  This kind
+of thought led many people throughout history to investigate the
+source of our knowledge of the axioms of Euclidean geometry.  Some of
+these investigations were of a philosophical nature, and others were
+focused on mathematical questions, such as: is it possible to boil
+down the number of axioms of Euclidean geometry so that we're left
+with just a few axioms that are obviously true?
+
+We won't go into details here, but just think about it this way.  Some
+of the axioms of Euclidean geometry seem to be self-evidently true.
+For example, between any two points, there is a line; or similarly,
+any two right angles are equal to each other.  Let's write $\Gamma$
+for the collection of these uncontroversial axioms.
+
+However, Euclidean geometry also depends on the following, less
+obvious, axiom:
+\begin{quote}
+  Parallel postulate: for any line $x$, and for an point $p$ not on
+  $x$, there is a unique line $y$ such that $p\in y$ and such that $y$
+  is parallel to $x$. \end{quote} Let's write $P$ for the parallel
+postulate.  Because $P$ is not obviously true on its face, many
+mathematicians spent a lot of time trying to prove that it follows
+from the uncontroversial axioms.  That is, they tried to show that
+$\Gamma\vdash P$.  I'm sorry to say that some of these mathematicians
+spent their whole lives trying to prove this little sequent, and died
+without having found an answer.  In fact, nobody ever managed to prove
+it.
+
+\label{loba}
+
+But then something amazing happened.  In the nineteenth century, an
+obscure Russian mathematician named Nikolai Lobachevsky decided that
+he would try for a proof.  Being a clever logician, Lobachevsky
+realized that all he had to do was to prove that $\Gamma$ and $\neg P$
+imply a contradiction.  So, he assumed the uncontroversial axioms and
+the {\it negation} of the parallel postulate, and he got busy working
+his way toward a contradiction.  Lobachevsky proved many things that
+seemed absurd.  For example, he proved that the internal angles of a
+triangle are strictly less than $180$ degrees.  However, he never got
+a literal contradiction, i.e.\ he never got a sentence $\phi$ and also
+its negation $\neg \phi$.
+
+After a while, it dawned on Lobachevsky that he had proven so many
+things that these consequences amounted to the description of a new
+mathematical universe.  In other words, he had described a model $M$
+in which the uncontroversial axioms $\Gamma$ are true, and the
+parallel postulate $P$ is false.  This model $M$ is a non-euclidean
+universe, which means that our universe isn't necessarily Euclidean.
+Therefore, the method of modelling is responsible for history's most
+famous example of showing that we don't know something that we thought
+we knew.
+
+\section{Logical grammar}
+
+The intuitive ideas of interpretations and models are really
+interesting and suggestive.  These ideas have proven to be extremely
+useful in many domains of knowledge, from mathematics to economics and
+philosophy.  However, as we've described them so far, these ideas are
+too vague to {\it prove} anything interesting about them, and a
+fortiori, to use them to prove anything about the system of logic
+we've developed in this book.
+
+The tool we develop here is the notion of an \emph{interpretation} of
+a predicate logic language into the theory of sets.  For this we
+assume that that we have a fairly firm grasp of what is true or false
+in the universe of sets.  Thus, in order to show that a sequent
+$\phi\vdash\psi$ is not valid, we will show that $\phi$ and $\psi$ can
+be interpreted as set-theoretic statements such that $\phi$ is
+obviously true, and $\psi$ is obviously false.
+
+To this end, we first need a precise description of the family of
+predicate logic sentences.  Suppose that $\Sigma$ is a fixed predicate
+logic signature.  That is, $\Sigma$ consists of function symbols and
+relation symbols.  We'll also assume that $\Sigma$ comes with an
+equality symbol.  We then define the set of $\Sigma$-\emph{terms} as
+follows:
+\begin{itemize}
+\item Each variable $x,y,z,\dots $ is a $\Sigma$-term.
+\item If $f\in\Sigma$ is an $n$-ary function symbol, and
+  $t_1,\dots ,t_n$ are $\Sigma$-terms, then $f(t_1,\dots ,t_n)$ is a
+  $\Sigma$-term.
+\end{itemize}
+When no confusion can result, we'll just say ``term'' instead of
+``$\Sigma$-term''.  The special case of a $0$-ary function symbol is
+called a \emph{name} or a \emph{constant symbol}.
+
+This definition of terms should agree with the intuitions you have
+already developed.  For example, if $\Sigma$ comes with a binary
+function symbol $\circ$, then the terms include expressions such as
+$x\circ y$ and $(x\circ y)\circ z$.  If $\Sigma$ comes with a name $1$
+and a binary function symbol $+$, then the terms include expressions
+such as $1+1$ and $(1+1)+(1+1)$.  Semantically speaking, the terms
+will be interpreted as functions; and in the special case of names,
+will be interpreted as points.
+
+We define the set of $\Sigma$-\emph{formulas} as follows:
+\begin{itemize}
+\item If $t_1$ and $t_2$ are terms, then $t_1=t_2$ is a formula.
+\item If $R$ is an $n$-ary relation symbol and $t_1,\dots ,t_n$ are
+  terms, then $R(t_1,\dots ,t_n)$ is a formula.
+\item If $\phi$ and $\psi$ are formulas, then $\phi\vee\psi$,
+  $\phi\wedge\psi$, $\phi\to\psi$ and $\neg\phi$ are formulas.
+\item If $\phi$ is a formula that does not contain the quantifiers
+  $\forall x$ or $\exists x$, then $\forall x\phi$ and $\exists x\phi$
+  are formulas.
+\end{itemize}
+A few comments on this definition of formulas.  First, to be more
+rigorous, we might want to define simultaneously the notion of a
+formula and the notion of the variables that occur freely in that
+formula.  However, we will operate for now on a more intuitive level.
+Basically, a variable occurs \emph{freely} in a formula if that
+variable hasn't at any stage of construction been bound by a
+quantifier.  So, for example, in the formula $x=y$, the variables $x$
+and $y$ both occur freely.  However, in the formula $\forall x(x=y)$,
+the variable $x$ has been bound, and only $y$ occurs freely.
+
+Second, the quantifier clause of our definition is clumsy.  It would
+be simpler to allow formulas like $\forall x(Px\to \exists xQx)$, but
+that is not permitted by our quantifier clause.  The reason for the
+more restrictive clause is simply to encourage the student to use
+perspicious notation.  While there is no reason in theory to ban
+sentences such as $\forall x(Px\to \exists xQx)$, it's better to use a
+variant such as $\forall x(Px\to \exists yQy)$ in which it's clear
+that the first quantifier applies only to the first occurence of $x$.
+
+We now define a predicate logic \emph{sentence} to be a formula in
+which no variables are free.  Thus, $\exists xRax$ is a sentence, but
+$\exists xRyx$ is not a sentence since $y$ is free.  Our proofs will
+always and only involve sentences.  If you ever have a step in a proof
+that has a formula rather than a sentence, then you've misapplied one
+of the inference rules.\footnote{The most elegant proof systems allow
+  sequents with free variables.  But baby steps
+  \dots }
+
+
+\section{Interpretation formalized}
+
+An \emph{\gls{interpretation}} of the symbols in $\Sigma$ consists of
+four things:
+\begin{enumerate}
+\item Some fixed set $M$, which we call the \emph{domain} or
+  \emph{universe} of the interpretation.  For technical reasons, the
+  domain $M$ must be a nonempty set.\footnote{This requirement has
+    bothered many logicians, including Bertrand Russell.  It can be
+    avoided by using an alternative to classical logic such as free
+    logic or coherent logic.}
+\item An assignment of each $n$-ary relation symbol $R\in\Sigma$ to
+  some subset $R^M$ of $M\times\cdots\times M$.  The set $R^M$ is
+  called the \emph{extension} of $R$ in $M$.
+\item An assignment of each constant symbol $c\in\Sigma$ to some
+  element $c^M\in M$.
+\item An assignment of each $n$-ary function symbol $f\in\Sigma$ to
+  some function $f^M$ from $M\times\cdots\times M$ to $M$.
+\end{enumerate}
+There will always be many different ways that the symbols in $\Sigma$
+could be interpreted.  There is so much freedom here it can be
+dizzying.  How should one choose the set $M$ from among the untold
+number of conceivable sets?  Fortunately, it doesn't make any
+difference which particular set you choose.  All that matters are
+structural facts, namely, the size of the set, the size of the
+extensions of the relation symbols, and the relations between the
+extensions of the relation symbols.  For many cases, you'll be able to
+tell whether a sentence is consistent or inconsistent by looking at
+interpretations in finite sets.  For some sentences, you'll need an
+infinite set, e.g.\ the natural numbers.  For the exercises in this
+book, you'll never need a set bigger than the natural numbers.
+
+Once the symbols in $\Sigma$ have been assigned to relevant
+set-theoretic items, there is a straightforward recipe for extending
+the assignment to all terms and formulas built on $\Sigma$.  As with
+valuations (i.e.\ rows in truth tables), the assignment grows, from
+the inside out, starting with the assignments to the function and
+relation symbols, and then applying set-theoretic operations
+corresponding to the connectives and quantifiers.
+
+Let's begin by looking at the case of a formula $\phi (x)$ in which
+only the variable $x$ occurs.  In this case, we'll define
+$\phi (x) ^M$ to be a subset of $M$, which can be thought of as
+follows:
+\begin{quote} $\phi (x)^M$ is the set of all $a\in M$ such that
+  $\phi (x)$ is true when $x$ takes value~$a$.  \end{quote} The
+definition of $\phi (x)^M$ is inductive.  In particular, we first
+define $\phi (x)^M$ when $\phi (x)$ is an atomic formula.  Then we
+extend the definition to complex formulas.  
+
+If we temporarily ignore function symbols, then an atomic formulas
+that contains only the variable $x$ is either of the form $x=x$, or of
+the form $R(x,\dots ,x)$.
+\begin{itemize}
+  \item Since $(x=x)^M$ should be the set of all
+    $M$ that are equal to themselves, it should be all of $M$.
+  \item As for $R(x,\dots ,x)^M$, since $R^M$ is defined to be a subset of
+$M\times\cdots \times M$, we can define $R(x,\dots ,x)^M$ to be the
+set of all $a\in M$ such that $\langle a,\dots ,a\rangle\in R^M$.
+More formally, 
+\[ R(x,\dots ,x)^M \: = \: \{ a\in M \mid \langle a,\dots ,a\rangle
+  \in R^M \} .\]
+\end{itemize}
+Now that we have a definition of $\phi (x)^M$ for an atomic formula
+$\phi (x)$, we extend the definition to Boolean combinations of
+formulas.  In particular,
+\[ \begin{array}{r c l p{0.2cm} r c l}
+     (\phi\wedge\psi )^M &=& \phi ^M\cap \psi ^M  & & (\phi\vee\psi
+                                                      )^M & = & \phi
+                                                                ^M\cup
+                                                                \psi
+                                                                ^M \\ \\
+     (\neg\phi )^M &=&  M\backslash \phi ^M & & (\phi\to\psi )^M &=& 
+                                             (M\backslash \phi ^M)\cup
+                                             \psi ^M \end{array} \]
+These definitions are fairly intuitive.  For example, $(\phi\wedge
+\psi )^M$ is true of some $a$ just in case both $\phi ^M$ and $\psi^M$
+are true of $a$.  For the case of $\phi\to\psi$, we use the intuitive
+equivalence with $\neg\phi\vee\psi$ and the previous definitions.
+
+Finally, we need to extend the interpretation to formulas that are
+built up with quantifiers --- and here we run into a little challenge.
+If $\phi (x)$ has a free variable $x$, then $\exists x\phi (x)$ no
+longer has a free variable, and so it doesn't make much sense to think
+of $\forall x\phi (x)$ as a set of things.  Instead, we want to think
+of $\forall x\phi (x)$ as simply being true or false.  The obvious
+thing to say here is that $(\exists x\phi (x))^M$ is true when
+$\phi (x)^M\neq\emptyset$, and $(\exists x\phi (x))^M$ is false when
+$\phi (x)^M=\emptyset$.  Similarly, $(\forall x\phi (x))^M$ is true
+when $\phi (x)^M=M$, and $(\forall x\phi (x))^M$ is false when
+$\phi (x)^M\neq M$.
+
+\begin{example} Suppose that $F$ and $G$ are predicate symbols.  Let
+  $M=\{ 1,2,3\}$, let $F^M=\{ 1,2\}$, and let $G=\{ 2,3\}$.  We can
+  then compute
+\[ \begin{array}{c c l c l} (Fx\wedge Gx)^M & = & (Fx)^M\cap (Gx)^M
+     & = & \{ 2\}   \\
+     (Fx\vee Gx)^M & = & (Fx)^M\cup (Gx)^M & = & M \\
+     \exists x(Fx\wedge Gx)^M & = & \mathsf{true} \\
+   \forall x(Fx\wedge Gx)^M & = &
+                                  \mathsf{false}  \end{array} \]  \end{example}
+
+\begin{example} Consider the sentence $Fc$.  Let $M$ be an
+  interpretation with domain $\{ 1,2\}$ where $F^M=\{ 1\}$ and
+  $c^M=2$.  Then $Fc$ is false in $M$.  Let $N$ be an interpretation
+  just like $M$ except that $c^N=1$.  Then $Fc$ is true in
+  $N$. \end{example}
+                            
+There are two primary reasons to build interpretations: to show that a
+collection of sentences is consistent, and derivatively, to show that
+a sequent cannot be proven.  In propositional logic, a sentence $\phi$
+is consistent just in case there is some valuation $v$ such that
+$v(\phi )=1$.  In predicate logic, a sentence $\phi$ is consistent
+just in case there is some interpretation $M$ such $\phi ^M$ is true.
+In propositional logic, a sequent $\phi\vdash\psi$ is provable if and
+only if every valuation that makes $\phi$ true also makes $\psi$ true.
+In predicate logic, a sequent $\phi\vdash\psi$ is provable if and only
+if for any interpretation $M$, if $\phi ^M$ is true then $\psi ^M$ is
+true.  To show, then, that a sequent cannot be proven, it suffices to
+produce an interpretation that makes its premises true and its
+conclusion false.
+
+\begin{defn} A \emph{\gls{counterexample}} to a sequent
+  $\phi\vdash\psi$ is an interpretation $M$ such that $\phi ^M$ is
+  true, but $\psi ^M$ is false. \end{defn}
+
+A counterexample is a concrete illustration of the failure of an
+argument to preserve truth.  That is, a counterexample to an argument
+is a formalization of the notion of a situation, or state of affairs,
+in which the premises are true and the conclusion is false.
+
+\begin{example} It is intuitively clear that $\forall x(Fx\vee Gx)$
+  doesn't imply $\forall xFx\vee \forall xGx$.  We'll now construct a
+  formal counterexample.  Let $M=\{ 1,2\}$, let $F^M=\{ 1\}$, and let
+  $G^M=\{ 2\}$.  Then
+  \[ (Fx\vee Gx)^M \:=\: (Fx)^M\cup (Gx)^M \: =\: \{1\}\cup \{ 2\}
+    \:=\: M , \] hence $(\forall x(Fx\vee Gx))^M$ is true.  Since
+  $2\not\in F^M$, it follows that $(\forall xFx)^M$ is false.
+  Similarly, $(\forall xGx)^M$ is false, and hence
+  $(\forall xFx\vee \forall xGx)^M$ is false.  Therefore, $M$ shows
+  that $\forall x(Fx\vee Gx)$ does not imply
+  $\forall xFx\vee\forall xGx$. \end{example}
+
+You might wonder: how did we know to choose this interpretation?
+Well, I'm sorry to say that there is no algorithm for finding
+predicate logic interpretations.\footnote{The technical claim here is
+  that predicate logic is \emph{undecidable}.}  In this way, predicate
+logic differs markedly from propositional logic, where the truth-table
+method provides a sure-fire method for finding the interpretation you
+want.  Nonetheless, with practice, a human being can become quite good
+at sniffing out the relevant interpretations.  For example, can I
+think of a situation where everything is $F$ of $G$, but it's not true
+that everything is $F$, and it's not true that everything is $G$?
+What immediately comes to my mind here, as a counterexample, is even
+and odd numbers.  Every number is either even or odd; but it's not
+true that every number is even, and it's not true that every number is
+odd.  So, I could have chosen domain $M=\{ 1,2,\dots \}$, and let
+$F^M$ be odd numbers and $G^M$ be even numbers.  But then I realized
+that two numbers were enough to show that the argument is invalid, and
+that's why I chose $M=\{ 1,2\}$ with $F^M=\{ 1\}$ and $G^M=\{ 2\}$.
+
+There's another approach that is sometimes helpful, but it's not
+guaranteed to succeed.  In particular, you can start to get a feel for
+whether or not an argument is valid by looking at what it says about
+small domains.  For example, if you take a domain $M=\{ a,b\}$ with
+two elements, then an existential sentence $\exists x\phi (x)$ says
+that \mbox{$\phi (a)\vee \phi (b)$}, and a universal sentence
+$\forall x\psi (x)$ says that $\psi (a)\wedge\psi (b)$.  In some
+cases, you'll get lucky by looking at small domains, and you'll be
+able to see directly how to build a counterexample.  In the example
+above, $\forall x(Fx\vee Gx)$ says that
+$(Fa\vee Ga)\wedge (Fb\vee Gb)$, and $\forall xFx\vee\forall xGx$ says
+that $(Fa\wedge Ga)\vee (Fb\wedge Gb)$.  Then a simple truth-table
+test shows that the valuation $v(Fa)=v(Gb)=1$ and $v(Ga)=v(Fb)=0$
+makes the first sentence true and the second sentence false.  From
+this, we see that $F^M=\{ a\}$ and $G^M=\{ b\}$ gives a counterexample
+to the argument.\footnote{There is, in fact, an algorithm for
+  determining the validity of arguments that use only unary predicate
+  symbols. See p.\ \pageref{algorithms}.}
+                              
+\begin{exercises} 
+  For each of the following sequents, provide a counterexample to show
+  that it is invalid.
+  \begin{enumerate}
+  \item $\exists xFx\:\vdash \: Fc$
+  \item $Fc\:\vdash \: \forall xFx$    
+\item $\exists xFx\wedge\exists xGx\:\vdash\:\exists x(Fx\wedge Gx)$
+\item $\forall xFx\to\forall xGx\:\vdash\:\forall x(Fx\to Gx)$
+\item $\forall x(Fx\to Hx) \:\vdash\:\exists xFx\vee \neg
+  \exists xHx$
+\item $\forall x(Fx\to Gx)\:\vdash\:\exists x(Fx\wedge Gx)$
+\item $\exists x(Fx\wedge Gx),\exists x(Gx\wedge Hx)\:\vdash\:\exists
+  x(Fx\wedge Hx)$
+\item $\vdash\:\forall xFx\vee \forall x\neg Fx$
+\item $\exists x(Fx\to Gx),\exists x(Gx\to Hx)\:\vdash\:\exists
+  x(Fx\to Hx)$
+\item $\exists x(Fx\to Gx)\:\vdash\: \exists xFx\to \exists xGx$
+\end{enumerate} \end{exercises}
+
+\begin{exercise} Suppose that $\phi$ and $\psi$ are formulas where
+   the only free variable is $x$.  Show that $(\phi\to \psi)^M=M$ iff
+   $\phi ^M\subseteq \psi^M$.
+ \end{exercise}
+
+Let's now expand the definition of an interpretation to cover
+propositional constants as well.  An interpretation assigns a propositional constant a truth value,
+either true ($1$) or false ($0$).  But now we have to think about how
+to extend an interpretation to formulas that contain both predicate
+symbols and propositional constants.  Here we adopt the following
+definitions:
+\[ \begin{array}{r c l c | c r c l}
+     \multicolumn{3}{c}{\text{$P^M$ is false}} & & & \multicolumn{3}{c}{\text{$P^M$ is true}} \\
+     \hline
+     (\phi \wedge P)^M &= & \emptyset & & &  (\phi \wedge P)^M &=& \phi
+                                   ^M  \\
+     (\phi\vee P)^M &=& \phi ^M & & &  (\phi\vee P)^M &=& M \\
+     (P\to \phi )^M &=& M       & & &  (P\to \phi )^M &=& \phi ^M \\
+     (\phi\to P)^M &=& M\backslash \phi ^M & & &  (\phi\to P)^M& =& M 
+   \end{array} \]
+ In general, you should try to think of something like $(\phi\to P)^M$
+ as the collection of things such that if they are $\phi$ then $P$.
+ So, if $P^M$ is true, then that holds for every individual.
+ However, if $P^M$ is false, then it only holds for those individuals
+ that are not $\phi$.  
+
+\begin{example} Consider the sentences $\exists x(Fx\to P)$ and
+  $\forall x(Fx\to P)$.  Let $M$
+  be an interpretation with domain $\{ 1,2\}$ where $F^M=\{ 1\}$ and
+  $P^M$ is false.  Then
+  \[ (Fx\to P)^M \: = \: M\backslash (Fx)^M \: = \: \{ 2 \} .\]
+  Therefore $\exists (Fx\to P)$ is true, while $\forall x(Fx\to P)$ is
+  false. \end{example}
+
+\begin{exercise}  For each of the following sequents, provide a counterexample to show
+  that it is invalid.
+  \begin{enumerate}
+  \item $\forall xFx\to P\: \vdash \: \forall x(Fx\to P)$
+  \item $\exists x(Fx\to P)\: \vdash \: \exists xFx\to P$
+  \end{enumerate}
+\end{exercise}
+
+
+
+\section{Interpretations generalized}
+
+The previous discussion explained how to interpret formulas with one
+free variable.  Now we need to deal with the general case.  Roughly
+speaking, if $\phi (x_1,\dots ,x_n)$ is a formula with $n$ free
+variables, then we would like for $\phi (x_1,\dots ,x_n)^M$ to be a
+collection of $n$-tuples of elements of $M$.  At this point, however,
+we have a difficult choice to make between intuitiveness and rigor.
+On the one hand, we can give an intuitive definition of
+$\phi (x_1,\dots ,x_n)^M$, but this definition is not completely
+rigorous.  On the other hand, we can give a mathematically precise
+definition of $\phi (x_1,\dots ,x_n)^M$, but only after introducing
+some non-intuitive technical auxiliaries.  We'll first give the
+intuitive definition, and use it to solve some problems.  At the end
+of the chapter we'll give a more rigorous definition.
+
+For the intuitive definition, we extend an interpretation $M$ to all
+atomic formulas as follows.  First, for a term $t$ with $n$-free
+variables, we define $t^M$ as an $n$-place function of those
+variables.  For example, if $f$ is a binary function symbol, then
+$f(x,x)$ is a term with one free variable, and we define $f(x,x)^M$ to
+be the function that takes input $a$ and returns output $f^M(a,a)$.
+As a special case of a term, for a variable $x_i$ we define $x_i^M$ to
+be the function that picks out the relevant component $a_i$.  In
+particular, $x_i^M(a_1,\dots ,a_n)=a_i$.
+
+Now for an atomic formula $R(t_1,\dots ,t_m)$, we define
+$R(t_1,\dots ,t_m)^M$ to be the set of $n$-tuples
+$\langle a_1,\dots ,a_n\rangle$ such that the $m$-tuple
+\[ \langle t_1^M(a_1,\dots ,a_n),\dots ,t_m^M(a_1,\dots ,a_n)\rangle
+  ,\] is in $R^M$.  Finally, for an equality $t_1=t_2$ of terms, we
+define \mbox{$(t_1=t_2)^M$} to be the set of
+$\langle a_1,\dots ,a_n\rangle$ such that
+$t_1^M(a_1,\dots ,a_n)=t_2^M(a_1,\dots ,a_n)$.  In the special case of
+constant symbols, we say that $(c=d)^M$ is true just in case
+$c^M=d^M$.
+ 
+This definition extends straightforwardly to Boolean combinations of
+formulas.  Then for quantified formulas, we extend as follows:
+ \begin{itemize}
+ \item If $\phi (x_1,\dots ,x_n,y)^M$ is already defined, then we let
+   $(\exists y\phi (x_1,\dots ,x_n,y))^M$ be the set of
+   $\langle a_1,\dots ,a_n\rangle$ such that there is some $b\in M$
+   such that
+   $\langle a_1,\dots ,a_n,b\rangle\in \phi (x_1,\dots ,x_n,y)^M$.  In
+   the special case where $n=0$, then $(\exists y\phi (y))^M$ is true
+   when there is a $b\in \phi (y)^M$, and $(\exists y\phi (y))^M$ is
+   false when there is no $b\in \phi (y)^M$.
+ \item If $\phi (x_1,\dots ,x_n,y)^M$ is already defined, then we let
+   $(\forall y\phi (x_1,\dots ,x_n,y))^M$ be the set of
+   $\langle a_1,\dots ,a_n\rangle$ such that no matter which $b\in M$
+   is chosen,
+   $\langle a_1,\dots ,a_n,b\rangle\in \phi (x_1,\dots
+   ,x_n,y)^M$. \end{itemize}
+
+ \begin{example} Let $M=\{ a_1,a_2\}$, and let
+   $R^M=\{ \langle a_1,a_1\rangle ,\langle a_2,a_2\rangle \}$.  Then
+   $(\exists yR(x,y))^M$ is the set of $a\in M$ such that
+   $\langle a,b\rangle \in R^M$ for some $b\in M$.  Hence
+   $(\exists yR(x,y))^M=M$, and it follows that
+   $(\forall x\exists yR(x,y))^M$ is true.
+\end{example}
+
+\begin{example} Suppose again that $R$ is a binary relation symbol.  
+  Let $M=\{ 1,2\}$ and let $R^M$ be the
+standard interpretation of ``less than'', namely
+$R^M=\{ \langle 1,2\rangle \}$.  In this case,
+\[ \begin{aligned}
+    (Rxx)^M & = \{ a\in M \mid \langle a,a\rangle \in R^M \} \: = \:
+    \emptyset . \end{aligned} \] If we had instead interpreted
+$R$ as ``less than or equal'' then we would get
+\[ (Rxx)^M \: = \: \{ a\in M \mid \langle a,a\rangle \in R^M \} \: =
+  \: M .\] \end{example}
+
+\begin{example} We will show that $\forall y\exists xRxy$ does not
+   imply $\exists x\forall yRxy$.  Let $M=\{ a,b\}$ and let
+   $R^M=\{ \langle a,a\rangle ,\langle b,b\rangle \}$.  Then
+   $(\exists xRxy)^M$ is the set of $y\in M$ that occur on the right
+   hand side of some pair in $R^M$, i.e.\ everything in $M$.  Hence
+   $(\forall y\exists xRxy)^M$ is true.  In contrast,
+   $(\forall yRxy)^M$ is the set of $x\in M$ such that
+   $\langle x,y\rangle\in R^M$ for all $y\in M$.  There is no such
+   $x\in M$, hence $(\forall yRxy)^M$ is the empty set, and
+   $(\exists x\forall yRxy)^M$ is false. \end{example}
+
+ \begin{example} Consider the numerical claim
+   $\exists x\exists y(x\neq y)$, which is supposed to says that there
+   are at least two things.  Since $(x=y)^M$ is the set of
+   $\langle a,a\rangle \in M\times M$, it follows that $(x\neq y)^M$
+   is the set of $\langle a,b\rangle \in M\times M$ such that
+   $a\neq b$.  Hence, $(\exists y(x\neq y))^M$ is the set of $a\in M$
+   such that there is some $b\in M$ with $a\neq b$.  If $M$ has only a
+   single element, then there are no such $a\in M$; and if $M$ has at
+   least two elements, then every $a\in M$ is not equal to some
+   $b\in M$.  Thus, $(\exists x\exists y (x\neq y))^M$ is true iff
+   $(\exists y(x\neq y))^M$ is nonempty iff $M$ has at least two
+   elements. \end{example}
+
+ One of the primary functions of modelling in the sciences is to
+ explore the possibilities that are consistent with a theory.  What's
+ more, scientists have a set of rules for how such possibilities must
+ be described --- and these rules correspond roughly, with some
+ idealization, to the axioms of set theory.  Hence, we'll say that a
+ possibility relative to a theory is just an interpretation in which
+ that theory's axioms are true, i.e.\ it's a model of the theory.
+
+
+\begin{defn} If $T$ is a theory, then an interpretation $M$ is said to
+  be a \emph{\gls{model}} of $T$ just in case all of the axioms of $T$
+  are true in $M$. \end{defn}
+
+\begin{example} Consider the theory $T$ with a single axiom:
+  \[ \exists x\exists y\left( (x\neq y)\wedge \forall z((x=z)\vee (y=z))
+      \right) . \]  Then a model of $T$ is any set that
+  contains exactly two elements. \end{example}    
+
+ \begin{example} We now consider an extended example.  Let $T$ be the
+   theory of autosets from Exercise \ref{autosets}.  Here the
+   signature $\Sigma$ has a single binary function symbol $\circ$, and
+   $T$ has three axioms which jointly say that $\circ$ gives a
+   transitive left and right action.  (To say that the action is
+   transitive means that from a fixed $x$, any $z$ can be reached by
+   means of acting on $x$ with some $y$.  In other words, from any
+   starting point, you can reach any other point.)
+
+Consider now an interpretation of $\Sigma$ with domain
+$\{ 0,1\}$.  We need to interpret $\circ$ as a function
+from $M\times M$ to $M$, and we'll do this by explicitly writing out a
+multiplication table:
+\[ \begin{array}{c | c | c} \circ & 0 & 1 \\ \hline 0 & 0 & 1 \\
+     \hline 1 & 1 & 0 \end{array} \] In other words,
+ \[ \circ ^M = \{ \langle 0,0,0\rangle ,\langle 0,1,1\rangle ,\langle
+   1,0,1\rangle ,\langle 1,1,0\rangle \} .\] It's easy to check that
+ this interpretation satisfies the associativity and left-right action
+ axioms.  Hence $M$ is a model of the theory $T$, i.e.\ $M$ is an
+ autoset.
+
+ In Exercise \ref{autosets} you were asked to prove that
+ $T\vdash \exists !x(x\circ x=x)$.  Here we put $T$ before the
+ turnstile $\vdash$ as shorthand for the axioms of $T$.  By the
+ soundness of our proof rules (which we haven't proven yet, but which
+ we promise is true), $\exists !x(x\circ x=x)$ is true in all models
+ of $T$, in particular in $M$.  Fortunately, we can see exactly what
+ in $M$ makes that sentence true: the element $0\in M$ is the unique
+ idempotent.
+
+In Exercise \ref{autosets} you also showed that
+\[ T\:\vdash\: \forall x\exists !y\forall z(z\circ x\circ y=z) .\]
+Intuitively speaking, this unique $y$ is the inverse $x^{-1}$ of $x$,
+and we could (if we wanted) define a corresponding unary function
+symbol $i$.  It's not hard to see then that in $M$, this unary
+function symbol is interpreted as the identity function, i.e.\ $0$ and
+$1$ are both their own inverses. \end{example}
+
+\begin{exercise} Present a model of $T$ with domain $M=\{ 0,1,2\}$.
+  (Hint: interpret $\circ$ as addition, where $2+1=1+2=0$ and
+  $2+2=1$.)  Identify the unique idempotent in $M$ and the inverse
+  operation $i$ on $M$.  \end{exercise}
+
+\begin{exercise} Show that the theory of autosets does not imply that
+  $\forall x\forall y(x\circ y=y\circ x)$.  \end{exercise}
+
+
+%% It turns out that $T$ only has one model with two elements.  We
+%% already showed that there is always a unique idempotent element.
+
+% We now show that the $=$ intro and elim rules are sound, at least when
+% used with names.  (To prove that these rules are sound for closed
+% terms in general, one needs a slightly more sophisticated argument.)
+% The $=$ intro rule says that $\vdash c=c$; and since $c^M=c^M$, it
+% follows that $(c=c)^M$ is true in any interpretation $M$.  Therefore,
+% $=$ intro is sound.
+
+% The $=$ elim rule says that $\phi (d)$ can be inferred from $\phi (c)$
+% and \mbox{$c=d$}.  So suppose that $M$ is an interpretation in which
+% both $\phi (c)$ and $c=d$ are true.  Then $c^M\in\phi ^M$ and
+% $c^M=d^M$, which clearly implies\footnote{This argument looks like it
+%   assumes $=$ elim in order to prove that $=$ elim is sound.  In one
+%   sense that is correct: we prove the general soundness of $=$ elim,
+%   taking for granted that we may use $=$ elim in our reasoning about
+%   sets.} that $d^M\in\phi ^M$.  Therefore, $=$ elim is sound.
+
+% Having the equality symbol $=$ essentially forces us to use a nonempty
+% set $M$ for an interpretation.  Recall that $\exists x(x=x)$ is
+% provable from no axioms at all.  Hence, any interpretation $M$ needs
+% to validate $\exists x(x=x)$, and so the set $(x=x)^M=M$ needs to be
+% nonempty.
+
+
+\section{Diagramming interpretations}
+
+The goal of this section is heuristic in the sense of helping you find
+interpretations.  We won't offer you an algorithm, but we will offer
+you some pictures that should help improve your intuitions.  In
+particular, for sentences that involve a binary relation symbol, say
+$R$, we can think of an interpretation as a sort of diagram with nodes
+and arrows.  With practice, you can start to see that particular
+sentences correspond to particular geometric configurations, and then
+you can use your geometric intuition to help find interpretations.
+
+We showed previously that $\forall y\exists xRxy$ does not imply
+$\exists x\forall yRxy$.  The counterexample we gave was completely
+mathematically rigorous, but perhaps not very intuitive.  We can
+capture the idea of the counterexample with the following simple
+picture.
+\begin{figure}
+  \centering
+  \begin{tikzpicture}
+    \node[circle] at (0,0) (t1) {$1$};
+    \node[circle] at (4,0) (t2) {$2$};    
+% 
+%    \filldraw [black] (0,0) circle (2pt)
+%   (2,0) circle (2pt);
+%   \draw [->,shorten >=4pt,shorten <=4pt] (0,0) to [bend right] (0,0);
+%   \draw [<-,shorten >=4pt,shorten <=4pt] (2,0) to [bend left] (2,0);
+    \draw[->] (t1) edge[out= 135,in= 45,looseness=10] (t1);
+    \draw[->] (t2) edge[out= 135,in= 45,looseness=10] (t2);
+  \end{tikzpicture} \end{figure} Think of an arrow between nodes as
+indicating that the relation $R$ holds between them.  Then the first
+sentence $\forall y\exists xRxy$ says that each node has an arrow
+coming into it --- which is true in this picture.  The second sentence
+$\exists x\forall yRxy$ says that there is a node that has arrows
+going out to every other node --- which is false in this picture.
+Thus, we can see quickly from the picture that the first sentence does
+not imply the second.
+
+%% TO DO: another example with arrow diagrams
+
+Some sentences have particularly nice geometric interpretations.  For
+example, the sentence $Raa$ says that $a$ bears the relation $R$ to
+itself, which means that there is an arrow looping from $a$ back to
+itself (as in the upper left of Figure \ref{arrows}).  Thus, in order
+for $\forall xRxx$ to be true, every node in the diagram must have an
+arrow coming back to itself.  The sentence $Rab\to Rba$ says that if
+there is an arrow from $a$ to $b$, then there is an arrow coming back
+from $b$ to $a$.  That could be true for two reasons: first there may
+be an arrow from $a$ to $b$, and also an arrow back from $b$ to $a$
+(as in the upper right of Figure \ref{arrows}) Second, $Rab\to Rba$
+would be true if there were no arrow from $a$ to $b$.  Generalizing,
+the sentence $\forall x(Rxy\to Ryx)$ says that the relation $R$ is
+symmetric; pictorially, it says that for any two nodes $a,b$, if there
+is an arrow from $a$ to $b$, then there is an arrow back from $b$ to
+$a$.  Finally, the sentence $(Rab\wedge Rbc)\to Rac$ says that if
+there are arrows from $a$ to $b$, and from $b$ to $c$, then there is
+an arrow from $a$ to $c$.  Pictorially, the sentence is true if and
+only if any two-step path corresponds to one step path (as in the
+bottom of Figure \ref{arrows}).  The transitivity axiom
+$\forall x\forall y\forall z((Rxy\wedge Ryz)\to Rxz)$ asserts that
+this condition holds for all two-step paths.
+
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}
+    \node[circle] at (0,3) (t1) {$a$};
+    \draw[->] (t1) edge[out= 135,in= 45,looseness=10] (t1);
+    \node[circle] at (3,3) (t2) {$a$};
+    \node[circle] at (5,3) (t3) {$b$};
+    \draw[->] (t2) edge[bend left] (t3);
+    \draw[->,dashed] (t3) edge[bend left] (t2);
+    \node[circle] at (0,1) (t4) {$a$};
+    \node[circle] at (2,1) (t5) {$b$};
+    \node[circle] at (4,1) (t6) {$c$};
+    \draw[->] (t4) edge (t5);
+    \draw[->] (t5) edge (t6);
+    \draw[->,dashed] (t4) edge[bend left] (t6);
+  \end{tikzpicture}   \caption{Visual representation of properties of
+    $Rxy$} \label{arrows} \end{figure}
+
+%    \draw[->] (t2) edge[out= 135,in= 45,looseness=10] (t2);
+
+
+% \begin{figure}
+%  \includegraphics[angle=270,scale=0.3]{relate.pdf}
+% \end{figure}  
+
+
+
+Suppose now that you're given sentences $\phi _1,\dots ,\phi _n$, and
+you want to determine if these sentences are consistent.  If these
+sentences only use the relation symbol $R$, then you can establish
+consistency by drawing a relevant arrow diagram.  Consider, for
+example, the sentences that say that the relation $R$ is antireflexive
+[$\forall x\neg Rxx$], transitive, and total
+[$\forall x\forall y(Rxy\vee Ryx)$].  You might begin by drawing a
+single node $a$ with no arrows.  But then the totality axiom fails.
+Thus, we need to add at least one other node $b$, and we need an arrow
+in one of the two directions.  Without loss of generality, we put in
+an arrow from $a$ to $b$.  Since there's only one arrow, the diagram
+trivially satisfies transitivity.  Since no node has an arrow to
+itself, the diagram satisfies irreflexivity.  And by construction, the
+diagram satisfies totality.  Therefore those sentences are consistent.
+
+\begin{exercise} Prove that if the relation $R$ is antireflexive and
+  total, then there are at least two things.  \end{exercise}
+
+Suppose now that we add the sentence that says that the relation $R$
+is entire, i.e.\ $\forall x\exists yRxy$.  Pictorially speaking, the
+relation $R$ is entire only if each node in the diagram has an arrow
+coming out.  Of course, that fails in the previous diagram, hence it
+doesn't validate the sentence $\forall x\exists yRxy$.  What's more,
+we couldn't fix up that diagram simply by adding an arrow back from
+$b$ to $a$.  For in that case, we would have $Rab\wedge Rba$, and
+since we're requiring transitivity, we would have to put an arrow from
+$a$ to itself, which is banned by the irreflexivity diagram.
+
+We now sketch and informal argument that no finite diagram can make
+those four sentences true.  Suppose for reductio ad absurdum that
+there is a diagram with $m$ nodes that makes these sentences true.
+The entirety axiom says that for each $a_n$ there is an $a_{n+1}$ such
+that $Ra_na_{n+1}$.  We apply this axiom sufficiently many times so
+that we have a list $a_1,\dots ,a_{m+1}$ of nodes.  We now show that
+this list has no repeated nodes.  If $i<j$ then transitivity implies
+that $Ra_ia_j$, and irreflexivity implies that $a_i\neq a_j$.  Hence
+all elements $a_1,\dots ,a_{m+1}$ are distinct, in contradiction with
+the assumption that the diagram has only $m$ nodes. Obviously, this
+argument works for any number $m$; hence there is no finite diagram
+that makes all of these sentences true.
+
+Of course, it doesn't follow (yet) that these sentences are {\it
+  inconsistent}, for there might be an infinite diagram that makes
+them all true.  I suspect, in fact, that you may already be thinking
+of an example, say the natural numbers $N=\{ 1,2,\dots \}$, with $R$
+interpreted as ``less than or equal.''  Clearly,
+$\phi _1,\dots ,\phi _4$ are true under this interpretation, and so
+these sentences are consistent.
+
+\begin{exercises} For each of the following sentences, provide one
+  interpretation in which it is true, and one interpretation in which
+  it is false.
+  \begin{enumerate}
+  \item $\forall x\forall y(Rxy\to Ryx)$
+  \item $\forall x\forall y\exists z(Rxz\wedge Ryz)$  
+  \item $\exists x\forall y (Ryx\to Ryy)$
+  \item $\forall x(\exists yRyx\to \forall zRzx)$
+  \item $\exists x\exists y (Rxy\leftrightarrow \neg Ryy)$  
+  \end{enumerate}
+\end{exercises}
+
+\begin{exercise} Is the following sentence consistent or not?  If it
+  is, describe an interpretation in which it is true.
+  \[ \forall x\exists y\forall z(\neg Rxx\wedge Rxy\wedge (Ryz\to
+    Rxz)) .\]
+\end{exercise}
+
+\begin{example} Let $R$ be a binary relation symbol, and let $T$ be
+  the theory of partially ordered sets formulated with $R$.  That is,
+  $T$ says that the relation $R$ is reflexive, antisymmetric, and
+  transitive.  Not surprisingly, a model of $T$ is called a partially
+  ordered set, and there are many of these.  First of all, take any
+  set $M$ and let $R^M=\{ \langle a,a\rangle \mid a\in M\}$.  Then $M$
+  is a partially ordered set --- although a rather boring one.  In
+  contrast, consider the set $N=\{ 0,1,2,\dots \}$ of natural numbers,
+  and let $R^M=\{ \langle a,b\rangle \mid a\leq b\}$.  Then $N$ is a
+  partially ordered set.
+\end{example}
+
+\begin{exercise} Write down at least two sentences that are true in
+  the model $N$ of natural numbers, but which are not consequences of
+  the theory of partially ordered sets. \end{exercise}
+
+      
+
+\subsection{Interpretation rigorized}
+
+The way we defined interpretations suffers from some (fairly
+innocuous) mathematical imprecision.  In particular, we didn't define
+$\phi ^M$ for an arbitrary formula $\phi$.  Instead, we defined
+$\phi (x_1,\dots ,x_n)^M$, but without explaining how to understand
+the notation $\phi (x_1,\dots ,x_n)$.  In this section, we fix that
+problem, but only at the cost of introducing a new complication.
+
+First we define two new things.
+\begin{defn} Let $x_1,\dots ,x_n$ be a duplicate-free list of
+  variables.  If all the free variables of the the term $t$ occur in
+  the list $x_1,\dots x_n$, then we say that $t(x_1,\dots ,x_n)$ is a
+  \emph{term in context}. \end{defn}
+\begin{defn} If all of the free variables of the formula $\phi$ occur
+  in the list $x_1,\dots ,x_n$, then we say that
+  $[x_1,\dots ,x_n:\phi ]$ is a \emph{formula in context}.
+\end{defn} We sometimes abbreviate the list $x_1,\dots ,x_n$ by
+$\vec{x}$, so that $[\vec{x}:\phi ]$ is a formula in context.  We also
+use a dash ``$-$'' to indicate an empty list of variables, so that
+$[-:\phi ]$ is a formula in context when $\phi$ is a sentence.  We
+will soon define $[\vec{x}:\phi ]^M$, but first let's explain the
+intuitive idea we're trying to express:
+\begin{quote} $[\vec{x}:\phi ]^M$ is the set of $n$-tuples $\vec{a}$
+  in $M\times \cdots \times M$ such that $\phi$ is true when $x_i$ is
+  assigned to $a_i$. \end{quote} If a variable $x_i$ is not free in
+$\phi$, then it serves as a ``dummy'' in this definition.  For
+example, if $p$ is a predicate symbol then \mbox{$[x_1,x_2:p(x_1)]^M$}
+is the set of $\langle a_1,a_2\rangle$ such that $a_1\in p^M$.  We
+also adopt the convention that the product of zero copies of $M$ is a
+one point set $\mathbf{1}$.  Hence, $[-:\phi ]^M$ will be a subset of
+$\mathbf{1}$, either the entire set, and we say that $[-:\phi ]^M$ is
+true, or the empty set, and we say that $[- :\phi ]^M$ is false.
+
+Let $M$ be an interpretation.  We first define $t(\vec{x})^M$ where
+$t(\vec{x})$ is a term in context.
+\begin{itemize}
+\item Suppose that $t$ is a variable $x_i$.  Then
+  $t(x_1,\dots ,x_n)^M$ is the function that takes an $n$-tuple
+  $\langle a_1,\dots ,a_n\rangle$ and returns the $i$-th entry $a_i$.
+\item Suppose that $c$ is a constant symbol.  Then $t(\vec{x})^M$ is
+  the function that takes an $n$-tuple $\vec{a}$ and returns the
+  element $c^M\in M$.
+\item Suppose that $t$ is a term of the form $f(t_1,\dots ,t_m)$,
+  where $t_i(\vec{x})^M$ has already been defined.  Then
+  $t(\vec{x})^M$ is the composite function that assigns
+  $f^M(b_1,\dots ,b_m)$ to $\vec{a}$, where
+  $b_i=t_i(\vec{x})^M(\vec{a})$.
+ \end{itemize}
+
+ \bigskip \noindent Now we define $[\vec{x}:\phi ]^M$ where
+ $[\vec{x}:\phi ]$ is a formula in context.
+ \begin{itemize}
+ \item For the tautology $\top$ we define $[\vec{x}:\top ]^M$ to be
+   $M\times\cdots\times M$.
+\item Let $t_1$ and $t_2$ be terms.  Then $[\vec{x}:t_1=t_2]$ is the
+  set of $\vec{a}$ such that 
+\[ t_1(\vec{x})^M(\vec{a}) \:= \: t_2(\vec{x})^M(\vec{a}) .\]
+\item Let $t_1,\dots ,t_m$ be terms, and let $R$ be an $m$-ary
+  relation symbol.  Then $[\vec{x}:R(t_1,\dots ,t_m)]^M$ is the
+  set of $\vec{a}$ such that
+  \[ \left\langle t_1(\vec{x})^M(\vec{a}),\dots
+      ,t_m(\vec{x})^M(\vec{a})\right\rangle \: \in \: R^M .\] 
+\end{itemize}
+
+\noindent For the inductive clauses, we look at a formula in context
+$[\vec{x}:\phi ]$ where for any proper subformula $\psi$ of $\phi$,
+and any context $\vec{y}$ of $\psi$, $[\vec{y}:\psi ]^M$ has already
+been defined.
+\begin{itemize}
+\item For Boolean combinations:
+\[ \begin{array}{lll}
+     [\vec{x}:\phi\wedge\psi ]^M &= &[\vec{x}:\phi ]^M\cap [\vec{x}:\psi ]^M \\
+     {[}\vec{x}:\phi\vee\psi {]}^M &=& [\vec{x}:\phi ]^M\cup [\vec{x}:\psi ]^M \\
+     {[}\vec{x}:\neg \phi {]}^M &=&  {[}\vec{x}:\top {]}^M\backslash
+                                    {[}\vec{x}:\phi {]}^M \\
+     {[}\vec{x}:\phi\to\psi ]^M &=& {[}\vec{x}:\neg\phi\vee\psi ]^M . \end{array} \]
+\item For the quantifiers, we wish to define
+  $[\vec{x}:\exists y\phi ]^M$, where we assume that
+  $[\vec{x},y:\phi ]^M$ has already been defined.  In this case, we
+  let $[\vec{x}:\exists y\phi ]^M$ be the set that results from
+  projecting out the last coordinate of $[\vec{x},y:\phi ]^M$.  In
+  other words, $[\vec{x}:\exists y\phi ]^M$ consists of $n$-tuples
+  $\langle a_1,\dots ,a_n\rangle$ such that there is a $b\in M$ with
+  $\langle a_1,\dots ,a_n,b\rangle \in [\vec{x},y:\phi ]^M$.
+  Similarly, for the universal quantifier,
+  $[\vec{x}:\forall y\phi ]^M$ consists of $n$-tuples
+  $\langle a_1,\dots ,a_n\rangle$ such that
+  $\langle a_1,\dots ,a_n,b\rangle\in [\vec{x},y:\phi ]^M$ for all
+  $b\in M$.
+\end{itemize}
+
+\begin{example} We show that $[x_1,x_2:p(x_1)]^M=[x:p(x)]^M\times M$.
+  It's clear that $[x:p(x)]^M=p^M$.  Now, if $t$ is the variable
+  $x_1$, then $t(x_1,x_2)^M$ is the function that takes a pair
+  $\langle a_1,a_2\rangle$ and returns $a_1$.  Hence,
+  $[x_1,x_2:p(x_1)]^M$ is the set of
+  $\langle a_1,a_2\rangle\in M\times M$ such that
+  $a_1=t(x_1,x_2)^M(a_1,a_2)\in p^M$.
+\end{example}
+
+\begin{exercise} Describe the sets $[x,y:x=y]^M$ and
+  $[x:x=x]^M$. \end{exercise}
+
+
+\subsection{Summary}
+
+For the purposes of this book, the primary use of interpretations is
+to show that a sequent cannot be proven.  Sometimes you'll want to
+know that for its own sake, and sometimes you'll want to know that so
+that you can avoid a bad strategy in trying to prove something else.
+In doing real science, one often goes back and forth between searching
+for a proof and searching for possible counterexamples.  In
+particular, becoming convinced that there is no counterexample can
+frequently lead to the discovery of a proof.
+
+Thinking about interpretations can also help find proofs in formal
+logic.  Consider, for example, the sentence
+$\exists x\forall y(Fx\to Fy)$, which many students find to be one of
+the most challenging tautologies that involves only monadic
+predicates.  Let's see then why this sentence has to be true in every
+interpretation.  The key thing to observe is that in every
+interpretation $M$, either everything is $F$, or something is not $F$.
+Suppose first that $F^M=M$.  Then for any element $b\in M$, we have
+$b\in F^M$.  If we pretend that $b$ is a name, then we can say that
+$Fb$ is true in $M$, in which case the conditional $Fa\to Fb$ is
+trivially true,\footnote{positive paradox} no matter what $a$ is.
+Since $b$ was an arbitrary element of $M$, $\forall y(Fa\to Fy)$ is
+also true, and hence $\exists x\forall y(Fx\to Fy)$ is true.  Now
+suppose that there is an $a\in M$ such that $\neg Fa$.  Then for any
+$b\in M$, it trivially follows that $Fa\to Fb$,\footnote{negative
+  paradox} and hence that $\forall y(Fa\to Fy)$, and so finally that
+$\exists x\forall y(Fx\to Fy)$.  In both cases, whether $F^M$ is empty
+or not, $\exists x\forall y(Fx\to Fy)$ is true.  Hence, that sentence
+is true in every interpretation, and is therefore provable from no
+premises at all.
+
+\begin{exercise} Try to construct a similar proof to show that
+  $\forall x\forall y(Fx\to Fy)$ is always true.  Where does it break
+  down? \end{exercise}
+
+% theory, however, one could use interpretations to show that a sequent
+% can be proven.  The \emph{completeness theorem} for predicate logic
+% says that if a sequent is truth-preserving, then it is provable.  That
+% is, if every interpretation $M$ that makes $\phi _1,\dots ,\phi _n$
+% true also makes $\psi$ true, then the sequent
+% $\phi _1,\dots ,\phi _n\vdash\psi$ is provable.  But it's not usually
+% easy to show something about {\it all} interpretations, because there
+% are infinitely many of them.
+
+% In some cases, however,
+
+% There is one crucial difference between truth tables and predicate
+% logic interpretations.  For any propositional logic consistency (or
+% validity) problem, a truth table is guaranteed to yield a solution in
+% a finite number of steps.  In contrast, there simply is no method of
+% running through all possible predicate logic interpretations, and if
+% there is a counterexample, there is no sure method of finding it.
+
+
+
+
+
+%% arrow diagrams
+
+%% TO DO: properties of relations -- serial, transitive, symmetric,
+%% reflexive, dense (?)
+
+
+
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "main"
+%%% End:

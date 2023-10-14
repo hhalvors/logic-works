@@ -1,0 +1,24 @@
+\newcounter{argument}
+\newenvironment{argument}{\begin{list}{\arabic{argument}.}{\usecounter{argument}}}{\end{list}}
+% \newenvironment{proof}{\begin{eqnarray}}{\end{eqnarray}}
+\renewcommand{\theargument}{\arabic{argument}}
+\newcommand{\pre}[1]{\item \begin{math} #1\end{math}}
+\newcommand{\con}[1]{\item[\copyright] \begin{math} #1 \end{math}}
+\newcommand{\ifthen}{\rightarrow}
+\newcommand{\qed}{\vdash}
+\newcommand{\orr}{\vee}
+\newcommand{\andd}{\wedge}
+\newcommand{\mitem}[1]{\item \begin{math} #1 \end{math}}
+\newcommand{\negg}{\neg}
+\newcommand{\bicon}{\leftrightarrow}
+\newcommand{\uq}{\forall x}
+\newcommand{\eq}{\exists x}
+\newcommand{\uqy}{\forall y}
+\newcommand{\eqy}{\exists y}
+\newcommand{\uqz}{\forall z}
+\newcommand{\eqz}{\exists z}
+\newcommand{\tr}{\mathrm{T}}
+\newcommand{\fa}{\mathrm{F}}
+\newcommand{\tfr}{\:\,\vdash\:\,}
+\def\ismodeledby{=\joinrel\mathrel|}
+

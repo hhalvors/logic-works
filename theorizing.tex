@@ -1,0 +1,1608 @@
+\chapter{Theories} \label{theories}
+
+Everyone uses logic everyday -- albeit usually without thinking twice
+about it.  In the sciences, logic gets used more explicitly.  I'm
+thinking especially here about the all-important task of formulating
+theories.  Theories are interesting creatures, because they aren't
+just a bunch of truths.  Instead, a theory is like a network of truths
+with a lot of logical structure between them.
+
+In this chapter, then, we're going to talk about how to use logic to
+represent the structure of a theory.  We'll focus on one particular
+theory that is beloved among philosophers and mathematicians: the
+theory of sets.  In the following chapter, we'll use the theory of
+sets to get a better handle on what can and cannot be proven with
+predicate logic.
+
+\section{Theory of equality}
+
+In previous chapters we used symbols to represent predicates (such as
+$Px$) and to represent relations (such as $Rxy$).  We also used other
+symbols to represent names (such as $a,b,c$).  At this point, we need
+to add one special relation symbol, which you already know quite well:
+the symbol ``$=$''.  This symbol is binary, i.e.\ it needs two
+variables, or two names, to form a meaningful formula.  But unlike our
+other relation symbols, people tend to write ``$=$'' as an infix,
+rather than as a prefix.  Following standard practice, we'll write
+formulas such as $x=y$, or $a=b$, etc.  Notice that it makes sense to
+write $a=b$, even though $a$ is not $b$.  The idea here is that $a$
+and $b$ are distinct names, and ``$a=b$'' means that $a$ and $b$ name
+the same thing.  We then stipulate as our first axiom that $a$ and $a$
+name the same thing.
+
+\begin{tcolorbox}[enhanced,width=10cm,title=Equality Introduction ({$=$}I),attach boxed title to top
+  left={yshift=-2mm,xshift=4mm},boxed title style={sharp corners}]
+For any name $a$, one may write $a=a$ without any \newline dependencies.
+Schematically:
+$\begin{array}{c}
+     \mbox{} \\
+     \hline a=a \end{array}$
+\end{tcolorbox}
+
+\bigskip \begin{tcolorbox}[enhanced,width=10cm,title=Equality Elimination ({$=$}E),attach boxed title to top
+  left={yshift=-2mm,xshift=4mm},boxed title style={sharp corners}]
+  From $a=b$ and $\phi (a)$, one may infer $\phi (b)$.  Schematically:
+  $ \begin{array}{c}
+       \Gamma\:\vdash\: a=b \qquad \Delta\:\vdash\: \phi (a) \\ \hline
+       \Gamma ,\Delta\:\vdash\: \phi (b) \end{array} $
+ \end{tcolorbox}
+ \noindent While this second rule looks complicated, it just says that
+ when you have established $a=b$, then you can convert $\phi (a)$ to
+ $\phi (b)$, as long as you remember to gather all the dependencies
+ together.
+
+We can illustrate these new rules by proving that the relation $=$ is
+symmetric and transitive.
+
+\medskip \noindent \textbf{To prove:} $a=b\:\vdash\: b=a$
+\[ \begin{array}{l l >{$}p{1.5cm}<{$} p{2cm}}
+     1 & (1) & a=b   & A \\
+       & (2) & a=a   & $=$I \\
+     1 & (3) & b=a   & 1,2 $=$E 
+   \end{array} \]
+When we apply $=$E in line 3, we are thinking of line 2 as $\phi (a)$,
+where the name to be replaced is on the left side of the $=$ symbol.
+Since we have $a=b$ in line $1$, we may infer $\phi (b)$, which is
+$b=a$.
+
+\medskip\noindent\textbf{To prove:} $a=b,b=c\:\vdash\: a=c$
+\[ \begin{array}{l l >{$}p{1.5cm}<{$} p{2cm}}
+     1 & (1) & a=b & A \\
+     2 & (2) & b=c & A \\
+     1,2 & (3) & a=c & 1,2 $=$E \end{array} \]
+Here we are thinking of $a=b$ as $\phi (b)$.  Then applying $b=c$, we
+get $\phi (c)$, which is $a=c$.
+
+We can also show the unsurprising result that everything is equal to
+something.
+\[ \begin{array}{l l >{$}p{3cm}<{$} p{2cm}}
+     & (1) & a=a & $=$I \\
+     & (2) & \exists y(a=y) & 1 EI \\
+     & (3) & \forall x\exists y(x=y) & 2 UI \end{array} \]
+The use of UI on line 3 is permitted, because line 2 doesn't depend on
+any assumptions in which $a$ occurs, and since all occurrences of $a$
+are replaced by $x$ and then bound by $\forall x$.  Note that this
+maneuver would {\it not} work to prove $\forall x\forall y(x=y)$.  If one
+tried to apply UI to line 1, then one would be required to replace
+both instances of $a$ with $y$ and bind with $\forall y$, yielding
+$\forall y(y=y)$.
+
+%% Bertrand Russell bothered by existence 
+
+%% Definite descriptions
+
+%% numerical claims
+
+Being able to express equality claims greatly expands the expressive
+power of our logic.  For example, consider the sentence:
+\[ \forall x\forall y((Px\wedge Py)\to x=y) . \] This sentence says
+that for any two things, if both are $P$, then they are the same
+thing.  (The English phrase ``for any two things'' typically carries
+an implication of distinctness.  However, $\forall x\forall y$ should
+be thought of on the analogy of drawing marbles from a jar, where we
+return each marble after it has been drawn.)  In other words, this
+sentence says, ``there is at most one $P$.''  We can also assert the
+unconditional numerical claim as follows:
+\[ \begin{array}{l c p{5cm}}
+     \forall x\forall y(x=y) & \equiv & There is at most one
+                               thing. \end{array} \]
+
+The sentence $\forall x\forall y((Px\wedge Py)\to x=y)$ does {\it not}
+tell us that there is a $P$.  We now claim that the following two
+sentences are equivalent:
+\[ \exists zPz\wedge \forall x\forall y((Px\wedge Py)\to
+  x=y)\:\equiv\: \exists x(Px\wedge \forall y(Py\to x=y)) \]
+To write out a full numbered proof of this equivalence would be a bit
+tedious.  In the following ``proof sketch'', we play a bit fast and
+loose.
+\[ \begin{array}{l l >{$}p{6.5cm}<{$} p{3cm}} 1 & (1) & \exists zPz\wedge \forall
+    x\forall y((Px\wedge Py)\to
+                                         x=y) & A \\
+     1 & (2) & \exists zPz & 1 $\wedge$E \\
+     3 & (3) & Pa          & A  \\
+     4 & (4) & Pb          & A  \\
+     1 & (5) & (Pa\wedge Pb)\to a=b & 1 $\wedge$E, UE \\
+     1,3,4 & (6) & a=b  & 3,4,5 $\wedge$I, MP \\
+     1,3 & (7) & Pb\to a=b & 4,6 CP \\
+     1,3 & (8) & \forall y(Py\to a=y) & 7 UI \\
+     1,3 & (9) & Pa\wedge \forall y(Py\to a=y) & 3,8 $\wedge$I \\
+     1,3 & (10) & \exists x(Px\wedge \forall y(Py\to x=y)) & 9 EI \\
+     1 & (11) & \exists x(Px\wedge \forall y(Py\to x=y)) & 2,3,10
+                                                           EE \end{array} \]
+ On line 5, we've combined an application of $\wedge$E with an
+ application of UE.  On line 6, we combined an application of
+ $\wedge$I with an application of MP.  If you decompressed these steps,
+ you'd have a proof that follows the letter of the law.  The important
+ thing, however, is to grasp the thought process behind the formal
+ proof.  The premise tells us two things: first, that something is a $P$,
+ and second, that any two things that are $P$ are
+ identical.  We now need to show
+ that there is a $P$ with the feature that any other $P$ is identical
+ to it.  So take any $P$, say $a$, whose existence is guaranteed by
+ the premise.  What features does this $P$ have?  Well, if there were
+ some other $P$, say $b$, then $a$ and $b$ would be identical.  Hence,
+ $a$ has the feature that $\forall y(Py\to a=y)$.  Thus, there is some
+ $P$ (namely $a$) with this feature, that is, $\exists x(Px\wedge
+ \forall y(x=y))$.  
+
+\begin{exercises} Prove the following sequent. \begin{enumerate}
+    \item $\exists x(Px\wedge \forall y(Py\to x=y))\:\vdash\:\exists zPz\wedge \forall x\forall y((Px\wedge Py)\to
+      x=y)$ \end{enumerate} \end{exercises}
+
+This sentence, $\exists x(Px\wedge \forall y(Py\to x=y))$ is one of
+the most famous of symbolic logic.  It says that there is a $P$, and
+that any other $P$ is identical to it.  In short it says:
+\[ \begin{array}{l c p{4cm}} \exists x(Px\wedge \forall y(Py\to x=y))
+     & \equiv & There is a unique $P$. \end{array} \] For convenience,
+ one sometimes abbreviates this sentence as $\exists !xPx$, the
+ exclamation mark indicating the uniqueness clause.  As proven above, the sentence on the left
+can be broken up into two components: (1) an existence clause, and (2)
+a uniqueness clause.  For this reason, when mathematicians (or
+computer scientists, or physicists, etc.) prove that there is a unique
+such and such, they have two tasks to carry out.  They have to prove
+that such a thing exists, and they have to prove that there is at most
+one such thing.  For example, mathematicians will tell you that there
+is a unique group of order $p$, where $p$ is a prime number.  To
+validate that claim, they construct these groups (proving existence),
+and they prove that any two such groups are isomorphic (proving
+uniqueness).\footnote{The advanced reader might note that it's not
+  {\it strict} uniqueness that is claimed here, but only uniqueness up
+to isomorphism.  The idea is the same, only strict identity has been
+replaced by isomorphism.}
+
+In terms of natural language, uniqueness claims are often signaled
+by the word ``only''.  For example, suppose that I say that the number
+$2$ is the only even prime number.  Here I am asserting
+both that $2$ is an even prime number, and that anything else with
+this feature is identical to the number $2$.  
+Hence, I might represent this statement as follows.
+\[ \begin{array}{r c p{7cm}}
+Fa\wedge\forall x(Fx\to (x=a)) & \equiv & $2$ is the only even prime number. \end{array} \]
+Here we've used $Fx$ for the compound predicate ``$x$ is an even prime
+number.''  The sentence on the right tells us that
+$a$ is an $F$, and that any $F$ is identical to $a$.  This reading
+suggests that the sentence on the right is equivalent to $\forall
+x(Fx\leftrightarrow (x=a))$, which is indeed the case.
+
+\begin{exercise} Prove the equivalence of
+  $Fa\wedge\forall x(Fx\to (x=a))$ and
+  $\forall x(Fx\leftrightarrow (x=a))$. \end{exercise}
+
+As we've just stated, there is only one even prime number. It would
+make sense, then, to talk about {\it the} even prime number.  In
+contrast, it wouldn't make sense to talk about the prime number less
+than four, since there are two such prime numbers.  It also wouldn't
+make sense to talk about the largest prime number, because there is no
+such thing.
+
+In one of the most famous uses of symbolic logic in philosophy,
+Bertrand Russell explained what it means to say that something does
+not exist.\footnote{``On denoting'' \textit{Mind} (1905)} The puzzle
+here is that if I say, ``there is something that does not exist,''
+then it's dangerously close to saying that ``there exists something
+that does not exist.''  Russell pointed out, however, that when we
+assert non-existence, all we are saying is that nothing fits a
+certain description.  For example, to say ``Santa Claus does not exist''
+might means something like, ``there is no being who lives at the North
+Pole and delivers gifts to children at Christmas,'' which can be symbolized
+simply as $\neg\exists x\phi (x)$.  Accordingly,
+a phrase such as ``Santa Claus loves me'' might appropriately be symbolized as
+\[ \exists x(\phi (x)\wedge \forall y(\phi (y)\to y=x)\wedge Lxa) \]
+Here the first two conjuncts assert that Santa Claus exists, and
+the third conjunct asserts that this guy loves $a$, the name I've
+chosen for ``me''.  If we simply wrote
+\[ \exists x(\phi (x)\wedge Lxa) \] then we would have ``some
+Santa-like figure loves me,'' but no implication that this figure is
+unique.
+
+I myself think that there is something slightly suspicious with
+Russell's analysis.  For example, if I say that Santa Claus has a
+round belly, then I don't mean to be saying that Santa Claus exists.
+And if you told me that Santa Claus has a white beard, then I wouldn't
+judge that what you said is false on the basis that Santa Claus
+doesn't exist.  So, if my intuitions are right, then fictional
+discourse has a kind of logic of its own, and one might wonder whether
+this logic can be illuminated by formal methods.\footnote{The subject
+  called \emph{free logic} studies questions like this one.}
+
+Phrases such as ``the $\phi$'' are called \emph{definite
+  descriptions}.  Russell's proposal, then, is that definite
+descriptions can be symbolized as a conjunction of existence and
+uniqueness claims.  Consequently, to say that ``the $\phi$ is not
+$\psi$'' can mean two different things: it can mean that there is no
+unique $\phi$, or it can mean that there is a unique $\phi$, but it is
+not $\psi$.
+                                                             
+The equality relation can also be used to express superlative claims.
+Suppose, for example, that you want to express the sentence:
+\begin{quote} Mette is the fastest runner in the class. \end{quote} For this, we could use the relation symbol $Rxy$
+to express that $x$ is at least as fast as $y$.  Then
+the sentence $\forall yRmy$ says that Mette is at least as fast as
+anyone, but it doesn't rule out the possibility that somebody else is
+as fast as her.  If we wanted to say that Mette was
+the unique fastest runner, then we could add a further clause
+saying that Mette is the only person who is as fast as herself,
+namely $\forall x(Rxm\to x=m)$.
+
+Note, however, that in using $Rxy$ to represent ``$x$ is as fast as
+$y$'', we tend to implicitly incorporate some other assumptions that
+are not explicitly captured in the formalism.  For example, it's
+trivially true that everyone is as fast as herself; however, it's not
+trivially true --- for an arbitrary relation symbol $Rxy$ --- that
+$\forall xRxx$.  Thus, if we wanted to capture all the relevant facts
+about the relation ``as fast as'', then we would have to add some
+other assumptions about $Rxy$.
+
+We've already seen how to express the claim that there is at most one
+$P$.  It's easy to extend this method to expressing claims of the form 
+\[ \begin{array}{p{10cm}}
+  At most $n$ things have property $P$.  \end{array} \]
+Consider, for example, how we might say that there are at most two
+$P$'s.  Imagine again that you're drawing marbles out of a jar,
+replacing each marble after it's drawn.  If there are at most two
+marbles in the jar (i.e.\ there are none, or one, or two), then if you
+draw three times from the jar, you are guaranteed to draw the same
+marble twice (supposing that there are any marbles to be drawn).
+Hence, for any three draws $x,y,z$, either $x=y$ or $x=z$ or $y=z$.
+Written symbolically,
+\[ \forall x\forall y\forall z(x=y\vee x=z\vee y=z) . \]
+This sentence will serve as our official translation of the phrase,
+``There are at most two things.''  To say that there are at most two
+$P's$, we need only conditionalize on the things' being $P$.  In
+particular, the sentence
+\[ \forall x\forall y\forall z((Px\wedge Py\wedge Pz)\to (x=y\vee
+  x=z\vee y=z)) \]
+says that for any three $P$'s, at least two of the three are
+identical.
+
+It should be easy to see how to generalize from the case of ``at most
+2'' to the case of ``at most $n$''.  Thus, for any number $n$, we can
+express the fact that there are at most $n$ things.  We'll now see
+that we can also express that there are at least $n$ things.
+Beginning again with the case of $2$, the sentence
+$\exists x\exists y(x\neq y)$ is sufficient to express the fact that
+there are at least two things.\footnote{Here we use $x\neq y$ as
+  shorthand for $\neg (x=y)$.}  Similarly, the sentence
+$\exists x\exists y\exists z(x\neq y\wedge x\neq z\wedge y\neq z)$
+expresses the fact that there are at least three things.  As before,
+to say that there are at least three $P$'s, we need only
+conditionalize on the fact that the things are $P$.  In this case,
+since we're using an existential quantifier, we want to conjoin with
+the claim that the things are $P$, hence
+\[ \exists x\exists y\exists z(Px\wedge Py\wedge Pz\wedge x\neq
+  y\wedge x\neq z\wedge y\neq z )  . \]
+
+Now, obviously if there are at least $n$ things and at most $n$
+things, then there are exactly $n$ things.  Similarly, if there are at
+least $n$ $P$'s and at most $n$ $P$'s, then there are exactly $n$
+$P$'s.  Thus, to express the claim ``there are exactly $n$ $P$'s'', we
+could simply conjoin the two sentences above.  However, there is a
+more compact and elegant way to express the same thing.  We claim, for
+example, that the following two sentences are equivalent.
+\[ \begin{array}{l l}
+\exists x\exists y(x\neq y)\wedge \forall x\forall y\forall z(x=y\vee
+     x=z\vee y=z) \\
+\exists x\exists y(x\neq y\wedge \forall z(x=z\vee y=z))      
+   \end{array} \]
+ The second sentence says that there are two distinct things, and
+ everything is identical to one of these two things.  Intuitively, that
+ sentence captures the claim that there  are exactly two
+ things.  We'll leave it to you to prove that this sentence is
+ equivalent to the conjunction of the sentences saying that there are
+ at least, and at most, two things.
+                           
+ \begin{exercises} Represent the logical structure of the following
+   sentences using the equality relation ``$=$'' when appropriate.
+  \begin{enumerate}
+  \item Maren is the only student who didn't miss any questions on the
+    exam. ($m,Qx$, variables are restricted to students)
+  \item All professors except $a$ are boring.  ($Px,a,Bx$)
+  \item $a$ is the best of all possible worlds. ($Rxy$, variables are
+    restricted to possible worlds)
+  \item There is no greatest prime number. ($Px,x<y$, variables are
+    restricted to numbers)
+  \item The smallest prime number is even. ($Px,Ex,x<y$)
+  \item For each integer, there is a unique next-greatest
+    integer. ($x<y$, variables are restricted to integers)
+  \item There are at least two Ivy League universities in New York. ($Ix,Nx$)
+  \item For any two sets $a$ and $b$, there is a largest set $c$ that
+    is contained in both of them.  (``$y$ is at least as large as
+    $x$'' $\:\equiv\:$ ``$y$ contains $x$'' $\:\equiv\:x\subseteq y$)
+    \sitem The function $f$ achieves its least upper bound on the
+    domain $[0,1]$. ($f,x\leq y,0,1$)
+\end{enumerate}
+\end{exercises}
+
+\begin{exercise} Consider the following lyric from the jazz musician
+  Spencer Williams:
+  \begin{quote} Everybody loves my baby, but my baby don't love nobody
+    but me. \end{quote} Represent the logical form of this sentence,
+  and show that it implies that the speaker is his own baby.  (Hint:
+  use $a$ as a name for the speaker, and $b$ as a name for the
+  speaker's baby, and restrict variables to people.)
+\end{exercise}
+
+
+\section{Ordering}
+
+We have many occasions for ranking things, or putting them into some
+kind of order.  Famously, each year \textit{US News and World Report}
+publishes a ranking of universities in the United States, which looks
+something like this:
+\[ \begin{tikzcd} \cdots \arrow{r} & a \arrow{r} & b \arrow{r} &
+    c \end{tikzcd} \] where $c$ is ranked number one, $b$ is ranked
+number two, etc.  Let's look at this as logicians, ignoring the
+content, and focusing on the form.  We note that this ranking
+validates the sentence
+\[ \forall x(x\leq y\wedge y\leq z\to x\leq z) ,\] i.e.\ the ordering
+is transitive.  It would be pretty weird if it weren't: that would
+suggest that $c$ might be both more excellent than $b$, which is more
+excellent than $a$, but $c$ is not more excellent than $a$.  We also
+note that this ranking validates the sentence
+$\forall x\forall y(x\leq y\vee y\leq x)$, i.e.\ \textit{US News}
+tells us that for any two universities, either the one is better than
+the other, or the other way around.
+
+Logicians don't have any business opining about the quality of
+universities, but between us, I'm suspicious about whether the latter
+sentence is actually true.  To be more concrete, let's suppose that
+there are two different virtues that a university can have --- let's
+call them $F$-ness and $G$-ness.  Suppose further that $c$ has more
+$F$-ness than $b$; but that $b$ has more $G$-ness than $c$.  Suppose
+furthermore, that we lack public consensus about whether $F$ is more
+important than $G$, or about how much more important it is.  In that
+case, if we try to build the $\leq$ ordering based on $F$-ness and
+$G$-ness, then the situation might more accurately be portrayed as
+follows:
+\[ \begin{tikzcd}
+    &   & c \\
+    \cdots \arrow{r} & a \arrow{ur} \arrow{dr} & \\
+    & & b \end{tikzcd} \] This picture says that both $c$ and $b$ are
+better than $a$; but that $c$ and $b$ are incomparable with each
+other.  That is, neither $c\leq b$ nor $b\leq c$.  In that case, the
+axiom $\forall x\forall y(x\leq y\vee y\leq x)$ fails, and the
+ordering is not linear.
+
+Quantifier logic is particularly good at describing structural
+features of orderings.  Let's first specify a very general notion of
+an ordering, a so-called \emph{partial order}.  Any time we construct
+a theory, the first thing we need to do is to choose some
+\emph{non-logical vocabulary}, i.e.\ some relation symbols or function
+symbols.  For the theory of partial order, it will suffice to choose
+one binary relation symbol, say $\leq$, which we will use in infix
+notation.
+
+The second step in defining a theory is to write down some
+\emph{axioms} that specify what the theory says about its non-logical
+vocabulary. For the theory of partial order, we have the following
+axioms:
+\[ \begin{array}{>{\raggedleft\it}p{2cm} l}
+Reflexive & x\leq x \\
+Antisymmetric & (x\leq y\wedge y\leq x)\to (x=y) \\
+Transitive & (x\leq y\wedge y\leq z)\to x\leq z \end{array} \]
+(Here we have, for convenience, allowed ourselves to drop outermost
+universal quantifiers.  Each of these axioms is meant to be
+universally quantified over all the variables that occur in it.)  A
+lot of different orderings meet these criteria.  The above two
+orderings of universities meet these criteria.
+
+We get another kind of ranking that meets these criteria if we stick
+two rankings side by side, and simply say that they have nothing to do
+with each other.  For example, consider the collection that consists
+of (a) all US universities, and (b) all single scullers who competed
+in last year's rowing world championship.  Let's say that $x\leq y$
+just in case either $x$ and $y$ are universities, and $y$ was ranked
+higher than $x$ in the {\it US News} poll, or $x$ and $y$ are scullers
+such that $y$ finished ahead of $x$ at the world championship.  Then
+this heterogeneous collection also satisfies the axioms of a partial
+order.
+
+To say that an order is not heterogeneous in this way --- i.e.\ that
+everything is comparable to everything else --- we might try adding an
+axiom such as:
+\[ \begin{array}{>{\raggedleft\it}p{2cm} l}
+Total & x\leq y\vee y\leq x \end{array} \]
+  But this axiom is awfully strict; for example, it doesn't permit the
+  second sort of university ranking we entertained above, where two
+  different universities are better than all the others, but cannot be
+  directly compared with each other.
+
+We might then add the following weaker axiom:
+\[ \begin{array}{>{\raggedleft\it}p{2cm} l}
+Directed & \forall x\forall y\exists z(z\leq x\wedge z\leq
+           y) \end{array} \]
+This axiom would ensure that any two things are at least indirectly
+related; in particular, either one is worse than the other, or there
+is some other university that is worse than both of them.  However,
+the Directed axiom wouldn't permit the possibility that there could be
+two distinct universities that are both the worst in their own special
+way.  That scenario would look like this:
+\[ \begin{tikzcd}
+    d \arrow{dr} & \\
+    & c \arrow{r} & \cdots \\
+    e \arrow{ur} & \end{tikzcd} \] (Imagine, for example, that $d$ has
+the least rigorous admissions standards, and that $e$ has the worst
+post-graduation job placement record.)  You could go on trying various
+other axioms, but it should be clear enough now that there's a lot you
+can say about order using quantifiers and Boolean logical connectives.
+
+\begin{exercise} Show that if a partial ordering satisfies the Total axiom, then
+  it satisfies the Directed axiom.
+\end{exercise}
+
+\begin{exercise} A relation $R$ is said to be symmetric just in case
+  \mbox{$\forall x\forall y(Rxy\to Ryx)$}.  Show that if $R$ is
+  symmetric and transitive, then it's reflexive.
+\end{exercise}
+
+\begin{exercise} Write down a sentence about linear orders that is
+  true in the integers (i.e.\ whole numbers) but false in the rational
+  numbers (i.e.\ fractions). \end{exercise}
+
+%% TO DO: could have an exercise about dense linear orders?  
+
+
+
+\section{Functions}
+
+In earlier chapters, we applied predicates to variables such as $x$,
+and to names, such as $a$.  Let's use the word \emph{terms} as a
+common description of these variables and names.  Syntactically
+speaking, terms are whatever comes after predicate symbols or relation
+symbols.
+
+We now need to introduce another kind of symbol that builds more
+complex terms.  To see what we're going for, consider first, as an
+example, the phrase, ``The biological father of \dots ''.  That
+phrase, of course, doesn't name anyone in particular.  Interestingly,
+though, it has the feature that whenever you plug in a name that
+denotes a unique individual, the phrase also denotes a unique
+individual (supposing, for simplicity, that each such individual has a
+unique biological father).  This phrase, then, acts as a
+\emph{function}, taking denoting terms (e.g.\ names) and returning
+other denoting terms.
+
+Mathematicians have long recognized the value of functions, and some
+of their favorites are binary functions such as $+$.  If you give me
+two number names, say $4$ and $17$, then $4+17$ is a name for another
+number.  Thus, $+$ takes as input two denoting terms, and it returns a
+denoting term as output.
+
+In the abstract, we'll typically use symbols like $f,g,h,\dots $ for
+functions.  These functions can be unary (i.e.\ take one term as
+input), binary (i.e.\ take two terms as input), or $n$-ary (i.e.\ take
+$n$ terms as input).  Besides allowing function symbols to be applied
+to names, we also allow function symbols to be applied to variables.
+Thus, if $f$ is a unary function symbol, then $f(x)$ also counts as a
+legitimate term (although not a name).  What this means is that $f(x)$
+can itself be put in any slot where terms are allowed to go.  For
+example, if $R$ is a binary relation symbol, then $Rf(x)y$ is a
+legitimate formula.  More intuitively, since $=$ is a binary relation
+symbol, we may place $f(x)$ on its left or right hand side.  For
+example, $f(x)=y$ is a perfectly good formula; and hence,
+$\forall x\exists y(f(x)=y)$ is a perfectly good sentence.  In fact,
+because of the rules for equality, that last sentence is provable.
+\[ \begin{array}{l l >{$}p{3cm}<{$} p{2cm}}
+       & (1) & f(a)=f(a) & $=$I \\
+       & (2) & \exists y(f(a)=y) & 1 EI \\
+       & (3) & \forall x\exists y(f(x)=y) & 2 UI 
+   \end{array} \]
+ Since the first step invokes $=$I, there are no dependencies at any
+ stage of the proof.  This proof shows that for each input, a function always assigns
+ some or other output.  It does {\it not} follow, however, that every
+ possible output corresponds to some input.  That additional condition
+ can be formulated as
+ \[ \forall y\exists x(f(x)=y) , \] and in this case it is said that
+ $f$ is \emph{onto} or \emph{surjective}.  Another important condition
+ a function can satisfy is having different outputs for different
+ inputs; or contrapositively, having the same input for the same
+ output.  Symbolically, this condition amounts to
+ \[ \forall x\forall y(f(x)=f(y)\to x=y) , \]
+ and in this case it is said that $f$ is \emph{one-to-one} or
+ \emph{injective}.
+
+As mentioned before, mathematics is chock full of binary function
+symbols such as $+$, $\times$.  It also uses unary function symbols,
+although their presence is sometimes difficult to detect.  Consider
+for example that little superscript $^{-1}$ that you learned to use
+when talking about the inverse of a number.  Well, you can think of
+that little superscript as a function symbol that is applied to the
+right side of a term, but where no parentheses are added.  In
+particular, given the name of a number, say $2$, the symbol $2^{-1}$
+names another number, namely the multiplicative inverse of $2$.  You
+might also remember that there is one number that doesn't have a
+multiplicative inverse, namely $0$.  What this means is that the
+symbol $0^{-1}$ doesn't make sense, and $^{-1}$ is only a function
+when restricted to non-zero numbers.
+
+When you learned how to reason about functions (e.g.\ in your
+precalculus class), there are some moves you probably came to take for
+granted.  For example, if $a=b$ then $f(a)=f(b)$.  It's illuminating
+to see that this fact can be derived from the inference rules for equality.
+ \[ \begin{array}{l l >{$}p{6cm}<{$} p{3cm}}
+  1  & (1) & a=b & A \\    
+     & (2) & f(c)=f(c) & $=$I  \\
+  1  & (3) & f(a)=f(b) & 1,2 $=$E \\
+      & (4) & a=b\to f(a)=f(b) & 1,3 CP \end{array} \]
+Since the last line has no dependencies with $a$ or $b$, the result
+holds for arbitrary $a$ and $b$.
+
+%% TO DO: extend equality rules
+
+With the expansion of the class of terms, we should also expand the
+range of the equality introduction and elimination rules.  In
+particular, for any term $t$, the $=$E rule allows us to write the
+sentence $t=t$ on a line without any dependencies.  Similarly, if $t$
+and $s$ are terms, then $\phi (s)$ can be derived from $\phi (t)$ and
+$t=s$.  The latter permits the following sort of substitution:
+\[ \begin{array}{l l >{$}p{3cm}<{$} p{3cm}}
+     1 &   (1) & 1+1=2 & A \\
+     2 &   (2) & 2+1=3 & A \\
+     1,2 & (3) & (1+1)+1=3 & 1,2 $=$E \end{array} \]
+ Or similarly,
+ \[ \begin{array}{l l >{$}p{4cm}<{$} p{3cm}}
+      1 & (1) & \mathsf{Sinned}(\mathsf{adam}) & A \\
+      2 & (2) & \mathsf{adam}=\mathsf{father}(\mathsf{cain}) & A \\
+      1,2 & (3) &
+                  \mathsf{Sinned}(\mathsf{father}(\mathsf{cain})) &
+                                                                    1,2
+                                                                    $=$E \end{array} \]
+
+
+
+ \begin{exercise} Suppose that $f$ and $g$ are functions such that
+   \mbox{$\forall x(g(f(x))=x)$}.  Show that $f$ is
+   one-to-one. \end{exercise}
+
+ \begin{exercise} A function $f$ is said to be an {\it involution}
+   just in case \mbox{$\forall x(f(f(x))=x)$}.  Show that if $f$ is an
+   involution, then $f$ is one-to-one and onto. \end{exercise}
+
+ \begin{exercises} Suppose that $\circ$ is a binary function symbol, that $i$ is a
+   unary function symbol, and that $e$
+   is a name.  Assume the following as axioms:
+   \begin{enumerate}
+   \item[A1.] The function $\circ$ is associative:
+     \[ \forall x\forall y\forall z((x\circ y)\circ z=x\circ (y\circ
+       z))  \]
+   \item[A2.] The name $e$ functions as a left and right identity:
+     \[ \forall x(x\circ e=x=e\circ x) \]
+   \item[A3.] The function $i$ gives left and right inverses:
+     \[ \forall x(x\circ i(x)=e=i(x)\circ x) \] \end{enumerate}
+   Prove that:
+   \begin{enumerate}
+   \item Inverses are unique: $\forall x\forall y((x\circ y=e)\to
+     (y=i(x)))$.
+   \item Inverse is an involution: $\forall x(i(i(x))=x)$.   
+   \item Inverse is anti-multiplicative: $\forall x\forall y(i(x\circ y)=i(y)\circ
+     i(x))$.
+ \end{enumerate}
+\end{exercises}
+
+\begin{exercise} Suppose that $f$ is one-to-one, but not onto.  For
+  each number $n$, it can be shown that there are more than $n$
+  things.  Show here that there are more than two
+  things.  \end{exercise}
+
+% Since $f$ is not onto, $\exists y\forall x(f(x)\neq y)$.  Let $a$ be
+% such that $\forall x(f(x)\neq a)$.  Then $f(a)\neq a$ and $f(f(a))\neq
+% a$.  Since $f$ is one-to-one, if $f(f(a))=f(a)$ then $f(a)=a$.
+% Therefore, $a\neq f(a)$ and $a\neq f(f(a))$ and $f(a)\neq f(f(a))$.
+
+%% TO DO: integrate with previous exercises
+
+   
+
+%% TO DO: Definitions
+
+\section{Arithmetic}
+
+At an early age, children learn basic facts about addition and
+subtraction.  In the process, they become comfortable with the idea of
+negative numbers.  Some time later, children learn facts about
+multiplication and division; and in doing so, it becomes apparent that
+for division always to make sense, there must be further numbers
+beyond the whole numbers --- namely, the fractions, which can also be
+expressed in terms of decimal expansions.  At this stage, a student
+may become vaguely aware that fractional numbers correspond to
+repeating decimals; and hence that non-repeating decimals are a new
+kind of number.
+
+With the introduction of each new type of number, students learn new
+bits of vocabulary.  Addition corresponds to a function symbol $+$,
+and subtraction corresponds to a function symbol $-$.  The
+introduction of multiplication and division comes with two new
+function symbols: $\times$ and $\div$.  The introduction of exponents
+provides a new binary function symbol $x^y$, etc.  The new function
+symbols are given meaning by the axioms they are assumed to satisfy.
+For example, addition is tacitly assumed to be commutative and
+associative:
+\[ x+y=y+x , \qquad x+(y+z)=(x+y)+z .\] Furthermore, the number $0$
+is tacitly assumed to be the additive identity: $x+0=x=0+x$.
+
+Multiplication is then assumed to be related to addition in certain
+ways; for example, 
+\[ a\times b \: = \: \underbrace{a+\cdots + a}_{\text{$b$ times}} \: ,\]
+which implies that multiplication distributes over addition, and (as a
+limiting case) that $a\times 0=0$.
+
+Most students tacitly accept these facts --- or, rather, axioms ---
+and use them when they reason about numbers.  It takes a special kind
+of mind to ask, ``could the axioms be written down explicitly, so that
+whenever a student reasons validly about numbers, she could cite the
+relevant axiom?''
+
+\newglossaryentry{Peano arithmetic}
+{
+  name={Peano arithmetic},
+  description={A set of first-order axioms for arithmetic, originally proposed by
+ Richard Dedekind.  Peano arithmetic was proven to be incomplete by
+ Kurt G{\"o}del.} }
+
+Let's try to write down a sufficient set of axioms to capture all of
+the facts about addition and multiplication of the non-negative whole
+numbers $0,1,2,\dots $.  The first thing we need is to introduce the
+basic vocabulary: we let $+$ and $\cdot$ be binary function symbols,
+and we let $0$ and $1$ be names.  The theory \emph{Peano arithmetic
+  (PA)} has six primary axioms:
+\[ \begin{array}{p{0.3cm} l p{1cm} p{0.3cm} l}
+     P1. & x+1\neq 0 & & P2. & x+1=y+1\to x=y \\
+     P3. & x+0=x     & & P4. & x+(y+1)=(x+y)+1 \\
+     P5. & x\cdot 0=0 & & P6. & x\cdot (y+1)=x\cdot y+x
+                                . \end{array} \] For the sake of
+readability, we drop the outermost universal quantifiers from the axioms.  The function $s(x)=x+1$ is called the \emph{successor function}.  Note that P2 says that the successor function is one-to-one, and P1 says that the successor function is not onto.  (As we will see later, this means that P1 and P2 imply that there are infinitely many things.)
+
+%% seems to me that P1 - P6 don't get you much.  I think you can't
+%% prove that 1 = 0 + 1
+
+Peano arithmetic also comes equipped with an \emph{induction schema},
+which consists of one axiom for each formula $\phi (y,\vec{x})$.
+\[ (\phi (0,\vec{x})\wedge \forall y(\phi (y,\vec{x})\to \phi
+  (y+1,\vec{x})))\to \forall y\phi (y,\vec{x}) .\] Here the vector
+variable $\vec{x}$ is just shorthand for an $n$-tuple $x_1,\dots ,x_n$
+of variables.  Although they might look strange, the induction schema
+represent a well-known strategy for proving things about the natural
+numbers.  In short, they say that if you can prove that $0$ has some
+feature $\phi$, and if you can prove that whenever $y$ is $\phi$ then
+$y+1$ also is $\phi$, then you may conclude that every number is
+$\phi$.
+
+Here's a classic case of the inductive reasoning strategy: define a
+function $\sigma$ by 
+\[ \sigma (x) \: = \: 1+2+\cdots +(x-1) + x. \] In other words,
+$\sigma (x)$ is the result of adding together all the numbers up to
+$x$.  We'll use induction to show that $\forall x\phi (x)$, where
+$\phi (x)$ is the formula 
+\[ \sigma (x)\:=\:\frac{x(x+1)}{2} .\] First check that $\phi (0)$,
+i.e.\ that $0=0(0+1)/2$.  Now let $a$ be a fixed natural number and
+suppose that $\phi (a)$, i.e.\ $\sigma (a)=a(a+1)/2$.  Then,
+\[ \sigma (a+1) \:=\: \sigma (a)+a+1 \:=\:
+  \frac{a^2+3a+2}{2}  \: = \: \frac{(a+2)(a+1)}{2} ,\]
+which means that $\phi (a+1)$ is true.  We've shown then that $\forall
+x(\phi (x)\to \phi (x+1))$, and hence by induction, $\forall x\phi
+(x)$.
+
+The preceding proof sketch assumes several facts about arithmetic that
+we haven't yet proven.  For example, it assumes that addition is
+associative and commutative.  So let's back up a step, and take up an
+argument where each step is explicitly justified by the axioms of
+Peano arithmetic.
+
+Consider, for example, the claim that every non-zero number has a
+predecessor, i.e.\ that $\forall y(y\neq 0\to \exists x(x+1=y))$.
+This fact follows almost immediately from the induction axioms.  By
+negative paradox, it's true that if $0\neq 0$ then $\exists
+x(x+1=0)$.  Furthermore, for any number $a+1$, it's true that there is
+an $x$ such that $x+1=a+1$.  Thus, it's trivially true that if the
+claim holds for $a$ then it holds for $a+1$.  
+
+Let's now formalize the argument.  We use the induction schema with
+the predicate
+\[ \phi (y)\:\equiv \: y\neq 0\to\exists x(x+1=y) .\] The variable
+vector $\vec{x}$ here is the trivial zero-length vector.  The argument
+then proceeds like this:
+\[ \begin{array}{l l >{$}p{6cm}<{$} p{6cm}}
+      & (1) & 0=0 & $=$I \\
+      & (2) & 0\neq 0\to \exists x(x+1=0)  & neg paradox \\
+      & (3) & a+1=a+1 & $=$I \\
+      & (4) & \exists x(x+1=a+1) & 3 EI \\
+      & (5) & a+1\neq 0\to \exists x(x+1=a+1) & pos paradox \\
+      & (6) & \phi (a)\to \phi (a+1)  & pos paradox \\
+      & (7) & \forall y(\phi (y)\to \phi (y+1)) & UI \\
+   \text{IS} & (8) & \forall y\phi (y) & 2,7 induction \end{array} \] If we
+plug in the definition of $\phi (y)$, then line 2 is $\phi (0)$, and
+line 5 is $\phi (a+1)$.  Then on line 6, we apply positive paradox to
+get $\phi (a)\to \phi (a+1)$.  Note that induction is the only axiom
+of PA that we used in the argument.  We included a dependency IS on
+line 8 to indicate that the result is not a tautology, in the strict
+sense; it is a consequence of an axiom of PA.
+
+%% Can it already be shown now that there are infinitely many things?
+
+%% what I would like here is an example of a proof -- maybe Belnap
+ 
+ 
+
+\begin{exercises} We use the abbreviation $\text{PA}\vdash\phi$ to
+  indicate that there is a proof from the Peano axioms to $\phi$.
+  Prove the following:
+  \begin{enumerate}
+  \item Prove that addition is associative.  We'll give an informal
+    argument, and ask you to write something that looks more like a
+    formal proof.  We use induction on the formula
+    $\phi (z)\equiv \forall x\forall y(x+(y+z)=(x+y)+z)$.  By two
+    applications of P3, we have $y+0=y$ and $(x+y)+0=x+y$.  Hence,
+    $x+(y+0)=x+y=(x+y)+0$.  That is, $\phi (0)$.  Now let $a$ be an
+    arbitrary natural number, and suppose that $\phi (a)$, that is
+    $x+(y+a)=(x+y)+a$.  Then
+    \[ \begin{array}{r c l c p{3.2cm}}
+         x+(y+(a+1)) & = & x+((y+a)+1) & & P4 \\
+                     & = & (x+(y+a))+1 & & P4 \\
+                     & = & ((x+y)+a)+1 & & assumption, $=$E \\
+                     & = & (x+y)+(a+1) & & P4 . \end{array} \]
+  \item $\text{PA}\vdash \forall x\forall y(x+y=y+x)$.  Hint: you'll need to use
+    induction twice.
+  \item $\text{PA}\vdash 0\neq 1$
+  \item $\text{PA}\vdash 1+1\neq 1$
+  \item $\text{PA}\vdash \forall x\forall y\forall z(x+z=y+z\to x=y)$
+  \item $\text{PA}\vdash \forall x\forall y\forall z(x\cdot (y\cdot z)=(x\cdot
+    y)\cdot z)$
+  \item $\text{PA}\vdash \forall x\forall y(x\cdot y=y\cdot x)$
+  \end{enumerate}
+\end{exercises}
+
+%% TO DO: explain how PA is interpreted into SETS
+
+
+\section{Definition}
+
+In subsequent sections, we will move on to yet more sophisticated
+theories.  However, when our theories become sophisticated, it becomes
+all the more important that we clearly express concepts and the
+relations between them.  Thus, we take a quick detour to discuss how
+we can define new concepts from old ones.
+
+There are many misconceptions about what it means to be logical.  You
+might, for example, have thought that the logical person is the one
+who demands evidence before believing something.  However, logic has
+nothing at all to say about which premises you should accept.  What's
+more, the logical person makes suppositions that are in no way
+demanded by the evidence that she possesses.  She does so because we
+humans cannot expect to receive the truth passively -- we have to seek
+it actively.
+
+Another misconception about logic is that good reasoning takes place
+against a fixed background scene of language -- or, in philosophical
+terms, with a fixed repertoire of concepts.  To the contrary, logic is
+concerned not just with good reasoning with a fixed set of concepts,
+but also with best practices for constructing new concepts.  To make
+the contrast more clear, deduction takes place within the framework of
+a fixed language.  There is no way that deductively valid inference
+could reach a conclusion that mentions a new concept -- i.e.\ a
+concept that is not mentioned in the premises.  For example, you
+couldn't validly infer a sentence with the relation symbol $Rxy$ from
+sentences with predicates $Fx$ and $Gx$.
+
+The kind of reasoning we've been discussing earlier in this book,
+let's call it \textit{horizontal reasoning}, since it moves us from
+premises to conclusion in a single language.  We now want to describe
+a kind of \textit{vertical reasoning} that extends our language.  If
+you've ever used a dictionary, then the main technique of vertical
+reasoning will be familiar to you: it's making definitions.  But we
+aren't concerned with the kind of definition that takes a word that's
+already in use, and that spells out its meaning in terms of other
+words.  We're concerned with the kind of definition that introduces a
+new term.
+
+Consider, for example, the natural language predicates ``$x$ is a
+parent'' and ``$x$ is female'', as applied to persons.  In this case, we
+can define a compound predicate
+\[ \begin{array}{p{8cm}} $x$ is a parent $\wedge$ $x$ is a
+     female \end{array} \] which
+can conveniently be abbreviated by ``$x$ is a mother.''  In other
+words, starting from predicates such as $Gx$ and $Fx$, we can
+define a new compound predicate:
+\[ \phi (x)\:\equiv \: Gx\wedge Fx .\] The left hand side of the
+definition -- i.e.\ the thing being defined -- is called the
+\emph{definiendum}. The right hand side of the definition consists of
+a formula in the antecedently established vocabulary, in this case,
+the vocabulary that consists of $Gx$ and $Fx$.  The right hand side of
+the definition is called the \emph{definiens}, i.e.\ the thing in
+terms of which the new symbol is defined.
+
+The quantifiers provide yet more sophisticated ways to formulate
+definitions.  Suppose, for example, that instead of having a predicate
+for ``$x$ is a parent,'' we had a relation symbol $Rxy$ for ``$x$ is a
+parent of $y$.''  Then we could define:
+\[ \begin{array}{r c l}
+     \mathsf{parent}(x) & \lra & \exists yRxy \\
+     \mathsf{child}(x)  & \lra & \exists yRyx \\
+     \mathsf{grandparent}(x,z) & \lra & \exists y(Rxy\wedge Ryz) \\
+     \mathsf{sibling}(x,z) & \lra & \exists y(Ryx\wedge Ryz) \end{array} \]
+
+\begin{exercises} Translate the following sentences into predicate
+   logic notation.  Restrict yourself to the following vocabulary:
+   $Fx$ for ``$x$ is female'', $Pxy$ for ``$x$ is a parent of $y$, and
+   $Lxy$ for ``$x$ loves $y$''.  Assume that we're only talking about
+   people, so you don't need a predicate symbol for ``is a person.''
+   You'll want to define new relations and predicates out of the ones
+   we've supplied, e.g.\ ``$y$ is a child'' can be symbolized as
+   $\exists xPxy$.
+
+ \begin{enumerate}
+  
+\item Every woman who has a daughter loves her daughter.
+
+\item Every person loves their parent's children.  
+  
+\item Everybody loves their own grandchildren.
+  
+\item Everybody loves their nieces and nephews.
+  
+\item No man loves children unless he has his own.
+
+\item Everybody is loved by somebody.   
+
+\item Everybody loves a lover. (Hint: a lover is anyone who loves somebody.)  
+
+\end{enumerate} \end{exercises}                               
+
+This kind of defining maneuver can be very powerful when used with
+genuine formal theories like Peano arithmetic.  For example, let $<$
+be a binary relation symbol, which we will write in infix notation.
+Define $x<y$ to be the formula $\exists z(x+(z+1)=y)$.  Then it can be
+shown that $x<y$ satisfies the axioms for a strict linear ordering;
+and knowing that, we can bring all of our knowledge about linear
+orderings to bear in our reasoning about arithmetic.
+
+\begin{exercise} Prove the following sequents.
+  \begin{enumerate}
+  \item $\text{PA}\:\vdash\:\forall x(\neg (x<x))$
+  \item $\text{PA}\:\vdash\:\forall xyz((x<y\wedge y<z)\to x<z)$
+  \item $\text{PA}\:\vdash\:\forall xy(x<y\vee x=y\vee
+    y<z)$ \end{enumerate}
+\end{exercise}
+
+Predicates and relations aren't the only things that can be defined.
+We can also define new terms (names and function symbols).  For
+example, if I know your name (suppose it's ``$a$''), and I have a
+function symbol $\mathsf{mom}(x)$ that I use to talk about the mother
+of $x$, then I have a name for your mother: $\mathsf{mom}(a)$.  In
+other words, a name plus a function symbol gives a new name.  We're
+very familiar with this maneuver in the case of arithmetic.  In our
+formulation of Peano arithmetic above, we only had two names: $0$ and
+$1$.  But now we can use the addition symbol to define names of new
+numbers, e.g.\ $2=1+1$, $3=2+1$, etc.
+
+More generally, we can define terms from formulas, so long as we
+ensure that those formulas have the right features.  For example,
+suppose that I have a language with a relation symbol $Rxy$ for ``$y$
+is the biological mother of $x$''.  (Note the order of variables:
+child comes first, then mother.)  There are two particular facts
+about biological motherhood that will be relevant here:
+\[ \forall x\exists yRxy \qquad (Rxy\wedge Rxz)\to y=z .\]
+The first fact is that everyone has a biological mother.  The second
+fact is that everyone has at most one biological mother.  Under these
+conditions we say that $Rxy$ is a \emph{functional relation}, and we
+can define a new function symbol $f$ by the condition
+\[ f(x)=y \: \lra \: Rxy .\] More generally, if
+$\phi (x_1,\dots ,x_n,y)$ is any formula with $n+1$ free variables,
+and if $T$ is a theory that implies that $\phi (x_1,\dots ,x_n,y)$ is
+a functional relation, then we permit $T$ to be extended by means of a
+definition
+\[ f(x_1,\dots ,x_n)=y \: \lra \: \phi (x_1,\dots ,x_n,y) .\]
+In the special case of $n=0$, to say that $T$ implies that $\phi (y)$
+is a functional relation means that $T\vdash \exists !y\,\phi (y)$.
+In that case, we're permitted to define a new name $c$ by the formula
+\[ c=y \: \lra \: \phi (y) .\]
+
+The reason for the restriction on the definition of terms is so that
+definitions don't lead to bad logic.  For example, suppose that an
+evil logician tried to pull a fast one on you by doing the following:
+\begin{quote} Let's write $\phi (x)$ to mean that $x$ is omnipotent,
+  omniscient, and omnibenevolent.  Now define a name $a$ by
+  $\forall x(x=a \lra \phi (x))$.  Now, it's a theorem of predicate
+  logic that $\exists x(x=a)$, and a quick argument shows that
+  $\exists x\phi (x)$.  Therefore, God exists.  \end{quote} No matter
+your opinion about theology, you shouldn't let this argument pass.
+The problem was letting the evil logician define the name $a$ without
+first showing that there is a unique $\phi$.
+
+A similar problem would arise if you tried to define a name when it
+has not previously been proven that at most one thing satisfies the
+definiens.  For example, suppose that you decided to define the name
+$a$ by
+\[ \forall x((x=a)\lra \mathsf{even}(x)) ,\] where the predicate
+$\mathsf{even}$ ranges over whole numbers.  This definition would then
+entail that there is just one even number.  So, one should only define
+a name in terms of a predicate if one has shown that the predicate is
+uniquely instantiated.
+
+If making definitions doesn't add new information, then what really is
+the point of making them?  One might ask in reply: if deducing
+consequences from a set of premises doesn't lead to genuinely new
+information, then what's the point of doing that?  We won't try to
+solve these philosophical puzzles here.  It's enough to point out that
+both deducing and defining are essential components of a logical
+lifestyle.
+
+%% perhaps mention here embedding the real numbers in complex numbers
+
+\begin{exercises} \label{autosets} The following series of exercises
+  is intended to show how defining new concepts can facilitate
+  reasoning.  We begin with a spartan language that has only one
+  binary function symbol $\circ$.  We then impose three axioms:
+  \begin{enumerate}
+  \item[B1.] $\forall x\forall y\forall z(x\circ (y\circ z)=(x\circ y)\circ
+      z)$
+  \item[B2.] $\forall x\forall z\exists !y(x\circ y=z)$
+  \item[B3.] $\forall x\forall z\exists !w(w\circ x=z)$  
+  \end{enumerate} \marginnote{The theory given by B1--B3 is sometimes
+    called \emph{autosets}, because it describes a collection of
+    things that act upon themselves.  The exercises show that the
+    theory of autosets is equivalent to \emph{group theory}.}  Recall
+  here that $\exists !$ is an abbreviation for the compound phrase
+  ``there exists a unique.''  From these axioms, one can directly
+  prove the following sentence
+  \[ \exists !y\forall x(x\circ y=x=y\circ x) .\] But a direct proof
+  is hideously complex.  Another way the result can be proven is by
+  first proving
+  \[ \exists !y\forall x(x\circ y=x) ,\] and then introducing a name
+  $e$ for this unique $y$.  One can then prove that
+  $\forall x(x=e\circ x)$, thus completing the proof.  The following
+  steps will lead you through the process.
+  \begin{enumerate}
+  \item Prove that $\forall x\forall z((x\circ z=x)\to \forall y(y\circ z=y))$.
+  \item Prove that $\exists !y\forall x(x\circ y=x)$.
+  \item Define a name $e$ for the unique $y$ whose existence you just
+    proved.
+  \item Prove that $\forall x(x=e\lra (x\circ x=x))$.
+  \item Since $\forall x\exists !y(x\circ y=e)$, define a function
+    symbol $^{-1}$ such that $\forall x(x\circ x^{-1}=e)$.
+  \item Prove that $\forall x(x^{-1}\circ x=e)$.  [Hint: use
+    $(x^{-1}\circ x)\circ (x^{-1}\circ x)=x^{-1}\circ x$.]
+  \item Prove that $\forall x(e\circ x=x)$.
+\end{enumerate}
+\end{exercises}
+
+
+\begin{exercises} The following exercises ask you to define new
+  relations, and then to prove that these relations have certain nice
+  properties. \begin{enumerate}
+\item Let $F$ and $G$ be predicates, and define
+  \[ \phi (x,y) \: \equiv \: Fx\wedge Gy .\] Show that
+  $\phi (x,y)$ is symmetric, i.e.
+  $\forall x\forall y(\phi (x,y)\to \phi (y,x))$.
+\item Let $Rxy$ be a binary relation, and define
+  \[ \phi (x,y)\:\equiv\: \forall w(Rwx\to Rwy) .\] Show that
+  $\phi (x,y)$ is transitive, i.e.
+  $\forall x\forall y\forall z((\phi (x,y)\wedge \phi (y,z))\to \phi
+  (x,z))$.
+\item Let $F$ be a predicate, and define
+  \[ \phi (x,y)\:\equiv \: Fx\lra Fy .\] Show that $\phi (x,y)$ is
+  an equivalence relation, i.e.\ reflexive, symmetric, and transitive.
+% \item Show that the relation $\leq$ can be defined in terms of $<$
+%   and $=$.
+% \item Suppose that $\leq$ is a partial order, i.e.\ reflexive,
+%  antisymmetric, and transitive.  Suppose further that each $x,y$ has
+%  a greatest lower bound.  Show that a corresponding binary function
+%  symbol $g(x,y)$ is definable.  Prove that
+%  $\forall x\forall y\forall z(z\leq g(x,y)\lra (z\leq x\wedge z\leq
+%  y))$.
+\end{enumerate}
+\end{exercises}
+
+%% TO DO (possibly): define partial order.
+%% If things have a glb, then can define $\wedge$
+
+
+\section{Set theory}
+
+The next theory we develop is of deep foundational importance.  In
+fact, it is currently believed that {\it all} of mathematics rests on
+the foundation of set theory.
+
+At the beginning of the 20th century, some logicians hoped to show
+that all of mathematics can be derived from pure logic.  I say
+``hoped'' because the point of such a derivation would be to explain
+away the mystery of our certainty of the truths of mathematics.  As we
+have seen, logical truths purchase certainty at the price of vacuity.
+For example, you can be certain that $P\vee \neg P$, but it doesn't
+exclude any possibilities.  So, if math could be derived from logic,
+then mathematical truths (such as $1+1=2$) would not exclude any
+possibilities.  
+
+To make a long story short, the reduction of math to pure logic didn't
+quite work.  However, it almost worked.  A consensus emerged that to
+get all of mathematics, you only need to add a few axioms that
+describe properties of \emph{sets} of things.  In this section, we'll
+present a piece of this theory of sets.  Besides its intrinsic
+interest for the foundations of mathematics, the theory of sets is of
+special interest to logicians, because it's a great reference point
+for checking our knowledge of basic logical facts.  Most particularly,
+we can use set theory to construct the analogue of truth-tables for
+quantifier logic, allowing us to show that certain sequents cannot be
+proven.
+
+There are many different ways that we could formalize the theory of
+sets.  The most common way these days is to formulate a theory with a
+single relation symbol $\in$, and whose objects (i.e.\ the things the
+quantifiers are supposed to range over) are supposed to be sets.  From
+that spartan basis, one can then construct things like sets of ordered
+pairs, and subsets of ordered pairs, and even functions (seen as a
+certain kind of subset of ordered pairs).  We find it more convenient,
+however, to take both sets and functions between sets as primitive,
+undefined notions.  We could do this by using two predicates ``is a
+set'' and ``is a function,'' but we'll usually just indicate whether
+something is a set or a function by means of using a different style
+of variables: we'll use capital letters such as $A,B,X,Y$ for sets,
+and lowercase letters such as $f,g,h,\dots $ for functions.  The
+notation $f:A\to B$ is shorthand for: ``$A$ and $B$ are sets and $f$
+is a function from $A$ to $B$.''  The set $A$ is said to be the
+\emph{domain} of $f$, and the set $B$ is said to be the
+\emph{codomain} of $f$.\footnote{To be clear, the symbols $f,g,h$ here
+  are not function symbols, but variables that range over the type of
+  thing that we intuitively think of as functions.  If we were to
+  fully formalize this theory, it would have function symbols $d_0$
+  for the domain of a function, $d_1$ for the codomain of a function,
+  and $i$ for the identity function on a set.}
+
+As with any theory, the theory of sets tries to formalize an intuitive
+idea.  Here the intuitive picture is something like the following:
+\begin{figure}[h]
+ \centering
+ \begin{tikzpicture}[ele/.style={fill=black,circle,minimum width=.8pt,inner sep=1pt},every fit/.style={ellipse,draw,inner sep=-2pt}]
+  \node[ele,label=left:$a$] (a1) at (0,4) {};    
+  \node[ele,label=left:$b$] (a2) at (0,3) {};    
+  \node[ele,label=left:$c$] (a3) at (0,2) {};
+  \node[ele,label=left:$d$] (a4) at (0,1) {};
+
+  \node[ele,,label=right:$1$] (b1) at (4,4) {};
+  \node[ele,,label=right:$2$] (b2) at (4,3) {};
+  \node[ele,,label=right:$3$] (b3) at (4,2) {};
+  \node[ele,,label=right:$4$] (b4) at (4,1) {};
+
+  \node[draw,fit= (a1) (a2) (a3) (a4),minimum width=2cm] {} ;
+  \node[draw,fit= (b1) (b2) (b3) (b4),minimum width=2cm] {} ;  
+  \draw[->,thick,shorten <=2pt,shorten >=2pt] (a1) -- (b4);
+  \draw[->,thick,shorten <=2pt,shorten >=2] (a2) -- (b2);
+  \draw[->,thick,shorten <=2pt,shorten >=2] (a3) -- (b1);
+  \draw[->,thick,shorten <=2pt,shorten >=2] (a4) -- (b3);
+ \end{tikzpicture}
+\end{figure}
+The two ovals are sets $A$ and $B$, and the dots inside the ovals are
+their elements.  Hence $A$ consists of elements $a,b,c,d$, and $B$
+consists of elements $1,2,3,4$.  We use the notation ``$a\in A$'' to
+indicate that $a$ is an element of $A$.  (Thus, $\in$ is a binary
+relation symbol, written in infix notation.)  The arrows from elements
+in $A$ to elements in $B$ constitute a function $f:A\to B$, which
+consists of an assignment of each element in $A$ to some element in
+$B$.
+
+The following axiomatization of set-theory prioritizes clarity over
+rigor.  We have attempted to write the axioms in such a way that they
+are easy to understand, but so that it's possible for the interested
+reader to determine how they might be fully regimented in first-order
+logic.
+
+\begin{description}
+\item[S1. Extensionality] The first axiom provides the condition under
+  which two sets are equal, namely when they contain the same
+  elements.
+  \[ \forall A\forall B(A=B\lra \forall x(x\in A\lra x\in B)) . \]
+  Similarly, two functions are equal if and only if they agree on all
+  inputs.
+  \[ \forall f\forall g(f=g\lra \forall x(f(x)=g(x)) .\]
+\item[S2. Comprehension] The second axiom provides a method of
+  building new sets from old sets.  It tells us that if we already
+  have a set $A$, and if we can describe a property $\phi (x)$ of
+  elements of $A$ (using the language of set theory), then there is a
+  set $B$ of things that contain just those elements.  We sometimes
+  write this set $B$ as $\{ x\in A \mid \phi (x) \}$, read as ``the
+  $x$ in $A$ such that $\phi (x)$.''  The meaning of this axiom will
+  be clearer after we see which sorts of properties $\phi (x)$ can be
+  described in the language of set theory.
+\item[S3. Empty Set]  The third axiom declares the existence of a set
+  with no elements.
+  \[ \exists A\forall x(x\not\in A) . \]
+\end{description}
+There will be a couple more axioms to come, but these first three will
+suffice to prove some interesting basic facts about sets and
+functions.  Consider the following claim and proof.
+
+\begin{prop} There is only one empty set, that is $\exists !A\forall
+  x(x\not\in A)$.  \end{prop}
+
+\begin{proof} The empty set axiom says that there is at least one
+  empty set; so we only need show that there is at most one.  Suppose
+  then that $A$ and $B$ are empty sets.  That is,
+  $\forall x(x\not\in A)$ and $\forall x(x\not\in B)$.  We will show
+  first that $\forall x(x\in A\to x\in B)$.  Since
+  $\forall x(x\not\in A)$, we have $a\not\in A$.  Hence by negative
+  paradox, if $a\in A$ then $a\in B$.  Since $a$ was arbitrary,
+  $\forall x(x\in A\to x\in B)$.  A similar argument shows that
+  $\forall x(x\in B\to x\in A)$.  By extensionality, $A=B$.
+\end{proof}
+
+This proof is fully compliant with the inference rules you learned
+earlier in this book.  You could, in fact, write it out in its full
+glory, with dependency numbers, citations of rules, etc.  However,
+it's slightly more pleasant for human beings to read and write proofs
+with words.  Moreover, there's an art to saying just the right words
+to convince your reader that the proof really does work.  One of the
+goals of this section is to help you hone your skill as a writer of
+clear and rigorous arguments.
+
+It can be a lot easier to use set theory if we define some new
+relation and function symbols.  We begin by using the fact we proved
+above -- that there is a unique empty set -- to define a name
+``$\emptyset$'' with the condition
+\[ \forall A\bigl( A=\emptyset \: \lra \: \forall x(x\not\in A) \bigr)
+  .\] We now define a binary relation symbol $\subseteq$ (written in
+infix notation) that is intended to capture the idea of one set being
+contained in another.
+\begin{defn} For sets $A$ and $B$, we say that $A$ is a \textbf{subset} of $B$,
+written $A\subseteq B$, just in case $\forall x(x\in A\to x\in B)$.
+More formally,
+\[ \forall A\forall B\bigl( A\subseteq B \: \lra \: \forall x(x\in
+  A\to x\in B) \bigr) . \] \end{defn} Keep in mind that the
+containment relation $\subseteq$ is very different than the
+elementhood relation $\in$.  For most purposes in this book, you can
+think of the elementhood relation $\in$ as standing between some $a$
+that is {\it not} a set and a some $A$ that {\it is} a set.  For
+example, you can think of yourself as an element or member of the set
+of people who have read this sentence.  In contrast, the relation
+$\subseteq$ can only hold between two sets.  Since you are not a set,
+you cannot stand in the relation $\subseteq$ to anything
+else.\footnote{For the advanced reader: we are intentionally
+  maintaining a naive distinction between sets and non-sets.  If one
+  really adopted ZF set theory as their ``theory of everything,'' then
+  everything would be a set.}
+
+We illustrate the definition of subset by showing that the emptyset
+$\emptyset$ is a subset of every other set.
+
+\begin{prop} $\forall B(\emptyset\subseteq B)$. \end{prop}
+
+\begin{proof} Let $B$ be an arbitrary set.  Since
+  $\forall x(x\not\in \emptyset )$, negative paradox gives
+  $\forall x(x\in \emptyset\to x\in B)$.  By the definition of
+  $\subseteq$, it follows that $\emptyset \subseteq B$.  Since $B$ was
+  an arbitrary set, it follows that $\forall B(\emptyset\subseteq
+  B)$. \end{proof}
+
+\begin{exercises} Prove the following results.
+  \begin{enumerate}
+  \item $A\subseteq A$.  
+  \item If $A\subseteq B$ and $B\subseteq C$ then $A\subseteq C$.
+  \item If $A\subseteq B$ and $B\subseteq A$ then
+    $A=B$. \end{enumerate} \end{exercises}
+
+Recall that when a theory $T$ implies that a relation $\phi (x,y,z)$
+is functional, then we may define a binary function symbol, say
+$\cap$, by
+\[ (x\cap y=z) \: \lra \: \phi (x,y,z) .\]
+Consider then the following relation, definable in the theory of sets:
+\[ \phi (A,B,C) \: \equiv \: \forall x(x\in C\lra (x\in A\wedge x\in
+  B)) \] To see that $\phi$ is functional, suppose that $\phi (A,B,C)$
+and $\phi (A,B,D)$.  A quick argument shows then that
+$\forall x(x\in C\lra x\in D)$, and hence by extensionality, $C=D$.
+Therefore, $\phi$ is functional, and we may define
+\[ (A\cap B=C) \:\lra \: \phi (A,B,C)  .\]
+In other words, 
+\[ \forall x(x\in A\cap B\lra (x\in A\wedge x\in B)) . \] We call
+$A\cap B$ the \emph{intersection} of $A$ and $B$.
+
+\begin{exercises} Prove the following results. \begin{enumerate}
+  \item $A\cap A=A$.
+  \item $A\cap \emptyset = \emptyset$.
+  \item $A\subseteq B$ if and only if $A\cap B=B$.
+  \item $C\subseteq A\cap B$ if and only if $C\subseteq A$ and
+    $C\subseteq B$.    
+\end{enumerate} \end{exercises}
+
+Similar to the definition of intersection, we can also define a \emph{union}
+of sets.  Here the relevant relation is:
+\[ \phi (A,B,C) \: \lra \: \forall x(x\in C\lra (x\in A\vee x\in B))
+  . \] Since $\phi$ is functional, we may define a function symbol
+$\cup$ with the feature
+\[ \forall x(x\in A\cup B\lra (x\in A\vee x\in B)) . \]
+
+\begin{exercises} Prove the following results.
+  \begin{enumerate}
+ \item $A\cup A=A$.   
+ \item $A\cup \emptyset = A$.
+ \item $A\subseteq B$ if and only if $A\cup B=B$.  
+ \item $A\cap (B\cup C)=(A\cap B)\cup (A\cap C)$.
+ \end{enumerate}
+\end{exercises}
+
+We need one more function on sets, namely the \emph{relative
+  complement} of two sets.  The idea here is that $A\backslash B$
+should consist of all those elements in $A$ that are {\it not} in $B$.
+Thus, the defining condition is:
+\[ \forall x(x\in A\backslash B\lra (x\in A\wedge x\not\in B)) . \] It
+is frequently useful to speak as if a set $A$ has an absolute
+complement $A^c$, i.e.\ the set of all things that are not in the set
+$A$.  Mathematicians know that it's dangerous to talk about ``the set
+of all things such that \dots '', but for many practical purposes we
+can take some large set $X$ as the background domain, and then we can
+think of $A^c$ as the relative complement of $A$ in $X$.
+
+\begin{exercises} Let $A^c=X\backslash A$, and prove the
+  following: \begin{enumerate}
+  \item $(A\cup B)^c=A^c\cap B^c$.
+  \item $(A\cap B)^c=A^c\cup B^c$.
+  \item $A\cup A^c=X$.
+  \item $A\cap A^c=X$.    
+  \end{enumerate} \end{exercises}
+
+The construction we perform now is not exactly a definition; in one
+sense, it should be considered to be a new axiom.
+
+\begin{description}
+  \item[S4. Cartesian products] There is a construction process that takes two sets
+$A,B$ as input, and that produces a new set $A\times B$ as output.
+The set $A\times B$ is called the \emph{Cartesian product} of $A$ and
+$B$. Each element of this new set $A\times B$ can be written in the
+form $\langle a,b\rangle$ with the identity condition:
+\[ \langle a,b\rangle = \langle c,d\rangle \: \lra \: a=c \wedge
+  b=d . \] \end{description}
+
+Note that the order in $\langle a,b\rangle$ matters; i.e.\ it is not
+necessarily the case that $\langle a,b\rangle =\langle b,a\rangle$.
+Accordingly, an element of the form $\langle a,b\rangle$ is called an
+\emph{ordered pair}.
+
+We define $\pi _1:A\times B\to A$ to be the function that takes each
+ordered pair $\langle a,b\rangle$ to its first component $a$.
+Similarly, we define $\pi _2:A\times B\to B$ to be the function that
+takes each ordered pair $\langle a,b\rangle$ to its second component
+$b$.
+
+It's not difficult to see that if $A$ and $B$ are finite sets, then
+the number $|A\times B|$ of elements in $A\times B$ is $|A|\cdot |B|$,
+where $|A|$ is the number of elements in $A$, and $|B|$ is the number
+of elements in $B$.  In fact, something like that result continues to
+hold even when $A$ and $B$ are infinite.  However, that more general
+result depends on developing a notion of different sizes of infinity,
+and that's a subject for a more advanced book.
+
+\begin{exercise} Show that if $A$ has $2$ elements and $B$ has $2$
+  elements, then $A\times B$ has $4$ elements. \end{exercise}
+
+\begin{exercise} Show that $\emptyset\times A=
+  \emptyset$.  \end{exercise}
+
+%% Show that powerset of A is in 1-to-1 correspondence with 2^A
+
+Predicate logic makes heavy use of \emph{relation symbols}, such as
+$Rxy$.  But what is a relation?  In the world of sets, we can think of
+a \emph{relation} as a kind of set -- namely a subset of $A\times B$.
+That might seem like a strange thing to say.  After all, if I asked
+you to give me an example of a relation, you might suggest the
+relation of being a parent, or the relation of being a sibling, or the
+relation of being taller than.  In what sense are these relations like
+a subset of $A\times B$?
+
+Every relation has two aspects: an \emph{intension} and an
+\emph{extension}.  The former, the intension, is a bit mysterious and
+difficult to define, but basically it's supposed to be the essence or
+meaning of the relation --- what makes it the particular relation that
+it is.  The latter, the extension, is easier to define: the extension
+of a relation is just the set of ordered pairs that stand in that
+relation.  So, for example, the extension of the relation ``has been
+married to'' consists of all pairs of people who have been married to
+each other, including
+\[ \langle\text{Donald},\text{Marla}\rangle , \quad
+  \langle\text{Donald},\text{Ivana}\rangle , \quad
+  \langle\text{Donald},\text{Melania}\rangle . \] So far we've just
+been taking about binary relations, i.e.\ those that hold between two
+things.  There are, however, $n$-ary relations for every natural
+number $n$.  The unary relations more frequently go under the name of
+\emph{properties}.  Just like other relations, a property has an
+intension and an extension.  Thus, the extension of a property is
+simply the set of those things that possess the property.
+
+Interestingly, properties with distinct intension can have the same
+extension.  A famous example used by W.v.O. Quine are the properties
+``$x$ is a living creature with a heart'' and ``$x$ is a living
+creature with kidneys''.\footnote{See Quine, ``Two dogmas of
+  empiricism'' {\it The Philosophical Review} 60, 20--43 (1951)}
+Obviously, having a heart is not the same thing as having kidneys.
+However, any living creature has a heart if and only if it has
+kidneys.  Therefore, these two properties have the same extension.
+
+It's surprisingly useful to classify relations into different kinds.
+Here we'll talk about two special kinds of relations: equivalence
+relations and functional relations.
+
+\subsection{Equivalence relations}
+
+We frequently have several names for the same thing.  If $a$ and $b$
+are names for the same thing, then we would say ``$a$ is identical to
+$b$'', or in short ``$a=b$''.  As we saw before, the equality relation
+has a peculiar logic.  For example, we take it for granted that $a=a$
+(which is certainly not the case for every relation).  We also showed
+that if $a=b$ then $b=a$; and that if $a=b$ and $b=c$, then $a=c$.
+While the equality relation has these features, it's not the only
+relation with them.  For example, consider the relation $R$ where
+$\langle a,b\rangle\in R$ just in case $a$ is the same height as $b$.
+Then $\langle a,a\rangle \in R$ (i.e.\ everyone is the same height as
+themselves); if $\langle a,b\rangle\in R$ then
+$\langle b,a\rangle\in R$ (being the same height as is symmetric); and
+if $\langle a,b\rangle\in R$ and $\langle b,c\rangle\in R$ then
+$\langle a,c\rangle\in R$ (being the same height as is
+transitive). These facts show that $R$ is an equivalence relation.
+
+A relation $R$ on $A\times A$ is said to be an \emph{equivalence
+  relation} just in case it is:
+\begin{description}
+\item[reflexive] For all $a\in A$, $\langle a,a\rangle\in R$.
+\item[symmetric] For all $a,b\in A$, if $\langle a,b\rangle\in R$ then
+  $\langle b,a\rangle\in R$.
+\item[transitive] For all $a,b,c\in A$, if $\langle a,b\rangle\in R$
+  and $\langle b,c\rangle\in R$ then $\langle a,c\rangle\in R$.
+\end{description}
+The simplest example of an equivalence relation is the equality
+relation $R=\{ \langle a,a\rangle \mid a\in A\}$. Another equivalence
+relation is the relation of having the same value for a certain
+quantity.  For example, ``$x$ is the same height as $y$'' is an
+equivalence relation on the set of people.
+
+\begin{exercises} \mbox{} \begin{enumerate} \item Let $R$ be an equivalence relation, and let $[a]$ be
+  the set of all things related to $a$, that is
+  \[ [a] \: = \: \{ b \mid \langle a,b\rangle\in R\} . \]
+  Show that either $[a]=[b]$ or $[a]\cap [b]=\emptyset$.
+\item Suppose that $R$ and $S$ are equivalence relations.  Show that
+  $R\cap S$ is an equivalence relation.
+\item Let $\phi\equiv\psi$ be the inter-derivability relation in
+  propositional logic.  Show that $\equiv$ is an equivalence
+  relation. \end{enumerate} \end{exercises}
+
+
+\subsection{Functional relations}
+
+There are several different ways to think of what a \emph{function}
+is.  First, a function can be thought of as a {\it rule} that assigns
+elements of one set to elements of another set.  Second, a function
+can be conceived of as a {\it graph}, i.e.\ a set of ordered pairs in
+a plane.  You might remember that for a graph to be a function it has
+to have the feature that any vertical line intersects it in only one
+point.  In other words, the graph of a function has the feature that
+if both $\langle a,b\rangle$ and $\langle a,c\rangle$ occur in the
+graph, then $b=c$.
+
+\begin{figure}[h] \centering
+\begin{tikzpicture}
+      \draw[->] (-3,0) -- (3,0) node[right] {$x$};
+      \draw[->] (0,-2) -- (0,3) node[above] {$y$};
+      \draw[scale=0.5,domain=-2.5:2.5,smooth,variable=\x,black] plot
+      ({\x},{\x*\x});
+    \end{tikzpicture}
+\caption{Graph of the function $f(x)=x^2$.  The parabola is the set
+  of ordered pairs $\langle x,x^2\rangle$.}    
+\end{figure}
+
+Many familiar functions are not really functions in the strict sense.
+Consider, for example, the inverse function $\frac{1}{x}$.  This
+operation isn't defined at $0$, and so it isn't really a function on
+all real numbers (i.e.\ its domain set is not the set of all real
+numbers).  We require that a function is defined on all elements of
+its domain set, that is, for all $x$ in the domain, there is an $f(x)$
+in the codomain.
+
+A relation $R$ on $A\times B$ is said to be a \emph{functional
+  relation} just in case it satisfies:
+\begin{description}
+\item[existence] For all $a\in A$ there is a $b\in B$ such that
+  $\langle a,b\rangle\in R$.
+\item[uniqueness] If $\langle a,b\rangle \in R$ and $\langle
+  a,c\rangle\in R$ then $b=c$.
+\end{description}
+Any function $f:A\to B$ gives rise to a functional relation called its
+graph: 
+\[ \mathrm{graph}(f) \: = \: \{ \langle x,f(x)\rangle \mid x\in X
+  \} \] By the extensionality axiom, there is a one-to-one
+correspondence between functions and functional relations, i.e.\ each
+function corresponds to precisely one functional relation, and if two
+functions are distinct, then they correspond to distinct relations.
+
+Since functions are relations, functions have both an intension and an
+extension.  You may already have observed that fact, i.e.\ that a
+single function can be expressed in various ways.  Consider, for
+example, the functions:
+\[ f(x)=x^2-1 ,\qquad g(x)=(x+1)(x-1) .\] Here we might say that $f$
+and $g$ have different intensions, since they provide different
+recipes for calculating an output.  Nonetheless, these two recipes
+always produce the same output, hence $f$ and $g$ have the same
+extension.
+
+Functions, like relations, have an \emph{arity}, i.e.\ a number of
+inputs.  Unlike relations, however, functions always have a single
+output.  A function like $f(x)=x^2-1$ is unary, i.e.\ it takes one
+input.  In contrast, the addition function is binary, i.e.\ its input
+is two numbers.  In the limiting case, a $0$-ary function has no
+inputs, and one output.  Such a function is called a \emph{point} or
+an \emph{element}, i.e.\ it is an element in a set.
+
+Since points are a special case of functions, which is a special case
+of a relation, it also follows that a point has both an intension and
+an extension.  To see what's going on here, it may be easier to think
+of a point as a name.  Then the intension of a name is its
+connotation, and the extension of a name is its
+denotation.\footnote{For further investigation of this issue, see
+  Gottlob Frege's discussion of ``morning star'' and ``evening
+  star.''}
+
+If $f$ is a function from $A$ to $B$, and $g$ is a function from $B$
+to $C$, then we may define a function $g\circ f$ from $A$ to $C$ by
+setting
+\[ (g\circ f)(x) \: = \: g(f(x)),\qquad \forall x\in A .\]
+
+\begin{exercise} Show the rather trivial fact that
+  $h\circ (g\circ f)=(h\circ g)\circ f$, whenever $f,g$ and $h$ have
+  domains and codomains that align in the right way. \end{exercise}
+
+\begin{exercise} Suppose that $R=\mathrm{graph}(f)$ and
+  $S=\mathrm{graph}(g)$.  Show that
+  \[ \mathrm{graph}(g\circ f)\: = \: \bigl\{ \langle x,z\rangle \mid
+    \exists y(\langle x,y\rangle \in R\wedge \langle y,z\rangle\in S) \bigr\} .\]  \end{exercise}
+
+% \begin{figure}[h] \label{many}
+%  \centering
+%  \begin{tikzpicture}[ele/.style={fill=black,circle,minimum width=.8pt,inner sep=1pt},every fit/.style={ellipse,draw,inner sep=-2pt}]
+%   \node[ele,label=left:$a$] (a1) at (0,4) {};    
+%   \node[ele,label=left:$b$] (a2) at (0,3) {};    
+%   \node[ele,label=left:$c$] (a3) at (0,2) {};
+%   \node[ele,label=left:$d$] (a4) at (0,1) {};
+
+%   \node[ele,,label=right:$1$] (b1) at (4,4) {};
+%   \node[ele,,label=right:$2$] (b2) at (4,3) {};
+%   \node[ele,,label=right:$3$] (b3) at (4,2) {};
+%   \node[ele,,label=right:$4$] (b4) at (4,1) {};
+
+%   \node[draw,fit= (a1) (a2) (a3) (a4),minimum width=2cm] {} ;
+%   \node[draw,fit= (b1) (b2) (b3) (b4),minimum width=2cm] {} ;  
+%   \draw[->,thick,shorten <=2pt,shorten >=2pt] (a1) -- (b4);
+%   \draw[->,thick,shorten <=2pt,shorten >=2] (a2) -- (b1);
+%   \draw[->,thick,shorten <=2pt,shorten >=2] (a3) -- (b1);
+%   \draw[->,thick,shorten <=2pt,shorten >=2] (a4) -- (b3);
+% \end{tikzpicture}
+% \label{many} \caption{A function that is neither one-to-one, nor onto}
+% \end{figure}
+
+\begin{exercises} \mbox{} \begin{enumerate}
+\item Consider the function $f(x)=x^3$ on real numbers.  Is
+  $f$ one-to-one?  Is $f$ onto?
+\item Give an example of a functional relation that can be described
+  in the vocabulary of a typical ten year old child.
+\item Show that if $g\circ f$ is one-to-one, then $f$ is one-to-one.
+\item Give an example of functions $g$ and $f$ where $g\circ f$ is
+  one-to-one, but $g$ is not one-to-one.  
+\end{enumerate} \end{exercises}
+
+%% will this next little bit be useful?  Why do it?
+
+Given a function $f:X\to Y$, there's a natural way to define a couple
+of other functions.  First of all, we define an \emph{inverse image}
+function $f^{-1}$ that maps subsets of $Y$ to subsets of $X$.  In
+particular, 
+\[ (x\in f^{-1}(A)) \: \lra \: (f(x)\in A) . \]
+In other words,
+\[ f^{-1}(A) \: = \: \{ x\in X \mid f(x)\in A \} .\] The set
+$f^{-1}(A)$ is called the \emph{inverse image} or \emph{preimage} of
+$A$ under $f$.  We now show that inverse image preserves intersections.
+
+\begin{prop} $f^{-1}(A\cap B)=f^{-1}(A)\cap f^{-1}(B)$.
+\end{prop}
+
+\begin{proof} We string together a series of biconditionals.
+  \[ \begin{array}{l l l}
+       x\in f^{-1}(A\cap B) & \lra & f(x)\in A\cap B \\
+                            & \lra & f(x)\in A\wedge f(x)\in B \\
+                            & \lra & x\in f^{-1}(A)\wedge x\in f^{-1}(B) \\
+       & \lra & x\in f^{-1}(A)\cap
+                f^{-1}(B) . \end{array} \] \end{proof}
+
+Whereas the preimage mapping $f^{-1}$ takes subsets of $Y$ to subsets
+of $X$, the \emph{image} mapping moves in the opposite direction.  Here we
+abuse notation by using $f$ again for the image mapping which applies
+to subsets of $X$, instead of to elements of $X$.  We define
+\[ f(A) \: = \: \{ y\in Y \mid \exists x(x\in A\wedge f(x)=y) \} . \]
+That is, $f(A)$ consists of those elements in $Y$ that are in the
+range of $A$ under the mapping $f$.  In general, it is not the case
+that $f(A\cap B)=f(A)\cap f(B)$.  Suppose, for example, that
+$A\cap B=\emptyset$, and that $f$ is a function such that
+$f(A)=f(B)=Y$.  Then $f(A\cap B)=f(\emptyset )=\emptyset$, but
+$f(A)\cap f(B)=Y$.
+
+\begin{exercises} Prove the following for arbitrary sets $A,B$, and
+  function $f:A\to B$.
+   \begin{enumerate}
+   \item $f^{-1}(A\cup B)=f^{-1}(A)\cup f^{-1}(B)$.  
+   \item If $A\subseteq B$ then $f^{-1}(A)\subseteq f^{-1}(B)$.
+   \item $f(A\cup B)=f(A)\cup f(B)$.
+   \item If $f$ is a one-to-one function, then $f(A\cap B)=f(A)\cap f(B)$.
+   \end{enumerate}
+ \end{exercises}
+
+%% TO DO: move the following? 
+\begin{exercise} Show that if $f:A\to B$ is one-to-one, and $A$ is
+  non-empty, then there is a function $g:B\to A$ such that $g\circ f$
+  is the identity function on $A$. \end{exercise}
+ 
+Axioms S1--S4 tell us what sets must be like, but they don't say much
+about which sets exist, other than the empty set.  Our next axiom
+ensures us of the existence of a set whose elements form an infinite
+progression.  You know this set under the common description:
+$0,1,2,\dots $, i.e.\ the \emph{natural numbers} $N$.  The key
+property of $N$ is that has an origin $0$, and a successor function
+$s(x)=x+1$ that enumerates all its elements.
+\begin{description}  
+\item[S5. Infinity] There is a set $N$, with element $0\in N$, and a
+  function $s:N\to N$ such that: $s$ is one-to-one, but not onto, and
+  every element of $N$ can be reached by a finite number of
+  applications of $s$ to $0$. \end{description} Successive
+applications of $s$ allow us to name all of the elements in $N$:
+\[ 1=s(0),2=s(s(0)),\dots .\] We can then use the comprehension axiom
+to define all the finite and co-finite subsets of $N$, such as
+\[ \{ x\in N \mid x=2\vee x=4 \} ,\qquad \{ x\in N \mid x\neq 3 \} .\]
+It follows then that for each natural number $n$, there is a set $S_n$
+with exactly $n$ elements.  As a convenient shorthand, we will write
+$\{ a_1,\dots ,a_n\}$ for the set
+\[ \{ x\in N \mid x=a_1\vee\cdots \vee x=a_2 \} .\] Then
+extensionality entails that duplicate items can be removed from a set,
+for example $\{ a,a,b \}=\{ a,b\}$.
+
+The structure of the natural numbers $N$ makes it possible to define
+an addition function $+$ and a multiplication function $\cdot$.  For
+example, we set $x+0=x$, and $x+s(y)=s(x+y)$.  It can be shown that
+$+,\cdot ,0,1$ satisfy the Peano axioms for arithmetic.  Thus, there
+is a clear sense in which the theory PA can be translated into the
+theory of sets.  This translation provides the desired reduction of at
+least one important part of mathematics, viz.\ arithmetic, to set
+theory.
+
+For the comprehension axiom, one might think it would be simpler just
+to say that for any formula $\phi (x)$, there is a set $\{ x | \phi
+(x) \}$ of all things that satisfy $x$.  But that idea leads
+immediately to problems, as was noted by Bertrand Russell.  Consider,
+for example the following predicate:
+\[ \phi (x)\: \equiv \: x\not\in x , \] and let
+$A=\{ x\mid \phi (x)\}$.  In other words, $A$ is the set of all sets
+that do not contain themselves.  
+
+\begin{exercise} Show that if $A\in A$ then $A\not\in A$.  Then show
+  that if $A\not\in A$ then $A\in A$.  Conclude that the assumption
+  that $A$ exists leads to a contradiction. \end{exercise}
+
+It turns out then not to be so easy to formulate a theory of sets that
+is both \emph{consistent}, and that is powerful enough to serve as a
+foundation for mathematics.
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "main"
+%%% End:

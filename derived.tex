@@ -1,0 +1,82 @@
+\chapter{Useful Valid Argument Forms}
+
+\label{equivs}
+
+\[ \begin{array}{>{\raggedleft\it}p{4cm}rcl}
+ hypothetical syllogism & \phi \to \psi,\, \psi \to \chi & \vdash & \phi \to \chi \\
+prefixing & \psi \to \chi & \vdash & (\phi\to\psi )\to (\phi \to \chi ) \\
+suffixing & \phi\to\psi & \vdash & (\psi\to\chi )\to (\phi\to\chi )\\
+permutation & \phi\to (\psi \to \chi ) & \vdash & \psi \to (\phi\to \chi ) \\
+contraction & \phi\to (\phi\to\psi ) & \vdash & \phi\to \psi \\
+positive paradox & \psi & \vdash & \phi\to \psi \\
+negative paradox & \neg \phi & \vdash & \phi\to\psi  \\
+ex falso quodlibet & \phi ,\neg \phi & \vdash & \psi \\
+     weakening & \neg \phi & \vdash & \neg (\phi\wedge\psi ) \\
+     disjunctive syllogism & \phi\vee\psi ,\neg \phi & \vdash & \psi \\
+     excluded middle & & \vdash & \phi \vee\neg \phi \\
+     commutation & \phi\wedge \psi & \dashv\vdash & \psi\wedge \phi \\
+     commutation & \phi\vee\psi & \dashv\vdash & \psi\vee\phi \\ 
+association & \phi\wedge (\psi\wedge\chi ) & \dashv\vdash & (\phi\wedge \psi)\wedge \chi \\
+association & \phi\vee (\psi\vee \chi) & \dashv\vdash & (\phi \vee \psi )\vee \chi \\
+material conditional & \phi\to\psi & \dashv\vdash & \neg \phi\vee \psi \\ 
+material conditional & \neg (\phi\to \psi ) & \dashv\vdash & \phi\wedge\neg \psi \\
+contraposition & \phi\to\psi & \dashv\vdash & \neg \psi\to \neg \phi \\
+DeMorgan & \neg (\phi\vee \psi) & \dashv\vdash & \neg \phi\wedge\neg \psi \\
+DeMorgan & \neg (\phi\wedge \psi) & \dashv\vdash & \neg \phi\vee \neg \psi  \\
+distribution & \phi\wedge (\psi\vee \chi) &\dashv\vdash & (\phi\wedge \psi)\vee (\phi\wedge \chi) \\
+distribution & \phi\vee (\psi\wedge \chi) &\dashv\vdash & (\phi\vee \psi)\wedge (\phi\vee \chi) \\
+exportation & \phi\to (\psi\to \chi) & \dashv\vdash & (\phi\wedge \psi)\to \chi \\
+duplication & \phi & \dashv\vdash & \phi\wedge \phi \\
+duplication & \phi & \dashv\vdash & \phi\vee \phi \\
+top & \top & \dashv\vdash & \phi\vee\top   \\
+top & \phi & \dashv\vdash & \phi\wedge\top    \\
+bottom &     \phi & \dashv\vdash & \phi\vee \bot   \\ 
+bottom &      \bot & \dashv\vdash & \phi\wedge\bot  \\
+self undermining  &     \phi\to \neg \phi & \dashv\vdash & \neg \phi  \\
+biconditional  &     \neg (\phi\lra \psi) & \dashv\vdash & \neg \phi\lra \psi  \\
+biconditional &      \phi\lra \psi & \dashv\vdash & (\phi\wedge \psi)\vee (\neg \phi\wedge \neg \psi)  \\
+biconditional &      \phi\lra \psi & \dashv\vdash & (\phi\to \psi)\wedge (\psi\to \phi ) \\
+     bicontraposition &      \phi\lra \psi & \dashv\vdash & \neg \phi\lra\neg \psi  \end{array} \]
+ 
+\section{Useful quantifier equivalences}
+
+\[ \begin{array}{>{\raggedleft\it}p{4cm} r c l p{6cm}}
+ quantifier negation & \neg\forall x\phi & \dashv\vdash & \exists x\neg \phi & \\
+quantifier negation  & \neg\exists x\phi & \dashv\vdash & \forall x\neg \phi &  \\
+alpha &  \forall x\phi & \dashv\vdash & \forall y\phi [y/x] & substitute $y$ for $x$ \\
+alpha &  \exists x\phi & \dashv\vdash & \exists y\phi [y/x] & substitute $y$ for $x$ \\ 
+swoosh & \forall x(\phi\wedge \psi ) & \dashv\vdash & \forall x\phi\wedge \forall x\psi &  \\
+swoosh & \exists x(\phi\vee\psi )   & \dashv\vdash & \exists x\phi\vee\exists x\psi & \\
+       & \forall x(\chi \to \phi)     & \dashv\vdash & \chi\to\forall x\phi & $x$ not free in $\chi$ \\
+       & \exists x(\chi\to \phi )     & \dashv\vdash & \chi \to\exists x\phi & $x$ not free in $\chi$ \\
+       & \forall x(\phi\to \chi )     & \dashv\vdash & \exists x\phi\to \chi & $x$ not free in $\chi$ \\
+       & \exists x(\phi\to \chi )     & \dashv\vdash & \forall x\phi\to \chi & $x$ not free in $\chi$ \\
+       & \forall x\forall y\phi  & \dashv\vdash & \forall y\forall x\phi \\
+       & \exists x\exists y\phi  & \dashv\vdash & \exists y\exists x\phi                                                          
+\end{array} \]
+ 
+
+% \begin{enumerate}
+
+%
+% \item distribution: $p\wedge (q\vee r)\vdash (p\wedge q)\vee
+%      (p\wedge r)$
+% \item associativity: $p\vee (q\vee r)\vdash (p\vee q)\vee r$
+
+% \item DeMorgan's: $\neg p\vee \neg q\vdash \neg (p\wedge q)$
+%      (hint: use weakening) and
+%      $\neg (p\wedge q)\vdash \neg p\vee \neg q$
+%  \item material conditional: $\neg p\vee q\vdash p\to q$ (hint: use
+%   positive/negative paradox) and $p\to q\vdash \neg p\vee q$
+%    \end{enumerate}
+
+                               %
+
+
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "main"
+%%% End:

@@ -1,0 +1,894 @@
+\chapter{A Theory about Predicate Logic} \label{meta2}
+
+In this chapter we sketch the outlines of a theory predicate logic ---
+or what's usually called ``metatheory of predicate logic.''  This
+theory began to be developed in the early 20th century, and since
+then, it's given rise to a number of distinct subdisciplines of
+mathematics: proof theory, model theory, and recursion theory, among
+others.  The metatheory of predicate logic is also the context for the
+proof of the famous incompleteness theorem of Kurt G{\"o}del.  Here
+we'll take up a sampling of metatheoretical topics, with focus on
+those that will help us become more proficient users of predicate
+logic.
+
+\section{Substitution}
+
+The aim of formal logic is to articulate the notion of a valid
+argument form.  Once we know that a form is valid, we can use it again
+and again to generate new valid arguments.  We generate these new
+valid arguments by taking the valid argument form, and by {\it
+  substituting} new content for old.  The trick, however, is in
+explaining what counts as a legitimate substitution of content.
+
+In propositional logic, the idea of substitution is simple: an
+elementary sentence such as $p$ can be replaced by any sentence
+$\phi$.  In predicate logic, we'll have to be a bit more
+sophisticated.  For example, suppose that we have a proof of the sequent
+$\vdash \forall x(Fx\vee\neg Fx)$.  Suppose, in particular, that the
+last two lines of the proof look like this:
+\[ \begin{array}{llll}
+     & (8) & Fa\vee \neg Fa  \\
+     & (9) & \forall x(Fx\vee \neg Fx) \end{array} \] %%
+ %
+Intuitively, it didn't really matter that we used $F$ here.  Surely
+we could have used $G$ instead.  So, imagine that you perform a
+``find $F$ and replace with $G$'' on the above proof.  Then,
+intuitively, the result should be a valid proof of
+$\vdash \forall x(Gx\vee\neg Gx)$.
+
+However, the ``find and replace'' intuition is not sufficient here.
+For example, the validity of $\forall x(Fx\vee\neg Fx)$ doesn't depend
+on the fact that $Fx$ is a simple formula (with no subformulas).  We
+should be able to modify the proof of $\forall x(Fx\vee\neg Fx)$ to
+produce a structurally identical proof of
+$\forall x((Fx\wedge Gx)\vee \neg (Fx\wedge Gx))$.  Nonetheless, this
+modification cannot be as simple as replacing instances of $Fx$ with
+instances of $Fx\wedge Gx$, because the proof is likely also to
+contain formulas such as $Fa$, and that should be replaced with
+$Fa\wedge Ga$.
+
+Similarly, it's of course possible to prove the sequent
+$\forall x\forall yRxy\vdash \forall xRxx$, and a structurally similar
+proof would result in the sequent
+\[ \forall x\forall y(Fx\wedge Gy)\:\vdash\: \forall x(Fx\wedge Gx)
+  .\] To get the latter proof, we would need to substitute
+$Fx\wedge Gy$ for $Rxy$, and $Fa\wedge Gb$ for $Rab$, and so on.
+
+Now we will make this notion of substitution precise.  In the first
+instance, we will think of a substitution as resulting from
+reconstruing the relation symbols of one vocabulary as formulas in
+another vocabulary.
+
+\begin{defn} A \emph{reconstrual} $F$ of $\Sigma$ into $\Sigma '$ is
+  an assignment of each atomic formula $r(t_1,\dots ,t_n)$ of $\Sigma$
+  to a formula $Fr(t_1,\dots ,t_n)$ of $\Sigma '$.\end{defn}
+
+We implicitly require here that if the terms after $r$ are changed,
+then the output formula $Fr$ is changed in the same way.  So, for
+example, if $r(x,y)$ is reconstrued as $p(x)\wedge q(y)$, then
+$r(z,z)$ must be reconstrued as $p(z)\wedge q(z)$.
+
+A reconstrual $F$ of $\Sigma$ into $\Sigma '$ extends naturally to all
+$\Sigma$-formulas.  In particular, we stipulate that
+$F(\phi\wedge\psi )=F(\phi )\wedge F(\psi )$, and similarly for the
+other binary connectives.  We also stipulate that
+$F(\neg \phi )=\neg F(\phi )$, and for the quantifiers
+$F(\forall x\phi )=\forall x F(\phi )$ and
+$F(\exists x\phi )=\exists x F(\phi )$.
+
+\begin{example} Consider the reconstrual $F$ that takes $r(x,y)$ to
+  $p(x)\wedge q(y)$.  Then
+  \[ \begin{array}{lll} F(\forall z\,r(z,z)) \: = \: \forall z\,
+      F(r(z,z)) \:= \: \forall z\, (p(z)\wedge q(z)) .\end{array}
+  \] %%
+  Now consider the reconstrual $G$ that takes $p(x)$ to
+  $\forall y\, r(x,y)$.  In this case, $G$ must reconstrue $p(y)$ as a
+  corresponding formula with free variable $y$.  Since the formula
+  $\forall y\, r(x,y)$ is equivalent to the formula
+  $\forall z\, r(x,z)$, we set $G(p(y))\equiv \forall z\, r(y,z)$.
+\end{example}
+
+Now we can define the notion of a substitution instance of a formula.
+
+ \begin{defn} A \emph{substitution instance} of a formula $\phi$ is
+   any formula of the form $F\phi$, for some reconstrual
+   $F$. \end{defn}
+
+ As was the case for propositional logic, substitution preserves
+ provability.
+
+\begin{subthm} Let $F$ be a translation of relation symbols to
+  formulas.  If $\phi\vdash\psi$ then $F\phi\vdash F\psi$.  In
+  particular, if $\phi$ is a tautology, then any substitution instance
+  of $\phi$ is a tautology. \end{subthm}
+
+The proof of this result is actually a simple induction on the
+construction of proofs --- as it was in the case of propositional
+logic.
+
+\begin{exercise} Assume that you've already got a proof of the sequent
+  $\forall xFx\to P\vdash \exists x(Fx\to P)$.  Use substitution to
+  show that $\vdash \exists x(Fx\to \forall yFy)$. \end{exercise}
+
+  
+
+
+% First of all, it seems  clear that if we can prove something
+% involving a ``black box'' sentence $P$, then we can prove the same
+% thing after replacing $P$ with any other sentence.  For example, we
+% proved the equivalence:
+% \[ \exists x(Fx\to P)\:\dashv\vdash\: \forall xFx\to P .\] But this
+% proofs didn't rely on any special properties of $P$; if you went
+% through it and replaced $P$ by, say, $\forall yFy$, then the proof
+% would still be valid.  Thus,
+% \[ \exists x(Fx\to \forall yFy)\:\dashv\vdash\:\forall xFx\to \forall
+%   yFy .\] Of course, it's crucial here that we don't choose a
+% replacement for $P$ that would violate the rules of logical syntax.
+% For example, we couldn't replace $P$ with $\forall xFx$, because then
+% the first sentence would become $\exists x(Fx\to \forall xFx)$, which
+% is not permitted by our grammatical rules.  To ensure that we don't
+% run afoul of the grammatical rules, it will suffice to require the
+% following:
+% \begin{quote} If you substitute one sentence for another, then the new
+%   sentence should use variables that haven't been used
+%   before.  \end{quote} But what about the case of
+% $\forall x(Px\wedge Qx)$ as a subtitution instance of $\forall xFx$?
+% In this case, the initial sentence $\forall xFx$ is universal, so the
+% final sentence should also be universal.  (We're assuming here that
+% ``being a universal sentence'' is part of the form that should be
+% preserved under substitution.)  But after the universal quantifier
+% $\forall x$, the starting sentence has a ``black box'' formula $Fx$.
+% Thus, it seems that we should be able to replace $Fx$ with any other
+% formula in which only the variable $x$ occurs freely.  Thus, for
+% example, we should be able to replace $Fx$ with $Px\wedge Qx$, and we
+% should also be able to replace $Fx$ with $\forall yRxy$.
+
+% We can now use the substitution method to provide an elegant proof of
+% one of the more nasty sequents in this book.
+% \[ \begin{array}{l l >{$}p{4cm}<{$} p{3cm}}
+%      1 & (1) & \forall xFx\to \forall yFy & SI \\
+%      2 & (2) & \exists x(Fx\to \forall yFy) & SI \\
+%      3 & (3) & Fa\to \forall yFy & A \\
+%      3 & (4) & \forall y(Fa\to Fy) & SI \\
+%      3 & (5) & \exists x\forall y(Fx\to Fy) & 4 EI \\
+%      1 & (6) & \exists x\forall y(Fx\to Fy) & 2,3,5
+%                                               EE \end{array} \]
+% Here we have invoked three sequents.  In line $1$ we use the sequent
+% $\forall xFx\vdash\forall yFy$, which is one of the easiest to prove.
+% In line $2$, we use the sequent $\forall xFx\to P\vdash \exists
+% x(Fx\to P)$ with the substitution $P\leadsto\forall yFy$.   In line
+% $4$ we use the sequent $P\to\forall yFy\vdash\forall y(P\to Fy)$ with
+% the substitution $P\leadsto Fa$.
+
+% Now that we've seen what does work, let's see what does not work.
+% Suppose that we substitute $Fx\leadsto Gx$, but that we leave $Fy$
+% alone.  Then we would get the invalid
+% sequent\marginnote{\begin{exercise} Provide a counterexample to the
+%     sequent $\vdash\exists x\forall y(Gx\to Fy)$. \end{exercise}}
+% \[ \vdash\:\exists x\forall y(Gx\to Fy) .\]
+% Clearly what's gone wrong here is that if $Fx$ is replaced by
+% something, then $Fy$ should be replaced by a relevantly similar
+% thing.  In this case, if $Fx$ is replaced by $Gx$, then $Fy$ should be
+% replaced by $Gy$, yielding the sequent
+% \[ \vdash\:\exists x\forall y(Gx\to Gy) .\]
+% We could also perform a more complicated substitution such as
+% $Fx\leadsto \exists zRzx$ and $Fy\leadsto\exists zRzy$, yielding
+% \[ \vdash\:\exists x\forall y(\exists zRzx\to \exists zRzy ) .\] Let's
+% pull together our observations to give a precise definition of a
+% permitted substitution.  As in the case of propositional logic, we
+% suppose first that $\Sigma$ and $\Sigma '$ are possibly distinct
+% signatures.  In the case at hand, we'll suppose first that $\Sigma$
+% and $\Sigma '$ only have predicate and relation symbols --- they don't
+% have function symbols or names.  
+
+The substitution theorem continues to hold if $\Sigma$ and $\Sigma '$
+both have the equality symbol, and if we require that the reconstrual
+preserves equality.  Unfortunately, the substitution theorem doesn't
+ hold --- without further tweaks --- for signatures that contain
+ function symbols or names.  Indeed, it's a little bit complicated in
+ the first place to decide what a function symbol (or name) should be
+ reconstrued as.  For example, if $\Sigma$ has a name $c$, but
+ $\Sigma '$ has no names, then how could $c$ be translated from
+ $\Sigma$ to $\Sigma '$?
+
+ One potential solution to this difficulty is to think of the name $c$
+ in terms of the associated formula $\phi (x)\equiv (x=c)$.  We can
+ then ask whether $\phi (x)$ can be translated to some $\Sigma '$
+ formula $F(\phi (x))$.
+
+% Suppose that Adam's language $\Sigma '$ has a single predicate symbol
+% $P$, and Adam's sum total of beliefs consist of the tautologies of
+% predicate logic (including the consequences of the $=$ rules), as well
+% as the proposition, ``there is a unique $P$.''  Suppose in addition
+% that Eve's language $\Sigma$ has a single name $c$, and Eve's beliefs
+% consist of the tautologies of predicate logic (including the
+% consequences of the $=$ rules).  We'll now see that Eve's language can
+% be translated into Adam's in a way that preserves all of her beliefs.
+
+% Translate Eve's formula $x=c$ to Adam's formula $Px$, and similarly
+% for the formulas $y=c,z=c,\dots$.  Since Eve believes all tautologies,
+% she believes that $c=c$, and hence that $\exists x(x=c)$.  She also
+% believes that $\forall x\forall y((x=c\wedge y=c)\to x=y)$.  In other
+% words, she believes that $\exists !x(x=c)$.  Now, if you translate
+% that formula into Adam's language, you get $\exists !xP(x)$, which of
+% course, Adam believes.
+
+% Thus, although Adam and Eve speak very different languages, there is
+% an intuitive sense in which they are really saying the same thing.
+% Adam has no names; he just has a predicate $P$.  But Adam believes
+% that there is one and only one $P$.  He might as well give this $P$ a
+% name, say $c$.  Eve, in contrast, has a name $c$; but she doesn't seem
+% to have any predicates in her language.  But that appearance is
+% misleading: Eve has predicates such as $\phi (x)\equiv (x=c)$, which
+% ascribes the property of being identical to $c$.  Thus, what Adam says
+% with $Px$, Eve says the same thing with $x=c$.
+
+% We can now formalize the notion of a reconstrual of function symbols
+% and constant symbols.
+
+\begin{defn} A reconstrual $F$ of an $n$-ary function symbol $f$ if a
+  $(n+1)$-ary formula $Ff(x_1,\dots ,x_n,y)$.  A reconstrual $F$ of a
+  constant symbol $c$ is a formula $Fc(y)$.  \end{defn}
+
+It is fairly intuitive, although somewhat tedious, to extend a
+reconstrual $F$ to complex terms like $1+1$ or $\mathsf{father}(a)$.
+The key here is to remember that if $n$-ary terms is represented by
+$(n+1)$-ary formulas, then complex terms can be represented by
+composing the formulas.
+
+\begin{example} Suppose that $f(y)=z$ is reconstrued as $\phi (y,z)$,
+  and that $c=y$ is reconstrued as $\psi (y)$.  Then $f(c)$ can be
+  thought of as the composite of the constant $c$ function and the $f$
+  function.  In other words, $f(c)=z$ would be represented by
+  \[ \exists y\left( \psi (y)\wedge \phi (y,z) \right) ,\] which says
+  that $z$ is the unique thing related by $\phi$ to the unique thing
+  that satisfies $\psi$. 
+\end{example}
+
+A general term is of the form $f(t_1,\dots ,t_n)$, where $f$ is an
+$n$-ary function symbol, and $t_1,\dots ,t_n$ are terms.  In this
+case, the formula $f(t_1,\dots ,t_n)=z$ is equivalent to the formula:
+\[ \exists y_1\cdots \exists y_n\left( (t_1=y_1)\wedge\cdots\wedge
+    (t_n=y_n)\wedge (f(y_1,\dots ,y_n)=z) \right) .\] Hence, if the
+terms $t_1,\dots ,t_n$ have been reconstrued as formulas, we can use
+the above formula as a guide for how to reconstrue the complex term
+$f(t_1,\dots ,t_n)$.
+
+So now we have a general recipe for generating new substitution
+instances of formulas.  However, the substitution theorem no longer
+holds in its original form.  For example, $\phi\equiv \exists y(y=c)$
+is a tautology, but if $Fc(y)$ is the formula $P(y)$, then $F\phi$ is
+the formula $\exists yPy$, which is not a tautology.  Nonetheless,
+it's pretty simple to modify the statement of the substitution theorem
+so that we get something valid.  In short, if $f$ is a function
+symbol, then let $\Delta _f$ be the sentence
+$\forall x\exists !yFf(x,y)$.  Similarly, if $c$ is a constant symbol,
+then let $\Delta _c$ be the sentence $\exists !yFc(y)$.  If we now let
+$\Delta$ be a list of all these sentences for the constant and
+function symbols that occur in $\phi$ and $\psi$, then we have the
+result: if $\phi\vdash\psi$ then $\Delta ,F\phi\vdash F\psi$.
+
+At this stage, it behooves us to ask whether we have found the most
+general notion of a validity-preserving substitution.  For, in one
+important sense, we understand ``validity in terms of form'' only
+insofar as we understand which substitutions preserve validity.  In
+the case at hand, there is good reason to think that there is an even
+more general notion of substitution, where individual variables can be
+replaced with multiple variables.\footnote{See Chapter 5 of Halvorson,
+  \textit{The Logic in Philosophy of Science}, Cambridge (2019).}
+
+\section{Soundness}
+
+When you're first learning to use formal logic, it's perfectly
+reasonable to trust that the system of rules that you've been given is
+both safe and sufficiently strong.  Think of it like this: if you buy
+a car from a reputable dealer, then you can trust that its wheels will
+stay on, that its engine will allow you to reach certain speeds, etc.
+However, if you want to become an expert driver, then at some point,
+you'll have to learn some of the theory behind how cars work.  In the
+same way, if you want to reach a higher level of logical expertise,
+then at some point, you'll have to learn some of the theory behind how
+logic works.
+
+We'll first prove that the system of predicate logic that we developed
+in this book is \emph{sound}.  That is, we want to check that we can't
+prove just anything; and we hope even to reassure ourselves that the
+limits of what can be proven match fairly well with our intuitions of
+what should be provable.
+
+For the proof of soundness, we'll need to make use of the following
+fact:
+\begin{prop} Suppose that $M$ is an interpretation, and that $c$ is a
+  name.  Then for any $a\in M$, there is an interpretation $N$ such
+  that $c^N=a$, and $\phi ^N=\phi ^M$ for all formulas $\phi$ in which
+  the name $c$ does not occur. In particular, if $\phi$ is a sentence
+  in which $c$ does not occur, then $M\vDash\phi$ iff
+  $N\vDash\phi$. \label{fact} \end{prop}
+
+We won't argue in detail here for Proposition \ref{fact}, but it
+should be fairly obvious why it's true.  In particular, the
+interpretation $N$ is defined to agree with $M$ on all symbols except
+for the name $c$, where $N$ is defined so that $c^N=a$.  The work of
+the argument comes in showing that $\phi ^N=\phi ^M$ for any formula
+$\phi$ in which the name $c$ does not occur.  To prove this
+rigorously, one could use induction on the construction of formulas.
+We leave the details to the reader.
+
+\begin{exercise} Prove the soundness of conditional
+  proof. \end{exercise}
+
+Now on to the proof of soundness.  We want to show that any line in a
+``correctly written'' proof is \gls{sound} in the sense that: for any
+interpretation $M$, if the dependencies of the line are true in $M$,
+then the sentence on the right-hand side of the line is also true in
+$M$.  For this, it will suffice to show that the rule of assumptions
+produces sound lines, and that all the other inference rules convert
+sound lines to sound lines.  The case of the rule of assumptions is
+obvious, so we move on to the other inference rules.
+
+First of all, let's note that the rules for the Boolean connectives
+convert sound lines to sound lines.  To see this, you need to convince
+yourself, for example, that if $\phi$ and $\psi$ are true in an
+interpretation $M$, then $\phi\wedge\psi$ is also true in $M$.  We'll
+leave these steps to the reader.
+
+We show now that the $\forall$ introduction rule converts sound lines
+to sound lines.  Suppose that $\phi \vDash \psi (c)$, where the name
+$c$ does not occur in $\phi$.  Now let $M$ be an interpretation such
+that $M\vDash \phi$.  We need to show that
+$M\vDash \forall x\psi (x)$, i.e.\ we need to show that
+$\psi (x)^M=M$.  Let $a$ be an arbitrary element of $M$.  Since $c$
+does not occur in $\phi$, Proposition \ref{fact} entails that there is
+an interpretation $N$ such that $c^N=a$ and $N\vDash \phi$.  Since
+$\phi\vDash\psi (c)$ it follows that $a=c^N\in \psi (x)^N$.  Since $c$
+does not occur in $\psi (x)$, we have $\psi (x)^N=\psi (x)^M$, and
+therefore $a\in \phi ^M$.  Since $a$ was an arbitrary member of $M$,
+it follows that $\psi (x)^M=M$, and therefore
+$M\vDash \forall x\psi (x)$.
+
+Notice how the argument we just made uses the fact that the name $c$
+does not occur in $\psi (x)$, which is one of the restrictions on the
+us of the UI rule.  If $c$ had occurred in $\psi$, then we might have
+been able to generate an unsound line, as in the following:
+\[ \begin{array}{l l >{$}p{2cm}<{$} p{1cm} p{2cm}}
+     1 & (1) & \forall xRxx & A \\
+     1 & (2) & Rcc & 1 UE \\
+     1 & (3) & \forall xRxc & 2 UI & $\Leftarrow\:$ wrong \\
+     1 & (4) & \forall y\forall xRxy & 3 UI \end{array} \] Here step 3
+ violates the restriction on the UI rule, for it applies $\forall x$
+ to the formula $\psi (x)\equiv Rxc$ in which $c$ occurs.  Moreover,
+ lines 3 and 4 are unsound.  For example, consider the interpretation $M$ with domain $\{ 1,2\}$ and where $R^M=\{ \langle 1,1\rangle ,\langle 2,2\rangle \}$ and $c^M=1$.
+
+Now we argue for the soundness of the EE rule.  Suppose that
+$\phi\vDash \exists x\psi (x)$ and $\psi (c)\vDash \theta$ where $c$
+does not occur in $\phi$ or in $\psi (x)$.  We need to show that
+$\phi\vDash\theta$.  Let $M$ be an interpretation such that
+$M\vDash\phi$, hence $M\vDash\exists x\psi (x)$.  Thus, there is an
+$a\in M$ such that $a\in \psi (x)^M$.  Since $c$ does not occur in
+$\psi (x)$, Proposition \ref{fact} entails that there is an
+interpretation $N$ that agrees with $M$ on all formulas not containing
+$c$, and such that $c^N=a$.  Thus, $c^N\in \psi (x)^N$, which means
+that $N\vDash \phi (c)$.  Since $\phi (c)\vDash\theta$, we also have
+$N\vDash\theta$, and since $c$ does not occur in $\theta$,
+$M\vDash\theta$.  Finally, since $M$ was an arbitrary interpretation,
+$\phi\vDash\theta$.
+
+\begin{exercise} Prove the soundness of the EI and UE
+  rules. \end{exercise}
+
+Once we've proven that each inference rule converts sound lines to
+sound lines, then we know that every line in a (correctly written)
+proof will be sound.  So, our rules of argument won't lead us to
+astray.  That's half of the battle.  The other half of the battle is
+to find rules of argument that can get us where we want to go.
+
+
+
+\section{Completeness}
+
+
+
+Predicate logic interpretations can be used for the same purposes as
+truth-tables were for propositional logic.  In particular, the
+soundness and completeness theorems show that there's a proof of a
+sequent iff there is no counterexample to that sequent.  In
+particular, since soundness holds, you can give a counterexample to
+demonstrate that a sequent cannot be proven.  And since completeness
+holds, if you know that $\psi$ is true in every model where $\phi$ is
+true, then you know that there is a proof of $\psi$ from $\phi$.
+
+The completeness theorem for predicate logic tends not to be of great
+practical value.  For one, it's often just as difficult (if not more
+so) to show that $\phi\vDash\psi$ than to show that $\phi\vdash\psi$.
+For another, even if you know that $\phi\vDash\psi$, and so that there
+{\it is} some proof of $\psi$ from $\phi$, still that doesn't
+necessarily help you to see how to find that proof.
+
+There's an in-principle reason why the completeness theorem is not of
+all that much practical utility: to reason about about interpretations
+requires the full power of the theory of sets.  Moreover, logicians
+have proven that there are trade-offs between power and tractability.
+Here ``tractability'' is a semi-technical term that means, roughly
+speaking, how easy it is to use a theory.  Since set-theory is so
+powerful, it's not very tractable.
+
+Thus, the value of the completeness theorem tends to be more
+conceptual than practical.  It helps us to understand better what's
+going on in logic, even if for individual problems, it may not provide
+us a quicker route to a solution.
+
+For a rigorous proof of the completeness theorem for predicate logic,
+you'll have to wait for a second course in logic.  Here we'll restrict
+ourselves to two things.  First, we'll sketch the idea behind one
+version of the completeness theorem.  Second, we'll explain how the
+completeness theorem for predicate logic differs from the famous {\it
+  incompleteness} theorem that was proven by G{\"o}del.
+
+Suppose for simplicity that $\Sigma$ is a signature without function
+symbols or names.  That is, $\Sigma$ only has relation symbols.  Let
+$\phi$ be a $\Sigma$-sentence.  We will sketch a proof of the
+following result:
+\begin{quote} If no contradiction can be derived from $\phi$, then
+  there is a model $M$ of~$\phi$. \end{quote} What's nice about this
+result is that it mimics what Lobachevsky did with non-Euclidean
+geometry (see page \pageref{loba}).  Lobachevsky assumed a sentence
+$\phi$, which implies the negation of Euclid's parallel postulate.
+Then he started proving things from $\phi$, never achieving a
+contradiction $\bot$.  From the list of sentences he proved,
+Lobachevsky was essentially able to describe a model $M$ in which
+$\phi$ is true.
+
+Let's suppose further that $\phi$ has the following simple form: if it
+contains any quantifiers, then they all occur out in the front.  You
+might think that this assumption greatly reduces the generality of our
+proof.  But in fact, with a little work, you can show that any
+sentence $\phi$ is provably equivalent to one in the form we just
+described --- which is called \emph{prenex normal form}.  So let's
+just assume that $\phi$ itself is in prenex normal form.
+
+Let's suppose first that $\phi$ has the simple form
+$\exists x\psi (x)$, where no quantifiers occur in $\psi$.  Then take
+the instance $\psi (1)$, which contains no variables (free or bound).
+If $\psi (1)\vdash\bot$, then an instance of EE gives
+$\exists x\psi (x)\vdash\bot$, contrary to our assumption.  Therefore
+$\psi (1)\not\vdash\bot$.  By completeness for {\it propositional}
+logic, there is a valuation on the atomic sentences in $\psi (1)$ such
+that $v[\psi (1)]=1$.  Define an interpretation $M$ by setting
+$M=\{ 1\}$, and for each relation symbol $R$ that occurs in
+$\psi (1)$, let $\langle 1,\dots ,1\rangle \in R^M$ iff
+$v(R(1,\dots ,1))=1$.  It immediately follows that $M\vDash\psi (1)$
+and hence $M\vDash\exists x\psi (x)$.  Therefore, $\phi$ has a model.
+
+Let's suppose now that $\phi$ has the form
+$\exists x\exists y\psi (x,y)$.  It might be tempting then to try a
+repeat with the domain $M=\{ 1\}$, but that won't necessarily work.
+For example, the sentence $\exists x\exists y(Rxy\wedge\neg Ryx)$ has
+a model with two elements, but it has no model with one element.
+Thus, when $\phi$ begins with more than one existential quantifier, we
+should generate a new object for each existential quantifier.  In this
+case, we can take the domain $M=\{ 1,2\}$, and generate the instance
+$R(1,2)\wedge \neg R(2,1)$, giving $R^M=\{ \langle 1,2\rangle \}$.
+
+The cases we just considered are misleadingly simple.  Indeed, those
+cases have the feature that the relevant model $M$ is finite.  We
+know, though, that there are consistent sentences that have no finite
+model.  Interestingly, all such sentences share the feature that, when
+put into prenex normal form, they have a mix of existential and
+universal quantifiers.  Thus, we need to consider how to generate a
+model from such sentences.
+
+Consider first the sentence $\forall x\exists y(Rxy\wedge\neg Ryx)$.
+We begin by generating an instance $R(1,2)\wedge \neg R(2,1)$,
+choosing a new name $2$ for the existence claim, since we don't know
+that it must be the same thing.  However, this instance alone won't
+generate a model for $\phi$, because when we introduce the new thing
+$2$, we need to make sure that the original universal quantifier
+$\forall x$ also applies to it.  So, we have to add a new object $3$
+and take another instance $R(2,3)\wedge\neg R(3,2)$.  This situation
+repeats ad infinitum, so following our recipe will lead to a domain
+$M=\{ 1,2,\dots \}$ and a relation
+$R^M=\{ \langle 1,2\rangle ,\langle 2,3\rangle ,\dots \}$.  In this
+particular case, we didn't actually need an infinite model --- a model
+with two elements would have done.  But what we do need is a general
+recipe that sometimes leads to our constructing an infinite model.
+
+The procedure we have just sketched does, in fact, work quite
+generally to produce a model $M$ for $\phi$, so long as no
+contradiction can be derived from $\phi$.  It thus shows that the
+inference rules we gave you in this book are \gls{complete}, at least
+for arguments with finitely many premises.  For the case of infinitely
+many premises, one must again invoke a new set-theoretic axiom (such
+as compactness).
+
+\subsection{Complete and incomplete theories}
+
+In compact symbolic form, the completeness theorem shows that if
+$\phi\vDash\psi$ then $\phi\vdash\psi$.  What then is all this
+business about ``incompleteness'', as in \emph{G{\"o}del's
+  incompleteness theorem}?
+
+\begin{defn} Let $T$ be a theory formulated in signature $\Sigma$.  We
+  say that $T$ is \emph{\gls{complete}} just in case for each
+  $\Sigma$-sentence $\phi$, either $T\vdash\phi$ or
+  $T\vdash\neg\phi$. \end{defn}
+
+\begin{exercise} Let $T$ be a consistent theory in propositional
+  logic.  Show that $T$ is complete iff $T$ has exactly one
+  model. \end{exercise}
+
+It's important to note that the completeness of a theory is relative
+to the language in which the theory is formulated.  For example, in an
+empty signature (with equality) the theory that says, ``There is
+exactly one thing'' is complete.  However, in a signature with
+predicate symbol $P$, that same theory is incomplete --- because it
+doesn't decide whether $\exists xPx$ is true or false.
+
+One might think that incompleteness is a defect of a theory, since it
+seems to indicate that the theory hasn't yet given an answer to some
+relevant question.  However, many theories in mathematics are
+intentionally incomplete; and their power comes precisely from the
+fact that there are many different ways for these theories to be true.
+For example, consider the theory of autosets, which we discussed
+briefly in Chapter \ref{theories}, and which (as we mentioned there)
+turns out to be equivalent to the so-called theory of groups, which is
+much loved by mathematicians.  The theory of autosets has models of
+all sizes: a model with one element, a model with two elements, etc..
+What's more, since the sentence ``there are exactly $n$-elements''
+corresponds to a sentence in the language of autosets, it follows that
+the theory of autosets neither implies $\phi$ not $\neg \phi$.
+Therefore, the theory of autosets --- and hence the theory of groups
+--- is incomplete.  The word ``incomplete'' might sound bad, but
+mathematicians are quite happy with the incompleteness of the theory
+of groups.  What's so interesting about groups is that there is a wide
+variety of them, with all sorts of different features.
+
+\begin{exercise} Let $T$ be the theory with no axioms (besides
+  tautologies) in a signature with only the equality symbol.  Show
+  that $T$ is incomplete. \end{exercise}
+
+In 1931, G{\"o}del published a proof of the incompleteness of
+arithmetic, or more precisely, of first-order Peano
+arithmetic.\footnote{Kurt G{\"o}del, 1931, "{\"U}ber formal
+  unentscheidbare S{\"a}tze der Principia Mathematica und verwandter
+  Systeme, I", {\it Monatshefte f{\"u}r Mathematik und Physik}, v. 38
+  n. 1, pp. 173--198.} Frequently, G{\"o}del's remarkable result is
+paraphrased as showing that there is a true statement of arithmetic
+that is not provable.  That way of speaking is licensed by the
+following simple result.
+
+\begin{prop} Let $T$ be a consistent theory.  Then the following three
+  conditions are equivalent:
+  \begin{enumerate}
+  \item $T$ is complete.
+  \item For each model $M$ of $T$, if $M\vDash\phi$ then
+    $T\vdash\phi$.
+  \item For some model $M$ of $T$, if $M\vDash\phi$ then
+    $T\vdash\phi$. \end{enumerate} \end{prop}
+
+\begin{exercise} Prove this proposition. \end{exercise}
+
+  % \begin{proof} Since $T$ is consistent, the second condition
+  %   trivially implies the third.
+
+  %   Suppose now that $T$ is complete, and let $M$ be an arbitrary
+  %   model of $T$ such that $M\vDash\phi$.  By completeness, either
+  %   $T\vdash\phi$ or $T\vdash\neg\phi$.  If $T\vdash\neg\phi$, then by
+  %   soundness, $M\vDash\neg\phi$, which is impossible.  Therefore,
+  %   $T\vdash\phi$.
+
+  %   Suppose now that $M$ is a model of $T$ such that if $M\vDash\phi$
+  %   then $T\vdash\phi$.  But for any $\Sigma$-sentence $\phi$, either
+  %   $M\vDash\phi$ or $M\vDash\neg\phi$.  Therefore, for any
+  %   $\Sigma$-sentence $\phi$, either $T\vdash\phi$ or
+  %   $T\vdash\neg\phi$, which means that $T$ is complete. \end{proof}
+
+If $T$ is Peano arithmetic, then the set $N=\{ 0,1,\dots \}$ of
+natural numbers is a model of $T$.  G{\"o}del proved that there is a
+sentence $\phi$ in the language of arithmetic such that neither
+$T\vdash\phi$ nor $T\vdash\neg\phi$; which we now know is equivalent
+to the fact that there is a sentence $\phi$ such that $N\vDash\phi$
+but $T\not\vdash\phi$.  In other words, there is a truth $\phi$ about
+$N$ that does not follow from Peano arithmetic.
+
+Now, you might raise the following objection to the supposed
+profundity of G{\"o}del's theorem: although Peano arithmetic $T$ is
+incomplete, can't we just keep adding new axioms until it's complete?
+In one sense, the answer is yes.  In fact, there's an easy recipe for
+constructing a complete extension of $T$ (if, in fact, $N$ exists):
+let $T^+$ be the set of all sentences that are true in the model $N$.
+(Sometimes the theory $T^+$ is called \emph{true arithmetic}.)  Then
+$T^+$ is obviously complete, and extends $T$.  Why not just take $T^+$
+as a better theory than $T$?
+
+The problem, in short, is that $T^+$ is essentially an ineffable
+theory.  We know some consequences of $T^+$, but we possess no general
+recipe for generating {\it all} consequences of $T^+$.  In fact, a
+fully precise statement of G{\"o}del's theorem says that {\it no}
+effable theory about the natural numbers can be complete.
+
+  %% TO DO: a section on decidability?
+
+\begin{exercise} Suppose that $T$ has a model $M$ such that
+  $M\vDash\phi$, and $T$ has a model $N$ such that $N\vDash\neg\phi$.
+  Show that $T$ is incomplete. \end{exercise}
+
+\section{Decidability}
+
+We concluded our discussion of completeness by saying that no
+``effable'' theory about the natural numbers is complete.  If
+G{\"o}del actually proved such a claim, with mathematical rigor, then
+the word ``effable'' must have a precise mathematical meaning in this
+context.  In fact, it does, although it usually goes by a more
+technical-sounding name, \emph{recursively enumerable}.
+
+Intuitively speaking, a recursively enumerable collection is a
+collection that can be generated, step-by-step by applying some rule.
+In this book, you have encountered several paradigm examples of
+recursively enumerable collections.
+\begin{itemize}
+\item The set $N$ of natural numbers is recursively enumerable: it is
+  generated by applying the successor function $s:N\to N$ repeatedly
+  to the number $0\in N$.
+\item If $\Sigma$ is a propositional logic signature, then the set of
+  $\Sigma$-sentences is recursively enumerable.  It is generated by
+  applying the construction rules (corresponding to the connectives)
+  repeatedly to the atomic sentences in $\Sigma$.
+\item If $\Sigma$ is a propositional logic signature, then the set of
+  provable sequents is recursively enumerable.  It is generated by
+  applying the inference rules repeatedly to instances of the rule of
+  assumptions.  
+\end{itemize}
+Based on these characterizations, it's also easy to see that the
+collection of predicate-logic formulas is recursively enumerable, as
+is the set of provable sequents in predicate logic.
+
+It does {\it not} follow from what we said here that every subset of a
+recursively enumerable subset is also recursively enumerable.  To
+prime your intuition about this matter, think about subsets of the
+natural numbers.  There is an uncountable infinity of subsets of the
+natural numbers, but only countably many recipes for generating
+subsets.
+
+In the case of predicate logic, our theories $T$ often have a finite
+number of axioms --- and hence, they are automatically recursively
+enumerable, as is the set of all their consequences.  However, a
+theory need not have only a finite number of axioms.  For example,
+consider the theory $T$ that has axioms:
+\[ \exists _{>1},\exists _{>2},\dots ,\exists _{>n},\dots \] where
+$\exists _{>n}$ is the sentence that says that there are more than $n$
+things.  This theory is sometimes called the \emph{theory of infinite
+  sets}, since its models are all infinite sets.  Now, while the
+theory of infinite sets has an infinite number of axioms, intuitively,
+its set of axioms is recursively enumerable.  Indeed, by writing the
+ellipsis after the first few axioms, I suggested a method of
+generating all of the infinitely many axioms of $T$.
+
+Now return to the theory $T^+$ of true arithmetic, which consists of
+all sentences that are true in the model $N$ of natural numbers.
+G{\"o}del showed not only that Peano arithmetic is incomplete; he
+showed that no complete and consistent extension of Peano arithmetic
+can have a recursively enumerable set of axioms.  In particular, $T^+$
+is not recursively enumerable, i.e.\ there is no rule that generates
+all and only the consequences of $T^+$.
+
+The notion of a recursively enumerable set is investigated in the
+subfield of mathematical logic called \emph{recursion theory}.  This
+theory also covers the related notion of a \emph{decidable set}, a
+notion with which you are now familiar.
+
+Suppose that $\Sigma$ is some fixed propositional logic signature, and
+let $\Gamma$ be the set of all tautologous $\Sigma$-sentences.  The
+set $\Gamma$ is rather boring, in the following sense: you could
+program your computer so that for any input sentence $\phi$, it will
+tell you whether or not $\phi\in\Gamma$.  The algorithm is simple:
+have your computer write out a truth-table for $\phi$, and if all rows
+under the main column are $1$, then the computer says \texttt{Accept}.
+Otherwise it says \texttt{Reject}.  Given this feature of the set
+$\Gamma$, we say that it is a \emph{decidable set}.
+
+What we just said also indicates that the set of valid propositional
+logic sequents is also a decidable set.  (We already knew that it was
+a recursively enumerable set, since it is generated by applying a
+finite number of rules of inference.)  Indeed, given a proposed
+sequent $\phi\vdash\psi$, just have the computer decide whether or not
+$\phi\to\psi$ is a tautology.  If the computer says \texttt{Accept},
+then the sequent is provable; if the computer says \texttt{Reject},
+then the sequent is not provable.
+
+Surprisingly, perhaps, the situation turns out to be different in
+predicate logic.  Again, the set of valid predicate logic sequents is
+obviously a recursively enumerable set.  Indeed, we were busy
+generating that set earlier in the book.  Nonetheless, the set of
+valid predicate logic sequents is {\it not} a decidable set.  That
+fact is known as Church's theorem, and its proof is far from
+trivial.\footnote{Named for Alonzo Church (1903--1995)} What it means
+for you, the practicing logician, is that there is no mechanical
+method for checking whether or not a predicate logic sequent can be
+proven.
+
+
+
+\section{Compactness}
+
+Recall from our discussion of propositional logic that the full
+completeness theorem can be derived from the finite completeness
+theorem, if we allow ourselves a new set-theoretic axiom: compactness.
+One version of the compactness axiom seems counterintuitive: it says
+that if every finite subset of a set $\Gamma$ of sentences is
+consistent, then $\Gamma$ is consistent.  Another version of the
+compactness axiom seems obviously true: it says that if a set $\Gamma$
+doesn't imply a contradiction $\bot$, then $\Gamma$ can be grown to a
+maximal set $\Gamma ^*$ that doesn't imply a contradiction.
+
+The compactness axiom also applies in the case of predicate logic,
+where it's perhaps even less controversial, but is quite a bit more
+powerful in applications.  Indeed, one can prove all sorts of
+interesting things about models using the compactness theorem.  One
+can also use compactness to prove some interesting things about what
+cannot be said in first-order logic.
+
+So long as we get to use the equality symbol $=$, first-order logic
+can make any finite numerical claim we wish.  For example, we can say
+that there are less than $n$ things, or more than $n$ things, or
+exactly $n$ things.  That is, for each of these claims, there is a
+predicate-logic sentence $\phi$ that captures its precise sense.
+There cannot, however, be a predicate logic sentence $\phi$ that says,
+``there are infinitely many things''.  To be clear, there are --- as
+we have already seen --- predicate logic sentences that are only true
+in infinite domains (e.g.\ the sentence that describes a linear order
+without endpoints).  However, those sentences must say something more
+than that there are infinitely many things.  For if $\phi$ says that
+there are infinitely many things, then $\neg \phi$ says that there are
+finitely many things.  But as we will now see, if a sentence $\phi$
+has models of arbitrarily large finite size, then $\phi$ also has an
+infinite model.
+
+Suppose that for each natural number $n$, $\phi$ has a model $M_n$
+that has more than $n$ elements.  Thus, $M_n\vDash\exists _{>n}$,
+where the latter sentence says, ``there are more than $n$ things''.
+Now let $\Gamma$ be the collection of all sentences:
+$\phi ,\exists _{>1},\exists _{>2},\dots $.  We have just shown that
+every finite subset of $\Gamma$ is consistent.  Therefore, by
+compactness, $\Gamma$ itself is consistent, i.e.\ $\Gamma$ has a model
+$M$.  However, $M$ must be an infinite set, because for each $n$,
+$M\vDash\exists _{>n}$.  Therefore, $\phi$ has an infinite model.
+
+Interestingly, although first-order logic doesn't have a sentence
+$\phi$ that says that there are infinitely many things, it does have
+an infinite set $T$ of sentences that together say there are
+infinitely many things.  Indeed, the set
+$T =\{ \exists _{>1},\exists _{>2},\dots \}$ has only infinite models.
+However, that fact in no way contradicts compactness, which says that
+if $T$ is inconsistent, then some finite subset of $T$ is
+inconsistent.
+
+We've just shown, then, that first-order logic can {\it not} say some
+things; in particular, it cannot say that there are infinitely many
+things.  Perhaps even more interesting, first-order logic cannot
+distinguish between different sizes of infinity.  To understand what's
+going on here, you'll have to take on faith that the size of the set
+of real numbers (i.e.\ decimal expansions) is strictly greater than
+the size of the set of natural numbers.  That's a fact that one
+routinely proves in set theory.  However, once again, if a first-order
+logic sentence $\phi$ has a model $N$ that is the size of the natural
+numbers, then it has a model $M$ of the size of the real numbers.
+
+Suppose, indeed, that $N$ is a model of $\phi$.  Whatever signature
+$\Sigma$ the sentence $\phi$ is written in, we can expand it by adding
+a new name $c_r$ for each real number $r$.  Now let $\Gamma$ be the
+set of sentences that includes $\phi$ and also the sentences
+$c_r\neq c_s$ for $r\neq s$.  We claim then that each finite subset of
+$\Gamma$ is consistent.  Indeed, any finite subset $\Gamma _0$ of
+$\Gamma$ contains only finitely many of the names $c_r$.  Let $M$ be
+an interpretation that agrees with $N$ on the vocabulary in $\phi$,
+and that assigns each $c^r$ to a distinct name in $N$.  Clearly then
+$M\vDash\phi$, and $M$ validates each sentence $c_r\neq c_s$ that
+occurs in $\Gamma _0$.  Therefore $\Gamma _0$ is consistent.  By
+compactness, $\Gamma$ is consistent; and it's clear that a model $M$
+of $\Gamma$ must be as large as the real numbers.  Therefore $\phi$
+has a model that is as large as the real numbers.
+
+%% cannot describe finite chains
+
+Consider next the case of linear orders.  Suppose that $<$ is a binary
+relation symbol, and suppose that $T$ is a theory that says that $<$
+is a discrete linear order without endpoints.  (The word ``discrete''
+here means that each point has an immediate successor and an immediate
+predecessor.)  The ``standard'' model of $T$ is the integers, i.e.\
+all negative and positive whole numbers:
+$\{ \dots ,-2,-1,0,1,2,\dots \}$.  However, $T$ also has non-standard
+models, such as the ``double integers'', which we now describe.  Take
+two copies $M_1$ and $M_2$ of the integers, and paste them together,
+declaring the each number in the first copy is strictly smaller than
+each number in the second copy.  Let $M$ be the resulting
+interpretation.  Then it's straightforward to verify that $M$ is also
+a model of $T$.
+
+Now, suppose that you are a mathematician, and your job is to come up
+with a set of axioms that picks out the integers.  If you see that
+your axioms $T$ also permit the double integers, then you might
+reasonably conclude that you need a further axiom to rule out that
+case.  So, what is the feature of the double integers that we would
+like to rule out?  Well, the double integers have the following funny
+property: there are finite numbers $a$ and $b$ such that there are
+infinitely many numbers between $a$ and $b$.  (For example, let $a$ be
+the $0$ from the first copy of the integers, and let $b$ be the $0$
+from the second copy of the integers.)  Thus, it would make sense to
+try to add a new axiom that says:
+\begin{quote} Between any two numbers $x$ and $y$, there are at most
+  finitely many other numbers. \end{quote} Is there a first-order
+logic sentence that can express that English language sentence?  In
+short, the answer is no, for the following reason.
+
+Suppose that $\phi (x,y)$ says that there are finitely many numbers
+between $x$ and $y$.  Then $\phi (x,y)$ is consistent with there being
+$n$ numbers between $x$ and $y$, and also with there being $n+1$
+numbers, etc..  In other words, for each $n$, $\phi (x,y)$ is
+consistent with the statement:
+\begin{quote} $\psi _n(x,y)\:\equiv\:$ There are more than $n$ numbers
+  between $x$ and $y$. \end{quote} However, this formula
+$\psi _n(x,y)$ can be expressed in first-order logic.  Thus, a
+compactness argument shows that the entire set
+\[ \{ \phi (c,d), \psi _1(c,d),\psi _2(c,d),\dots \} \] is consistent,
+where $c$ and $d$ are new names.  But if there is no bound on the
+distance between $c^M$ and $d^M$, then it cannot be correct to say
+that there are finitely many numbers between $c^M$ and $d^M$.
+Therefore, the formula $\phi (x,y)$ doesn't express the fact that
+there are finitely many numbers between $x$ and $y$.
+
+We've just seen that first-order logic cannot express an axiom that
+says that there are finitely many numbers between any two other
+numbers.  The problem, of course, is with that pesky word ``finite''.
+First-order logic can say things about specific finite numbers, but
+the amorphous concept of ``finiteness'' is beyond its grasp.  If you
+wanted to speak that way, you'd have to use a language that is more
+expressive than the one we've developed in this book.
+
+Let's look at one last case of something that first-order logic cannot
+express --- this time close to home for anyone who has studied
+calculus.  In more advanced applications of calculus, it becomes
+important to know that there are lots and lots of real numbers.  In
+fact, every bounded subset $S$ of real numbers has a least upper
+bound.  (That's how we know that the irrational number $\pi$ exists:
+let $S$ be the subset of all rational numbers that are less than this
+theoretical number $\pi$.  Since $S$ has a least upper bound, $\pi$
+exists.)  Stated symbolically, to say that $y$ is an upper bound for
+$S$ is expressed by the formula
+\[ \phi (x)\:\equiv \: \forall x(x\in S\to x\leq y) .\]
+Thus, to say that $r$ is the least upper bound of $S$ can be expressed
+by
+\[ \phi (r)\wedge \forall y(\phi (y)\to r\leq y) .\] Thus, first-order
+logic can say that $r$ is a least upper-bound; but what it cannot say
+directly is that {\it every} subset $S$ has a least upper bound.
+Indeed, you should immediately be suspicious when you see a quantifier
+word, such as ``every'', precede a name for a subset $S$ of the
+relevant domain.  Such a locution is a signal that one is quantifying
+not just over points in the domain, but also over subsets of the
+domain.  In such cases, then, we are doing something that cannot be
+done in first-order logic.
+
+The preceding considerations show, or at least indicate, that the
+study of the real number system $\mathbb{R}$ cannot proceed within the
+bounds of first-order logic.  That might seem like a blow to the idea
+that logic forms the foundation for all human knowledge.  However, the
+story is in fact more nuanced than that.  As we saw in Chapter
+\ref{theories}, first-order logic can be used to axiomatize set
+theory.  And as one learns in a class on mathematical analysis, set
+theory can be used to formulate the theory of real numbers, including
+the principle that each bounded subset has a least upper bound.  Thus,
+the foundational aspirations of first-order logic are still alive and
+well.
+
+
+
+
+
+
+
+  
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "main"
+%%% End:

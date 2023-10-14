@@ -1,0 +1,99 @@
+\chapter{Resum{\'e} of Inference Rules}
+
+\begin{tabular}{l c l}
+  
+\begin{tcolorbox}[hbox,title=$\wedge$I,attach boxed title to top left] 
+$\begin{array}{c}
+    \Gamma\:\vdash\:\phi \qquad \Delta\:\vdash\:\psi \\ \hline
+                                     \Gamma
+       ,\Delta\:\vdash\:\phi\wedge\psi \end{array} $ \end{tcolorbox} \hfill
+  & & 
+     \begin{tcolorbox}[hbox,title=$\wedge$E,attach boxed title to top left] 
+$ \begin{array}{c}
+    \Gamma\:\vdash\:\phi\wedge\psi \\ \hline
+    \Gamma\:\vdash\:\phi \qquad \Gamma\:\vdash\:
+    \psi  \end{array} $ \end{tcolorbox}
+
+\\ \\ 
+
+\begin{tcolorbox}[hbox,title=$\vee$I,attach boxed title to top left]                                                         
+$ \begin{array}{c}                                   
+\Gamma\:\vdash\:\phi \\ \hline                                 
+\Gamma\:\vdash\:\phi\vee\psi \qquad \Gamma\:\vdash\:\psi\vee\phi \end{array} $
+\end{tcolorbox} & &
+\begin{tcolorbox}[hbox,title=$\vee$E,attach boxed title to top left]                                                                                                                $\begin{array}{c}                                 
+\Gamma\:\vdash\:\phi\vee\psi \qquad \Delta ,\phi\:\vdash\:\chi
+     \qquad \Theta ,\psi\:\vdash\:\chi \\ \hline
+                                                                                                                                                                                        \Gamma ,\Delta ,\Theta\:\vdash\:\chi \end{array} $ \end{tcolorbox}
+
+\\ \\ 
+
+\begin{tcolorbox}[width=4cm,title=CP,attach boxed title to top left]                                                                                                         
+  $\begin{array}{r c l}
+    \Gamma ,\phi & \vdash & \psi \\ \hline
+    \Gamma & \vdash & \phi\to \psi
+   \end{array} $
+\end{tcolorbox}
+& &
+\begin{tcolorbox}[hbox,title=MP,attach boxed title to top left]                                                                                                        
+$\begin{array}{c}
+   \Gamma\:\vdash\:\phi\to \psi \qquad \Delta\:\vdash\:\phi \\ \hline
+\Gamma ,\Delta \:\vdash\:\psi \end{array}$ \end{tcolorbox} 
+
+ \\ \\
+ 
+\begin{tcolorbox}[hbox,title=MT,attach boxed title to top left]                                                                                                       
+$\begin{array}{c}
+   \Gamma\:\vdash\:\phi\to \psi \qquad \Delta\:\vdash\:\neg\psi \\ \hline
+   \Gamma ,\Delta\:\vdash\:\neg\phi \end{array}$  \end{tcolorbox}
+&  &                        
+\begin{tcolorbox}[width=4cm,title=RAA,attach boxed title to top left]                                                                                                      
+$\begin{array}{r c l}
+   \Gamma ,\phi &\vdash & \psi\wedge\neg\psi \\ \hline
+   \Gamma & \vdash & \neg \phi  \end{array}$ \end{tcolorbox}
+
+\\ \\ 
+
+\begin{tcolorbox}[width=3.5cm,title=DN,attach boxed title to top left]                                                                                                                $\begin{array}{r c l}
+   \Gamma &\vdash & \phi \\ \hline
+   \Gamma & \vdash & \neg\neg\phi  \end{array}$ \end{tcolorbox}
+& &
+\begin{tcolorbox}[width=3.5cm,title=DN,attach boxed title to top left]                                                                                                               
+$\begin{array}{r c l}
+   \Gamma & \vdash & \neg\neg\phi \\ \hline
+   \Gamma & \vdash & \phi  \end{array}$ \end{tcolorbox}
+
+\end{tabular}
+
+\noindent\begin{tabular}{l c l}
+\begin{tcolorbox}[width=3.5cm,title=EI,attach boxed title to top left]                                                                                                                 
+$\begin{array}{r c l}
+   \Gamma & \vdash & \phi (a) \\ \hline
+   \Gamma & \vdash & \exists x\phi (x)  \end{array}$ \end{tcolorbox}
+& &
+\begin{tcolorbox}[width=9cm,title=EE,attach boxed title to top left]                                                                                                                 
+$\begin{array}{c p{0.1cm} p{3cm}}
+   \Gamma \:\vdash\:\exists x\phi (x) \qquad \Delta ,\phi (a)\:\vdash\:\psi & &
+\multirow{2}{3cm}{\small $a$ does not occur in $\Gamma$, $\Delta$, or $\phi (x)$} \\ \cline{1-1}
+   \Gamma ,\Delta \:\vdash\:\psi   & & \end{array}$ \end{tcolorbox}
+
+\\ \\                                        
+\begin{tcolorbox}[width=3.5cm,title=UE,attach boxed title to top left]                                                                                                                 
+$\begin{array}{r c l}
+   \Gamma &\vdash & \forall x\phi (x) \\ \hline
+   \Gamma &\vdash & \phi (a) \end{array}$ \end{tcolorbox} 
+           &  &
+\begin{tcolorbox}[width=7cm,title=UI,attach boxed title to top left]                                                                                                                 
+$\begin{array}{r c l p{0.1cm} p{2.8cm}}
+   \Gamma &\vdash & \phi (a) & & 
+\multirow{2}{3cm}{\small $a$ does not occur in \newline $\Gamma$ or $\phi (x)$} \\ \cline{1-3}
+   \Gamma &\vdash & \forall x\phi (x)   & & \end{array}$ \end{tcolorbox}                \end{tabular}
+
+
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "main"
+%%% End:

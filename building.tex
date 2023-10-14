@@ -1,0 +1,643 @@
+\chapter{New Proofs from Old} \label{new}
+
+As the old saying goes, ``don't work harder, work smarter.''  You've
+done the hard work writing a lot of proofs; now it's time to work
+smarter.  In this chapter, we're going to think about how you can
+reliably take short-cuts with proofs.  The key word here is
+``reliably.''  That is, we want to ensure that these shortcuts won't
+cause you to misjudge whether or not something can be proven.
+
+For example, suppose that we ask you to prove the sequent:
+$\vdash (P\to Q)\vee \neg (P\to Q)$. You've probably never proved this
+sequent before.  However, you should have -- if you've been diligent
+-- proved an instance of the law of excluded middle, i.e.\ something
+like $\vdash P\vee \neg P$.  Now suppose that you have the proof of
+$P\vee\neg P$ saved in a file \texttt{em.txt}, and that you run a
+``find and replace'' to swap in $P\to Q$ for $P$.  Then, the result
+will be a proof of $(P\to Q)\vee \neg (P\to Q)$.  That's working
+smart: take an old proof, run find-and-replace, and ta da, you have a
+new proof.
+
+What we just did was a case of {\it substitution}.  We'll discuss
+substitution in the first section.  Then we'll talk about another
+short-cut method that allows you to splice an old proof into a new one
+--- the method of {\it cut}.  Finally, we'll talk about a third
+short-cut method that allows you to {\it replace} a sub-formula with
+any logically equivalent sub-formula.  If you learn these three
+methods, you'll be able to prove even the most challenging
+propositional logic sequents with ease.
+
+
+\section{Substitution}
+
+In this section, we describe the theoretical basis for the
+``find-and-replace'' method of generating new proofs from old.  To
+this end, we first need to define the notion of a
+\emph{\gls{substitution instance}}. \index{substitution instance} The
+idea here is that the find-and-replace operation changes a formula
+$\phi$ to a substitution instance $\phi ^*$, and a proof of
+$\phi\vdash\psi$ to a proof of $\phi ^*\vdash\psi ^*$.
+
+Each sentence of our symbolic language is either one of the symbols
+$P,Q,R,\dots $, or it's built up from those symbols using the
+connectives $\neg,\wedge ,\vee$ and $\to$.  It's time to be a bit more
+precise about the ways in which we permit sentences to be constructed.
+We call the capital letters $P,Q,R\dots $ our \emph{\glspl{atomic
+    sentence}}, the idea being that they have no internal structure.
+\index{sentence!atomic} We also stipulate that if $\phi$ and $\psi$
+are sentences, then $\neg\phi$, $\phi\wedge\psi$, $\phi\vee\psi$, and
+$\phi\to\psi$ are also sentences.  (To be even more precise, we have
+to put parentheses around the resulting sentence at each stage of
+construction.  However, we will omit parentheses after applying
+$\neg$, and we will omit the outermost parentheses from every
+sentence.)  What's more, we stipulate that all legitimate sentences
+come about from applying a finite number of these construction steps.
+
+We now define a notion of a
+\emph{\gls{translation}}. \index{translation} For simplicity, let's
+suppose that we begin with a list $P,Q,R,\dots $ of simple sentences.
+A \emph{\gls{reconstrual}} \index{reconstrual} is an assignment $F$ of
+each atomic sentence $X$ to some other sentence $F(X)$.  For example,
+$F(P)$ could be another atomic sentence, such as $R$, or it could be a
+complex sentence such as $R\to \neg S$, or even $\neg P$ or
+$P\wedge\neg P$.  There are no restrictions at all on the assignment
+$F$, so long as the result is a legitimate sentence.
+
+Once we have a reconstrual $F$, we can use it to translate {\it any}
+sentence $\phi$.  In short, we define $F(\phi )$ to be the sentence
+that results from replacing each atomic sentence $X$ in $\phi$ with
+$F(X)$.  The resulting string of symbols $F(\phi )$ will always be a
+legitimate sentence, and we call it a substitution instance of $\phi$.
+
+As usual, the definition becomes more clear when we look at examples.
+Suppose, for example, that we reconstrue $P$ as $Q\to P$, and $Q$ as
+$\neg R$.  That reconstrual results in the following substitution instances.
+\[ \begin{array}{l l l}
+     P\to Q & \leadsto  & (Q\to P)\to \neg R \\
+     P\vee \neg P & \leadsto  & (Q\to P)\vee \neg (Q\to P) \\
+     Q\to P & \leadsto & \neg R \to (Q\to P) \end{array} \] It should
+be clear that there is some sense in which the substitution operation
+preserves the form of the original sentence; or, to be more precise,
+that $F(\phi )$ is an instance of the form presented by $\phi$.
+However, $F(\phi )$ can have more structure than $\phi$ itself has;
+for example, {\it every} sentence is a substitution instance of the
+atomic sentence $P$.
+
+%% exercise
+
+\begin{exercise} Which of the following formulas is a substitution instance of
+  the formula $P\to \neg Q$?  In cases where you answer affirmatively,
+  show how to reconstrue $P$ and $Q$ to get the resulting formula.
+\begin{enumerate}
+\item $\neg Q\to \neg P$
+\item $(P\to \neg Q)\to R$
+\item $(P\to \neg Q)\to \neg (P\to \neg Q)$.
+\end{enumerate}  
+\end{exercise}
+
+Recall that our inference rules are schematic, i.e.\ they depend only
+on the form of the sentences involved.  Thus, it should immediately
+follow that substitution preserves validity, since it preserves form.
+We will prove that rigorously in Chapter \ref{meta}, with a result
+known as the \emph{substitution theorem}.  But for now, it will
+suffice to state the upshot, which we can use to generate new proofs
+from old ones.
+
+\bigskip 
+\begin{tcolorbox}[enhanced,width=10cm,title=substitution,attach boxed title to top
+  left={yshift=-2mm,xshift=4mm},boxed title style={sharp corners}]
+  A proof of $\phi _1,\dots ,\phi _n\vdash\psi$ can be converted to a
+  proof of $F(\phi _1),\dots ,F(\phi _n)\vdash F(\psi )$, where $F$ is
+  a reconstrual of the non-logical vocabulary.
+\end{tcolorbox}
+\bigskip
+
+The \emph{substitution meta-rule} is just a formalization of what you
+already know: that find-and-replace preserves the validity of proofs
+(as long as you restrict the finding to atomic sentences, and you
+replace them with other well-formed sentences).  Note that
+substitution is not a rule in the same sense as, say, modus ponens,
+which generates new valid inferences.  To illustrate this point,
+imagine that proofs of all valid sequents are saved in some computer
+file $\mathsf{proofs.txt}$.  Each such proof consists of finitely many
+lines, and in the right hand column, every line is justified by one of
+the inference rules: $\wedge I$, $\wedge E$, MP, etc.  None of those
+lines is justified by some rule called ``substitution.''  Instead, the
+substitution meta-rule tells us that for any proof in
+$\mathsf{proofs.txt}$, there is another proof in $\mathsf{proofs.txt}$
+that looks just like the first, except that the atomic sentences have
+been replaced by some other sentences.
+
+\begin{exercise} Do you think the following claims are true or false?
+  Explain your answers.
+  \begin{enumerate}
+  \item If $\phi$ is not provable, then no substitution instance of
+    $\phi$ is provable.
+  \item The sentence $(P\wedge Q)\to R$ has a substitution instance
+    that can be proven.
+    %% For each sentence $\psi$, if $\psi$ doesn't imply $\bot$, then
+    %% there is an elementary conjunction $\phi$ such that
+    %% $\phi\vdash\psi$.
+  \end{enumerate} \end{exercise}
+
+\section{Cut}
+
+We now introduce a key meta-rule that, if used correctly, can greatly
+increase your efficiency in proving things.  Let's begin with an
+example.
+
+Suppose that you've been asked to prove that
+\[ P\to (Q\vee R)\:\vdash\: (P\to Q)\vee (P\to R) .\] After many
+failed attempts, you might decide to bring out the sledgehammer of
+reductio ad absurdum: to assume the negation of the result you want,
+and derive a contradiction.  Now, the negation
+$\neg ((P\to Q)\vee (P\to R))$ doesn't look to be all that useful.
+However, you might then remember that you've already proven the
+following version of DeMorgan's rule:
+$\neg (P\vee Q)\vdash \neg P\wedge \neg Q$.  You could then substitute
+$P\to Q$ for $P$, and $P\to R$ for $Q$, which gives you a proof of
+\[ \neg ((P\to Q)\vee (P\to R)) \: \vdash \: \neg (P\to Q)\wedge \neg
+  (P\to R) .\] But now you've got to figure out how to splice that
+proof into the proof you're currently working on.  The cut meta-rule
+will allow you to perform this splice, yielding the following lines:
+\[ \begin{array}{l l >{$}p{4.5cm}<{$} p{3cm}}
+     1 & (1) & P\to (Q\vee R) & A \\
+     2 & (2) & \neg ((P\to Q)\vee (P\to R)) & A \\
+     2 & (3) & \neg (P\to Q)\wedge \neg (P\to R) & cut,
+                                                   DM \end{array} \]
+The basic idea here is that if you've proven a sequent
+$\phi\vdash\psi$ (such as DeMorgan's), then you can use that sequent
+to continue a proof from a line with $\Gamma\vdash\phi$ to a line with
+$\Gamma\vdash\psi$.  We state the rule, however, in a more general fashion.
+
+\bigskip \begin{tcolorbox}[enhanced,width=10cm,title=cut,attach boxed
+  title to top left={yshift=-2mm,xshift=4mm},boxed title style={sharp
+    corners}]
+  Suppose that you have already demonstrated that \newline
+  $\phi _1,\dots ,\phi _n\vdash\psi$.  Then in any proof where you
+  have lines $\Gamma _1\vdash\phi _1,\dots ,\Gamma _n\vdash\phi _n$,
+  you may infer that $\Gamma _1,\dots ,\Gamma _n\vdash \psi$.
+\end{tcolorbox}
+%% justification
+\bigskip As with substitution, cut is not a new inference a new rule.
+Instead, it's a promise: if certain proofs exist, then so does another
+proof.  Imagine again a computer file $\mathsf{proofs.txt}$ that
+contains all correctly written proofs.  The word ``cut'' does not
+appear in any of those proofs.  However, if $\mathsf{proofs.txt}$
+contains proofs of $\phi _1,\dots ,\phi _n\vdash\psi$, and also of
+each $\Gamma _i\vdash\phi _i$, then cut promises that
+$\mathsf{proofs.txt}$ also has a proof of
+$\Gamma _1,\dots ,\Gamma _n\vdash\psi$.  That latter proof, however,
+only cites the primitive inference rules such as $\wedge I$ and $MP$.
+
+When you write proofs, however, you can cite cut, because you're
+giving your reader a promise that you could expand it out into a
+correctly written proof.  For example, suppose that you already have a
+proof of the sequent $\phi\vdash\psi$ (which you named ``hocus
+pocus''), and that you've begun a new proof where $\phi$ appears on
+line $m$.  Then on a subsequent line, you can write $\psi$ with a
+citation of cut.
+\[ \begin{array}{l l l p{3cm}}
+     \Gamma & (m) & \phi & \\
+            & \vdots \\
+     \Gamma & (n) & \psi & cut, hocus pocus \end{array} \] If somebody
+ then calls you on the cut, you can do the following: take the proof of $\phi\vdash\psi$ and add a line of CP to get a proof of $\vdash\phi\to\psi$.  Then instead of citing cut on line $n$, copy in that entire proof, and finish with a step of MP.
+\[ \begin{array}{l l >{$}p{1.75cm}<{$} p{2cm}}
+     \Gamma & (m) & \phi & \\
+            & \vdots \\
+            & (n_1) & \phi\to\psi  & \\
+     \Gamma & (n_2) & \psi         & $m,n_1$ MPP \end{array} \]
+So, using cut with an already proven sequent is just a way of
+indicating that you could write a proof.  
+
+Many cases of cut involve the special case $n=1$, i.e.\ where you've
+already demonstrated that $\phi\vdash\psi$, and you find yourself with
+a line like this:
+\[ \begin{array}{l l l p{3cm}}
+     \Gamma & (m) & \phi  & \end{array} \]
+In this case, cut licenses the following inference:
+ \[ \begin{array}{l l >{$}p{1cm}<{$} p{3cm}}
+      \Gamma & (n) & \psi & $m$ cut \end{array} \]
+For an example of cut with $n=2$, suppose that you have proved
+disjunctive syllogism $P\vee Q,\neg P\vdash Q$, and that you have the
+following two lines in a proof:
+\[ \begin{array}{r l l p{3cm}}
+     \Gamma _1 & (m) & P\vee Q \\
+     \Gamma _2 & (n) & \neg P  \end{array} \]
+ Then cut licenses a subsequent line:
+ \[ \begin{array}{r l >{$}p{1cm}<{$} p{3cm}}
+      \Gamma _1,\Gamma _2 & (n') & Q & $m,n$ cut \end{array} \]
+
+  The cut rule is also really useful in the case where $n=0$.  In that
+  case, we have already proven a single sequent $\vdash\psi$ that has
+  no premises.  The cut rule then says that on any line of a
+  subsequent proof, we may write $\psi$ with no dependencies.  So, for
+  example, if we've already proven the law of excluded middle (lem),
+  $P\vee\neg P$, then any time we're writing a proof, we may insert a
+  line:
+ \[ \begin{array}{l c >{$}p{1.5cm}<{$} p{4cm}}
+  & (n) & P\vee\neg P & cut, LEM \end{array} \]
+%% don't forget to extend to SI(s)
+This invocation of cut goes beyond substitution, because substitution
+only creates an entire new proof.  Cut allows you to paste an old
+proof in the middle of a new one.
+
+You can, however, use cut together with substitution.  For example, if
+you've proven excluded middle, then substitution gives you a proof of
+$\vdash (P\to Q)\vee \neg (P\to Q)$.  Then cut permits you to drop
+this sequent into a proof as follows:
+ \[ \begin{array}{l c >{$}p{4cm}<{$} p{4cm}}
+  & (n) & (P\to Q)\vee\neg (P\to Q) & cut, LEM \end{array} \]
+Technically speaking, this line $n$ should say something like
+``substitution + cut''.  But substitution is so immediate that it can
+typically be used without mention.
+
+Let's look at one more example of the use of cut.  We'll take for
+granted that you already have proofs of excluded middle
+$\vdash P\vee \neg P$, and positive paradox $P\vdash Q\to P$.  We will
+use these results to prove the sequent $\vdash (P\to Q)\vee (Q\to P)$.
+\[ \begin{array}{l l >{$}p{4cm}<{$} p{4cm}}\
+       & (1) & P\vee \neg P  &   cut, lem \\
+     2 & (2) & P             &   A \\
+     2 & (3) & Q\to P        &   2 cut, pos paradox \\
+     2 & (4) & (P\to Q)\vee (Q\to P) & 3 $\vee$I \\
+     5 & (5) & \neg P        &   A \\
+     5 & (6) & \neg Q\to \neg P & 5 cut, pos paradox \\
+     2 & (7) & \neg \neg P   & 2 DN \\
+     2,5 & (8) & \neg\neg Q   & 6,7 MTT \\
+     2,5 & (9) & Q            & 8 DN \\
+     5   & (10) & P\to Q       & 2,9 CP \\
+     5   & (11) & (P\to Q)\vee (Q\to P) & 10 $\vee$I \\
+         & (12) & (P\to Q)\vee (Q\to P) & 1,2,4,5,11 $\vee$E                                
+   \end{array} \]
+ On line 2 we have the sequent $P\vdash P$.  Positive paradox establishes
+ the sequent $P\vdash Q\to P$.  Hence, cut permits us to combine these
+ two sequents into $P\vdash Q\to P$, which we write on line 3.  
+ We then use positive paradox again to obtain line 6 from line 5.
+ (Note that if we had permitted ourselves to use negative paradox, then
+ we could immediately have obtained $P\to Q$ from line 5.)
+
+%% TO DO: powerful to combine substitution with cut
+
+\section{If and Only If}
+
+We have one more meta-rule to cover, viz.\ the replacement rule.
+However, we pause to define a symbol that will facilitate our
+discussion of replacement.
+
+If you spend any amount of time hanging around mathematicians or
+analytic philosophers, you'll pick up the phrase ``if and only if.''
+This phrase is meant to express something even stronger than a
+conditional; it's meant to express a two-directional conditional, or
+\emph{\gls{biconditional}}.  For example, if I tell you that
+\begin{quote} You will get an A on the exam if and only if you
+  study \end{quote} then I'm telling you two things.  First, ``you
+will get an A on the exam if you study,'' which means that studying is
+a \emph{sufficient condition} for getting an A on the exam.  Second,
+``you will get an A on the exam only if you study,'' which means that
+studying is a \emph{necessary condition} for getting an A on the exam.
+
+We will use the symbol $\lra$ for the ``if and only if'' connective.
+Like a conditional, this connective applies to two sentences; thus, if
+$\phi$ and $\psi$ are sentences of propositional logic, then so is
+$\phi\lra\psi$.  In order for this new connective to be useful, we now
+have to specify its inference rules.  Fortunately, its meaning is
+completely transparent, once we already know how to express ``if \dots
+then \dots '', and ``and''.  In particular, $\phi\lra\psi$ should be
+equivalent to $(\phi\to\psi )\wedge (\psi\to\phi )$.  In fact, we will
+make this equivalence into a definition of the introduction and
+elimination rules.
+
+
+\bigskip 
+\begin{tcolorbox}[enhanced,width=11cm,title=biconditional introduction
+  ($\lra$I) and elimination ($\lra$E),attach boxed title to top
+  left={yshift=-2mm,xshift=4mm},boxed title style={sharp corners}]
+\[ \begin{array}{c c c}  \begin{array}{c c} \Gamma\:\vdash\: (\phi\to \psi)\wedge (\psi\to \phi) \\
+                              \hline \Gamma\:\vdash\: \phi\lra \psi \end{array} & &
+                                                                                 \begin{array}{c c} \Gamma\:\vdash\: \phi\lra \psi \\ \hline
+\Gamma\:\vdash\: (\phi\to \psi )\wedge (\psi\to \phi ) \end{array} \end{array} \]                                                                                   
+\end{tcolorbox}
+\bigskip 
+
+To check that these are good inference rules, let's first verify that
+``$P$ if and only if $P$'' is tautologous.
+\[ \begin{array}{l l >{$}p{3.5cm}<{$} p{3cm}}
+1 & (1) & P & A \\
+  & (2) & P\to P & 1,1 CP \\
+  & (3) & (P\to P)\wedge (P\to P) & 2,2 $\wedge$I \\
+  & (4) & P\lra P  & 3 $\lra$I \end{array} \]
+In technical writing, people often abbreviate ``if and only if'' to
+the three letters ``iff''.  Another expression that is sometimes used 
+with the same force is ``just in case''.  In particular,
+mathematicians often state their definitions by saying something like,
+``We'll say that a number $n$ is {\it prime} just in case \dots ''.
+By this they mean, a number $n$ is prime if and only if \dots .
+
+Recall that a conditional $P\to Q$ in propositional logic can be
+asserted in conditions considerably weaker than those that license
+asserting a conditional in some everyday life contexts.  In
+particular, $Q\vdash P\to Q$, which means that $Q$ itself is a
+sufficient condition for $P\to Q$.  This result also suggests that
+$P\lra Q$ should be assertable in any context where both $P$ and $Q$
+are assertable.  We verify that fact now.
+\[ \begin{array}{l l >{$}p{4cm}<{$} p{4cm}}
+      1 & (1) & P\wedge Q & A \\
+      1 & (2) & Q & 1 $\wedge$E \\
+      1 & (3) & P\to Q & 2 cut, positive paradox \\
+      1 & (4) & P  & 1 $\wedge$E \\
+      1 & (5) & Q\to P & 4 cut, positive paradox \\
+      1 & (6) & (P\to Q)\wedge (Q\to P) & 3,5 $\wedge$I \\
+      1 & (7) & P\lra Q   & 6 $\lra$I \end{array} \]
+This proof yields the sequent $P\wedge Q\vdash P\lra Q$.  A similar
+proof (see the exercises) shows that $\neg P\wedge\neg Q\vdash P\lra
+Q$.  You could then combine these two proofs with a step of
+disjunction elimination to prove the sequent:
+\[ (P\wedge Q)\vee (\neg P\wedge\neg Q)\: \vdash \: P\lra Q .\]
+
+\begin{exercises} Prove the following sequents.  You may invoke cut
+  with any named sequent that you have already proven (e.g.\ lem,
+  positive paradox, negative paradox).
+   \begin{enumerate}
+\item $P\lra Q\:\vdash\: Q\lra P$     
+\item $\vdash\: (Q\to P)\vee (P\to R)$     
+\item $P\lra Q\:\dashv\vdash\: (P\wedge Q)\vee (\neg P\wedge \neg Q)$     
+\item $\neg (P\lra P)\:\vdash\: Q\wedge\neg Q$
+\item $P\lra Q, Q\lra R\:\vdash\: P\lra R$
+\item $\neg (P\lra Q)\:\dashv\vdash\: (P\lra \neg Q)$  
+\item $\vdash\: (P\lra Q)\vee (P\lra R)\vee (Q\lra R)$
+\end{enumerate}
+\end{exercises}
+
+
+%% TO DO: more complicated substitution -- i.e. replacement
+
+\section{Replacement} \label{replacement}
+
+The substitution meta-rule permits only transformations that begin
+with atomic sentences, and that propagate through the application of
+the logical connectives.  The \emph{replacement meta-rule} is more
+flexible: it permits replacement of an entire subformula.
+
+The idea behind this meta-rule is simple.  Suppose that you have
+proven both sequents $\phi\vdash\psi$ and $\psi\vdash\phi$.  So, you
+know then that $\phi$ and $\psi$ are equivalent, ``for all logical
+purposes.''  In particular, whatever inferential relations $\phi$
+stands in to any other sentence $\theta$, $\psi$ stands in exactly
+those same inferential relations to $\theta$.  This suggests that in
+any argument, $\psi$ should be able to play the same role as $\phi$.
+
+For example, consider the sequent
+\[ R\vee ((Q\to R)\to P) \: \vdash \: R\vee ((\neg Q\vee R)\to P) .\]
+This sequent could be proven the long way around by performing
+disjunction elimination.  After assuming the second disjunct of the
+premise, you could then assume $\neg Q\vee R$.  Then plug in the proof
+of $\neg Q\vee R\vdash Q\to R$, and so on.
+
+Let $\theta$ be the formula $Q\to R$, let $\theta '$ be the formula
+$\neg Q\vee R$, and let $\phi$ be the formula $R\vee ((Q\to R)\to P)$.
+In other words, $\phi$ is the formula $R\vee (\theta \to P)$, and the
+conclusion of the argument is the formula $R\vee (\theta '\to P)$.
+
+After doing many proofs, you'll start to get the feeling that a move
+like this can always be done.  That is, if one formula $\theta$ occurs
+as part of another $\phi$, and if $\theta$ is provably equivalent to
+$\theta '$, then you'll always be able to find a proof $\phi\vdash\phi
+[\theta '/\theta ]$, where $\phi [\theta '/\theta ]$ is the formula
+you get if you replace $\theta$ in $\phi$ with $\theta '$.
+
+But can you be sure that it will always work?  The answer is yes, that
+you can be sure, but it takes some patient verification to see why.
+The key here is simply to check that all of the connectives preserve
+inter-derivability of sentences.  So, for example, if $\theta$ and
+$\theta '$ are inter-derivable, then no matter what sentence $\psi$
+is, the conjunction $\theta\wedge\psi$ will be inter-derivable with
+$\theta' \wedge\psi$, the conditional $\theta\to\psi$ will be
+inter-derivable with $\theta'\to\psi$ and so on.  If we apply the same
+thought again, it follows that $\chi\vee (\theta\wedge\psi )$ is
+inter-derivable with $\chi\vee (\theta '\wedge\psi )$, and so on.  In
+other words, once you have that $\theta\dashv\vdash\theta '$, then
+$\theta$ can be embedded as deeply as you want in some other formula
+$\phi$, and it will still be the case that $\phi\dashv\vdash \phi
+[\theta '/\theta ]$, where $\phi [\theta '/\theta ]$ is the result of
+replacing $\theta$ in $\phi$ with $\theta '$.
+
+Our meta-rule of replacement can be made more convenient for proving
+stuff if we remember that $\phi\dashv\vdash\phi [\theta /\theta ']$
+implies that if $\Gamma\vdash\phi$ then
+$\Gamma\vdash\phi [\theta /\theta ']$.  That is, if there's a proof of
+$\phi$ from $\Gamma$, then there's also a proof of
+$\phi [\theta /\theta ']$.
+
+\bigskip \begin{tcolorbox}[enhanced,width=10cm,title=replacement with
+  an equivalent (RE),attach boxed title to top
+  left={yshift=-2mm,xshift=4mm},boxed title style={sharp corners}]
+  Given a line \mbox{$\Gamma\vdash\phi$ of a proof}, and a sub-formula
+  $\theta$ of $\phi$, if $\theta$ is equivalent to $\theta '$, then
+  you may infer a sub{-}sequent line
+  $\Gamma\vdash\phi [\theta '/\theta]$, where $\theta$ has been
+  replaced by $\theta '$.  Schematically: \[ \begin{array}{c c}
+       \vdash\theta\lra\theta ' \qquad \Gamma\vdash\phi \\ \hline
+       \Gamma\vdash \phi [\theta '/\theta] \end{array} \]
+\end{tcolorbox}
+
+\bigskip The replacement meta-rule can be used with any equivalences
+that have already been proven.  If you keep in mind some key
+equivalences (see page \pageref{equivs}), then it can really speed up
+proofs.  Consider, for example, the following alternative proof of
+Peirce's law.
+ % \[ \begin{array}{l l l p{4cm}}
+ %      1 & (1) & (P\to Q)\to P  & A \\
+ %      2 & (2) & \neg P         & A \\
+ %      1,2 & (3) & \neg (P\to Q) & 1,2 MTT \\
+ %      1,2 & (4) & P\wedge\neg Q & 3 mat cond \\
+ %      1,2 & (5) & P             & 4 $\wedge$E \\
+ %      1,2 & (6) & P\wedge \neg P & 5,2 $\wedge$I \\
+ %      1   & (7) & \neg \neg P    & 2,6 RAA \\
+ %      1   & (8) & P              & 7 DN \end{array} \]
+\[ \begin{array}{l l >{$}p{3cm}<{$} p{4cm}}
+     1 & (1) & (P\to Q)\to P  & A \\
+     1 & (2) & \neg (P\to Q)\vee P & 1 RE, mat cond \\
+     1 & (3) & (P\wedge \neg Q)\vee P & 2 RE, mat cond \\
+     4 & (4) & P\wedge \neg Q & A \\
+     4 & (5) & P              & 4 $\wedge$E \\
+     6 & (6) & P              & A \\
+     1 & (7) & P & 3,4,5,6,6 $\vee$E \end{array} \]
+On line 2, we used replacement on the entire line with the equivalence
+$\phi\to\psi \dashv\vdash \neg\phi\vee \psi$.  (When replacement is applied
+to an entire line, we could also have used cut.)  On line 3, we used
+replacement on the first disjunct with the equivalence $\neg
+(\phi\to\psi )\dashv\vdash \phi\wedge\neg\psi$.
+
+The replacement meta-rule can be especially helpful if you need to
+convert a sentence $\phi$ into an inter-derivable sentence $\phi '$
+that has some specific form.  For example, one particularly nice kind
+of sentence is one where all negation signs apply only to atomic
+sentences; all conjunction symbols apply only to atomic or negated
+atomic sentences; and where there are no conditional or biconditional
+connectives.  (Such sentences are said to be in \emph{disjunctive
+  normal form}, and we will investigate them further in Chapter
+\ref{truth}.)  For example, the following sentence has this form:
+\[ (P\wedge Q)\vee (P\wedge\neg Q)\vee (\neg P\wedge Q)\vee (\neg
+  P\wedge\neg Q) .\] We won't provide a detailed recipe here for
+finding equivalent disjunctive normal form sentences, but instead
+we'll just work a couple of examples.
+
+First, we write a proof of the sequent
+\[ (P\to Q)\vee (Q\to P)\:\vdash\: (P\vee\neg P)\vee (Q\vee\neg Q) .\]
+\[ \begin{array}{l l >{$}p{4.5cm}<{$} p{3cm}}
+     1     & (1) & (P\to Q)\vee (Q\to P) & A \\
+     1    & (2) & (\neg P\vee Q)\vee (\neg Q\vee P) & 1 RE \\
+     1     & (3) & \neg P\vee (Q\vee (\neg Q\vee P)) & 2 RE \\
+     1     & (4) & \neg P\vee ((Q\vee \neg Q)\vee P) & 3 RE \\
+     1     & (5) & \neg P\vee (P\vee (Q\vee\neg Q)) & 4 RE \\
+     1     & (6) & (\neg P\vee P)\vee (Q\vee \neg Q) & 5 RE \\
+     1 & (7) & (P\vee\neg P)\vee (Q\vee \neg Q) & 6 RE \end{array} \]
+ Since the conclusion here is a tautology, it's not surprising that it
+ can be derived from the premise.  (It can, in fact, be derived from
+ any premise.)  What's interesting is that each step of this proof
+ uses RE, and so the derivation is reversible --- hence, the premise
+ and conclusion are logically equivalent.
+
+\begin{exercise} In the proof above, identify each equivalence that
+  has been used. \end{exercise}
+ 
+Now we convert $P\lra Q$ to $(P\wedge Q)\vee (\neg P\wedge\neg Q)$
+using a string of equivalences.
+\[ \begin{array}{r c l l}
+     P\lra Q & \dashv\vdash & (P\to Q)\wedge (Q\to P) & \\
+             & \dashv\vdash & (\neg P\vee Q)\wedge (\neg Q\vee P) & \\
+             & \dashv\vdash & ((\neg P\vee Q)\wedge\neg Q)\vee ((\neg P\vee
+                        Q)\wedge P) \\
+             & \dashv\vdash & ((\neg P\wedge\neg Q)\vee (Q\wedge\neg Q))\vee
+                        ((\neg P\wedge P)\vee (Q\wedge P)) \\
+             & \dashv\vdash & (\neg P\wedge\neg Q)\vee (Q\wedge P) .
+   \end{array} \]
+ In the final line, we used the fact that for any contradiction $\bot$, and
+ for any sentence $\phi$, we have  $\phi\vee\bot\dashv\vdash\phi\dashv\vdash\bot\vee\phi$. In this sense, a
+ contradiction acts like a zero (i.e.\ an additive identity) for the $\vee$ operation.
+ 
+
+                                               
+                                                          
+
+ \begin{exercises} Use replacement-style reasoning to convert the
+   following sentences to disjunctive normal form.  You might wish to
+   consult the equivalences on page \pageref{equivs}.
+  \begin{enumerate}
+  \item $(P\to Q)\vee (Q\to R)$  
+  \item $(P\lra Q)\vee (P\lra R)\vee (Q\lra R)$
+  \end{enumerate}
+\end{exercises}
+
+
+
+% Indeed, if a
+% sentence is longer than just a single symbol, then the last
+% construction step must have been to apply some connective $\otimes$ to
+% two other sentences $\phi$ and $\psi$.  
+
+  
+                               
+%% TO DO: resume of rules (including dependencies)
+
+%% TO DO: sequent introduction & theorem introduction    
+     
+
+
+
+% the picture can just be a bit misleading because it might occur that $m_i$ occurs in $\Delta _i$; but our notation doesn't indicate that in that case, $m_i$ should be removed from $\Delta _i$ in the final tabulation on line $n$.
+% Recall, however, that
+% we need to keep track of the context in which the premise $P_1\vee P_2$
+%  is obtained, as well as the contexts in which the conditionals $P_1\to
+%  Q$ and $P_2\to Q$ are obtained.  In this particular case, we
+%  could use $\Gamma$ for information obtained from Angelina, and
+%  $\Delta$ for information obtained from club rules.  Then the
+%  inference could be represented as:
+%  \[ \begin{array}{c} \Gamma \:\vdash \:P_1\vee P_2 \qquad \Delta
+%       \:\vdash\:P_1\to Q \qquad \Delta \:\vdash\:P_2\to Q \\
+%       \hline \Gamma ,\Delta \:\vdash\: Q \end{array} \] Here the
+%  conclusion $Q$ depends on both the information from Angelina ($\Gamma$) and the club rules ($\Delta$).  Let's represent the argument again, this time approximating a linear format:
+%  \[ \begin{array}{l l >{$}p{2cm}<{$} p{1.5cm}}
+%       \Gamma & (1) & P_1\vee P_2  & A \\
+%       \Delta & (2) & P_2\to Q   & A \\
+%       \Delta & (3) & P_2\to Q   & A \\
+%       \Gamma ,\Delta & (4) & Q    & 1,2,3 $\vee$E \end{array} \]
+% In the final line, we have explicitly stated that the inference is
+% permitted by our new rule: disjunction elimination ($\vee$E).
+% However, the official disjunction elim rule will need to be
+% cast in a slightly more general form.  First of all, we do {\it not}
+% want to require that the second instance of the conclusion (line $3$
+% in the proof above) depend on the {\it same} things as the first
+% instance of the conclusion (line $2$ above).  Hence, in general, we
+% should allow something like this:
+%  \[ \begin{array}{l l >{$}p{2cm}<{$} p{1.5cm}}
+%       \Gamma & (1) & P_1\vee P_2  & A \\
+%       \Delta _1 & (2) & P_1\to Q   & A \\
+%       \Delta _2 & (3) & P_2\to Q   & A \\
+%       \Gamma ,\Delta _1 ,\Delta _2 & (4) & Q    & 1,2,3 $\vee$E \end{array} \]
+% Second, we want in general for our introduction and elimination rules
+% for a connective (say $\vee$) not to refer to some other connective
+% (say $\to$).  Thus, it would be best if we formulated the Disjunction
+% Elimination rule without requiring that the second and third premises
+% be conditional statements.  In this case, instead of using $\Delta
+% \vdash P_1\to Q$ as the second premise, we could use $\Delta ,P_1\vdash
+% Q$, which --- you will recall --- means that, ``there is a proof of
+% $Q$ from $\Delta$ and $P_1$.''  Thus, in fact, we should think of the 
+%  Disjunction Elimination rule as taking three {\it proofs}
+%  as input, and giving a new proof as output.  The input proofs are:
+%  \begin{enumerate}
+%  \item $\Gamma\vdash P_1\vee P_2\:$ (a proof of a disjunctive
+%    statement)
+%  \item $\Delta _1,P_1\:\vdash Q\:$ (a proof of a conclusion $Q$ from the
+%    first disjunct $P_2$ and possibly some auxiliary information
+%    $\Delta _1$)
+%  \item $\Delta _2,P_2\:\vdash Q\:$ (a proof of the same conclusion $Q$
+%    from the second disjunct $P_2$ and possibly some other auxiliary
+%    information $\Delta _2$)
+%  \end{enumerate}
+%  The disjunction elimination rule states that: these three input
+%  proofs may be converted to the following output proof:
+%  \[ \Gamma ,\Delta _1 ,\Delta _2 \: \vdash \: Q \] Just as conditional
+%  proof converts a proof of $Q$ from $P$ into a proof of $P\to Q$,
+%  disjunction elimination converts proofs of $Q$ from $P_1$ and $P_2$
+%  into a proof of $Q$ from $P_1\vee P_2$.  The official statement of
+%  the rule is as follows:
+
+
+
+
+% Suppose that we ask you to prove the sequent:
+% \[ \:\vdash (R\to S)\vee (S\to R) \]
+% It would not be unreasonable to try to prove this sequent by means of
+% reductio ad absurdum.  To this end, you would first assume the
+% negation of the conclusion:
+% \[ \begin{array}{l l l p{1.5cm}}
+%      1 & (1) & \neg ((R\to S)\vee (S\to R)) & A \end{array} \]
+%  You might then remember that you previously proved DeMorgan's law
+%  \[ \neg (P\vee Q)\:\vdash\: \neg P\wedge\neg Q \]
+% And you would be right to think that you could repeat this proof using
+% $R\to S$ in place of $P$, and $S\to R$ in place of $Q$.  The result
+% then would be a line that looks like this:
+% \[ \begin{array}{l l l l} 1 & (n) & \neg (R\to S)\wedge \neg (S\to R)
+%     & \end{array} \] You might then remember proving
+% $\neg (P\to Q)\vdash P\wedge \neg Q$, and if you make the proper
+% substitutions, then from line $n$ you could first derive $R$ from
+% $\neg (R\to S)$, and then $\neg R$ from $\neg (S\to R)$.  You will
+% then have shown that the assumption on line 1 leads to both $R$ and
+% $\neg R$; hence you can apply RAA to obtain $\neg \neg ((R\to S)\vee
+% (S\to R))$. 
+
+
+
+
+
+  
+%% truth tables -- but without explaining why they work
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "main"
+%%% End:
+
+

@@ -1,0 +1,187 @@
+\chapter{Beyond Logic}
+
+Since logic has no content, you cannot have failed to learn the
+content of this book.  We hope, though, to have shown you an example
+of how you can think more clearly, more rigorously, and more freely.
+
+You might be disappointed.  You might have hoped that logic would tell
+you what to to believe, or how to behave.  However, since logic only
+cares about form (and not content), it cannot possibly advise us on
+what to believe.  At best, logic can help us to calculate the costs of
+our beliefs.  And once again, it's up to you to decide what costs you
+are willing to pay.
+
+Consider, for example, the following simple argument for God's
+existence.
+\[ \begin{array}{p{10cm}}
+     If God does not exist, then there are no moral rules. \\
+     There are moral rules. \\
+     Therefore, God exists. \end{array} \] This argument is valid.
+  But so what?  It doesn't tell you what to believe.  Perhaps you
+  don't believe the premises.  Or perhaps you believe the premises;
+  and upon discovering that they entail this conclusion, you'll decide
+  to reject the premises.  Logic does not tell you that you ought not
+  do that.  There's an old philosophers' saying: {\it one person's
+    modus ponens is another person's modus tollens}.  In other words,
+  logic doesn't tell you whether to accept the premises and the
+  conclusion, or whether to reject one of the premises because you
+  reject the conclusion.
+
+\section{What next?}
+
+Did you just waste a class (or many hours, or both) on learning
+techniques that you'll never again use?  Even if you never again write
+a formal proof, the work you've put into learning formal logic will
+not be wasted.  Consider an analogy.  A competitive athlete may spend
+hour upon hour performing exercises that she will never perform in
+competition.  Of course, those exercises are not wasted time.  The
+different individual exercises are like vectors that can be summed
+together to produce the desired outcome during competition.  The
+individual component contributors to performance may be invisible; but
+if they weren't there, the performance would be undermined.
+
+Your life is more important than any athletic competition, and your
+brain is one of your most important tools for winning in life (however
+you define that for yourself).  You can think of formal logic as the
+brain's version of isolation exercises.  By learning the individual
+inference rules, and by using them again and again, you've built some
+exquisite mental muscles.  In real life, you might never have occasion
+to employ these individual mental muscles in isolation.  However,
+anytime you need to think hard, or fast, or clearly, these individual
+mental muscles will combine to enable you to perform at the highest
+possible level.
+
+If you want to go further with formal logic, then I have good news for
+you: it's a thriving subject, with connections to many other fields of
+study, such as computer science.  As for the study of logic itself,
+there are many different directions you could go from here, and I'll
+briefly discuss five of them.
+
+First, you might wish to study \emph{extensions of classical logic}.
+For philosophers, the most important of these extensions is
+\emph{modal logic}, which studies intensional connectives such as ``it
+is necessarily true that \dots '' usually symbolized with a box
+$\Box$.\footnote{For propositional modal logic, see J.C. Beall and
+  B. van Fraassen, {\it Possibilities and Paradox}, Oxford (2003), or
+  G. Forbes, {\it Modern Logic}, Oxford (1994).  For quantified modal
+  logic, see K. Konyndyk, {\it Introductory Modal Logic}, University
+  of Notre Dame Press (1986), or T. Sider, {\it Logic for Philosophy},
+  Oxford (2010).}
+
+While modal logic has primarily found its audience among philosophers,
+other extensions of classical logic are of interest in the exact
+sciences.  Here we should mention higher-order logics (where one can
+quantify over
+subsets)\footnote{https://plato.stanford.edu/entries/logic-higher-order},
+infinitary logics (where one can form infinite conjunctions or
+disjunctions of sentences), and the lambda calculus (where one adds an
+operator for forming names out of predicate
+phrases)\footnote{https://plato.stanford.edu/entries/lambda-calculus}.
+
+Second, if you're feeling a bit more revolutionary, then you might be
+interested in studying \emph{alternatives to classical logic}.  These
+alternatives to classical logic can again be subdivided into two
+classes: fragments of classical logic, and substructural logics.  A
+fragment of classical logic is a logic that uses only some subset of
+the logical vocabulary or the inference rules.  For example,
+\emph{intuitionistic logic} drops the double-negation elimination
+rule, and instead adopts an ex falso quodlibet rule.  (In this case,
+excluded middle can no longer be proven.)  The move to intuitionistic
+logic was initially motivated by an outlook in the philosophy of
+mathematics that has largely been discredited.  However,
+intuitionistic logic is still an important tool for reasoning about
+mathematical structures that do not ``live in'' the universe of
+sets.\footnote{S. Mac Lane and I. Moerdijk, {\it Sheaves in Geometry
+    and Logic}, Springer (1994).}  More generally, \emph{coherent
+  logic} drops the negation symbol and the universal quantifier, and
+so is neutral between intuitionistic and classical logic.
+
+A \emph{substructural logic} is a logic that modifies some of the
+rules we tacitly adopted for manipulating dependency numbers.  In
+particular, we tacitly assumed that lists of dependency numbers
+aggregate like sets, e.g.\ the aggregate of ``$2$'' and ``$2,3$'' is
+``$2,3$'', which is no different than ``$3,2$''.  In substructural
+logic, these identities are no longer assumed to hold.  Already in the
+1960s, some logicians argued that changes in the structural rules were
+the best solution to the paradoxes of material
+implication.\footnote{https://plato.stanford.edu/entries/logic-relevance}
+More recently, it has been observed that changes in the structural
+rules can yield logics that better represent the kind of reasoning
+used in quantum physics (e.g.\ quantum logic)\footnote{P. Gibbins,
+  {\it Particles and Paradoxes: The Limits of Quantum Logic},
+  Cambridge University Press (1987).}, and in computer science (e.g.\
+linear logic).\footnote{A.S. Troelstra, {\it Lectures on Linear
+    Logic}, CSLI (1992). For an general overview, see G. Restall, {\it
+    An Introduction to Substructural Logics}, Routledge
+  (2000).} \label{relevant}
+
+Third, this entire book has focused on a limiting case of good
+arguments, namely those arguments where the premises provide decisive
+support for the conclusion (i.e.\ deductively valid arguments).  So,
+it would make a lot of sense to now go on to study less idealized
+cases, where the premises are only intended to provide some (less than
+decisive) support conclusion.  One promising approach to this idea is
+to use the \emph{probability calculus}, which offers various ways to
+measure the evidential support that premises provide for a
+conclusion.\footnote{Colin Howson and Peter Urbach, {\it Scientific
+    Reasoning: The Bayesian Approach}, Open Court (2005).}  More
+generally, various \emph{inductive logics} have been proposed,
+although there has been some controversy among philosophers about
+whether the notion of inductive support can be properly
+formalized.\footnote{Brian Skyrms, {\it Choice and Chance: An
+    Introduction to Inductive Logic}, Cengage (1999).}
+
+Fourth, one could proceed from here to a more in depth study of the
+metatheory of first-order logic.  For example, in \emph{proof theory}
+one builds and studies elegant ``sequent calculi.''  In fact, we
+intentionally chose the proof system in this book because it closely
+resembles the sequent calculus, and so anyone who learns this system
+is well-prepared to move on to proof theory.\footnote{A.S. Troelstra
+  and H. Schwichtenberg, {\it Basic Proof Theory}, Cambridge (2000).}
+Going in a different meta-theoretical direction, in \emph{model
+  theory} one studies the relation between theories and their models,
+and its here that one proves some of the most powerful results of
+metalogic.\footnote{D. Marker, {\it Model Theory: An Introduction},
+  Springer (2002).} For example, the L{\"o}wenheim-Skolem theorem
+shows that any theory with an infinite model also has a countably
+infinite model --- which is deeply puzzling when applied to
+Zermelo-Fraenkel set theory, which entails that there is an
+uncountably infinite set.\footnote{For a general overview of
+  metatheory, see G. Hunter, {\it Metalogic: An Introduction to the
+    Metatheory of Standard First Order Logic}, University of
+  California Press (1996), or H. Enderton, {\it A Mathematical
+    Introduction to Logic}, Academic Press (2001).}
+
+Fifth, you might wish to study particular theories within first-order
+logic.  Of course, that's precisely what's done in many different
+parts of mathematics --- e.g.\ one studies group theory, or ring
+theory, or field theory, or \dots . However, some such theories are of
+special interest to logicians, most particularly Zermelo-Fraenkel set
+theory and Peano arithmetic.  Set theory has itself become a massive
+field of study, and there are many good textbooks.  As for the study
+of Peano arithmetic and G{\"o}del's incompleteness theorem, we would
+point the interested reader to Burgess, Boolos, and Jeffrey, {\it
+  Computability and Logic}, Cambridge (2007), or P. Smith, {\it An
+  Introduction to G\"odel's Theorems}, Cambridge (2013).
+
+Sixth, and finally, you might want to study the network of all
+theories as they are related to each other via translations.  Here we
+would (immodestly) point you to H. Halvorson, {\it The Logic in
+  Philosophy of Science}, Cambridge (2019).
+
+%% it cannot tell you what to believe
+
+%% people think that we need to move to intensional logics.  But even
+%% intensional logics are formal logics ... only capture formal relations
+
+%% Carnap: principle of tolerance? 
+
+
+
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "main"
+%%% End:
